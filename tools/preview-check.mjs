@@ -56,12 +56,14 @@ await page.evaluate(() => document.fonts.ready);
 await page.evaluate(() => { document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-in')); });
 
 // Service rows
-const row = page.locator('.service-row__toggle').first();
-await row.click();
-note('service row expands', await row.getAttribute('aria-expanded') === 'true' && await page.locator('#service-strategy').isVisible());
+note('first row open by default', (await page.locator('.service-row__toggle').first().getAttribute('aria-expanded')) === 'true' && await page.locator('#service-store-operations').isVisible());
+const row2 = page.locator('.service-row__toggle').nth(1);
+await row2.click();
+note('second row expands', await row2.getAttribute('aria-expanded') === 'true' && await page.locator('#service-store-development').isVisible());
+note('desktop keeps first row open alongside', await page.locator('#service-store-operations').isVisible());
 await page.locator('#work').screenshot({ path: join(outDir, 'work-open-1440.png') });
-await row.click();
-note('service row collapses', await row.getAttribute('aria-expanded') === 'false' && !(await page.locator('#service-strategy').isVisible()));
+await row2.click();
+note('second row collapses', await row2.getAttribute('aria-expanded') === 'false' && !(await page.locator('#service-store-development').isVisible()));
 
 // Workboard
 const status = page.locator('.status-btn').first();
@@ -134,6 +136,10 @@ await m.locator('#nav-panel a[href="#work"]').click();
 note('menu closes on selection', !(await m.locator('#nav-panel').isVisible()));
 await m.waitForTimeout(600);
 note('selection scrolled to #work', await m.evaluate(() => { const r = document.querySelector('#work').getBoundingClientRect(); return r.top >= 0 && r.top < 200; }));
+await m.locator('.service-row__toggle').nth(2).click();
+await m.waitForTimeout(100);
+note('mobile keeps one row open at a time', (await m.locator('#service-real-estate').isVisible()) && !(await m.locator('#service-store-operations').isVisible()));
+await m.locator('#work').screenshot({ path: join(outDir, 'work-390.png') });
 await m.locator('[data-open-note="note-1"]').scrollIntoViewIfNeeded();
 await m.locator('[data-open-note="note-1"]').click();
 await m.screenshot({ path: join(outDir, 'note-dialog-390.png') });

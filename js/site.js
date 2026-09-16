@@ -49,14 +49,24 @@
     else window.setTimeout(draw, 120);
   }
 
-  /* ---------- Service rows ---------- */
-  Array.prototype.forEach.call(document.querySelectorAll('.service-row__toggle'), function (btn) {
+  /* ---------- Service rows ----------
+     First row opens by default (set in the markup). Desktop may hold several
+     rows open; below 768px only one row is open at a time. */
+  var rowToggles = Array.prototype.slice.call(document.querySelectorAll('.service-row__toggle'));
+  var singleOpen = window.matchMedia('(max-width: 767px)');
+  function setRow(btn, open) {
     var region = document.getElementById(btn.getAttribute('aria-controls'));
+    btn.setAttribute('aria-expanded', String(open));
+    region.hidden = !open;
+    btn.closest('.service-row').classList.toggle('is-open', open);
+  }
+  rowToggles.forEach(function (btn) {
     btn.addEventListener('click', function () {
       var open = btn.getAttribute('aria-expanded') === 'true';
-      btn.setAttribute('aria-expanded', String(!open));
-      region.hidden = open;
-      btn.closest('.service-row').classList.toggle('is-open', !open);
+      if (!open && singleOpen.matches) {
+        rowToggles.forEach(function (other) { if (other !== btn) setRow(other, false); });
+      }
+      setRow(btn, !open);
     });
   });
 
