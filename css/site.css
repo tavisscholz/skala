@@ -357,7 +357,8 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .approach__grid { display: grid; grid-template-columns: 7fr 5fr; gap: var(--space-8) var(--space-9); align-items: end; }
 .tool__grid { display: grid; grid-template-columns: 7fr 5fr; gap: var(--space-8) var(--space-9); align-items: end; }
 .tool__grid .figure { border: 3px solid var(--color-acid); }
-.notes__grid { display: grid; grid-template-columns: 5fr 7fr; gap: var(--space-8) var(--space-9); align-items: end; }
+.notes__grid { display: grid; grid-template-columns: 7fr 5fr; gap: var(--space-8) var(--space-9); align-items: end; }
+.notes__grid .figure img { object-position: 50% 42%; }
 @media (max-width: 1023px) { .approach__grid, .notes__grid, .tool__grid { grid-template-columns: 1fr; gap: var(--space-7); } }
 
 /* ---------- Field notes ---------- */

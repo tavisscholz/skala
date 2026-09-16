@@ -16,6 +16,7 @@ MAPPING = {
     "approach-before-doors-open": ("approach-before-doors-open.webp", 1200),
     "tool-opening-checklist": ("tool-opening-checklist.webp", 1200),
     "about-operator-in-aisle": ("about-operator-in-aisle.webp", 900),
+    "SKALA_09_the_field_notebook": ("notes-field-notebook.webp", 1200),
 }
 
 src = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else "assets/images/source")
