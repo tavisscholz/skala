@@ -1,0 +1,83 @@
+/* SKALA 01 — Operator Movement · design tokens
+   Locked trial tokens from the handoff (Section 4) plus the
+   implementation-only additions the board does not define
+   (type scale, spacing rhythm, layout dimensions, motion). */
+
+:root {
+  /* Color — locked */
+  --color-acid: #E5FF2A;
+  --color-ink: #050505;
+  --color-white: #FFFFFF;
+  --color-paper: #F0F0EC;
+  --color-periwinkle: #A19AFF;
+  --color-orange: #FF5B35;
+  --color-muted-light: #BEBEB8;
+  --color-muted-dark: #555550;
+
+  /* Semantic surfaces — locked */
+  --surface-page: var(--color-paper);
+  --surface-emphasis: var(--color-acid);
+  --text-primary: var(--color-ink);
+  --button-fill: var(--color-acid);
+  --button-text: var(--color-ink);
+
+  /* Shape — locked (poster, not SaaS) */
+  --radius-control: 0px;
+  --radius-panel: 0px;
+
+  /* Layout — locked container, implementation gutters */
+  --container: 1280px;
+  --gutter: 48px;            /* desktop side margin */
+  --grid-gap: 24px;          /* 12-column gutter */
+  --header-h: 80px;
+  --section-y: 96px;
+
+  /* Spacing — locked */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --space-10: 128px;
+
+  /* Typography — implementation scale between the specified endpoints */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-brush: "Permanent Marker", "Segoe Print", "Bradley Hand", "Chalkboard", cursive;
+
+  --text-hero: clamp(2.5rem, 1.84rem + 3.24vw, 4.75rem);       /* 40–76px: two lines of "Bigger tomorrows." fit the 7-col panel; see docs */
+  --text-section: clamp(1.875rem, 1.2rem + 2.6vw, 3.5rem);      /* 30–56px */
+  --text-campaign: clamp(2rem, 0.8rem + 3vw, 3.375rem);         /* 32–54px: strip stays on one line at 1280 */
+  --text-subhead: clamp(1.25rem, 1rem + 0.9vw, 1.75rem);        /* 20–28px */
+  --text-closing: clamp(2.5rem, 1.25rem + 3vw, 4.25rem);        /* 40–68px closing campaign heading */
+  --text-body: clamp(1rem, 0.94rem + 0.2vw, 1.125rem);          /* 16–18px */
+  --text-ui: 0.9375rem;                                         /* 15px */
+  --text-label: 0.75rem;                                        /* 12px */
+  --wordmark-header: clamp(2rem, 1.6rem + 0.9vw, 2.5rem);       /* ≈112–136px wide */
+  --wordmark-hero: clamp(6.5rem, 2rem + 7.2vw, 11.875rem);      /* ≈104–190px, sized to clear the 5-col poster */
+
+  --leading-tight: 1.0;
+  --leading-body: 1.55;
+  --tracking-hero: -0.045em;
+  --tracking-tight: -0.03em;
+  --tracking-label: 0.09em;
+
+  /* Motion — implementation */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --duration-enter: 220ms;
+  --duration-underline: 450ms;
+  --travel-enter: 12px;
+
+  /* Focus */
+  --focus-ring: 3px;
+  --focus-offset: 3px;
+  --focus-color: var(--color-ink);   /* on acid / paper */
+}
+
+/* Gutters by viewport (Section 5) */
+@media (max-width: 1023px) { :root { --gutter: 32px; } }
+@media (max-width: 767px)  { :root { --gutter: 20px; --header-h: 68px; --section-y: 56px; } }
+@media (max-width: 360px)  { :root { --gutter: 16px; } }

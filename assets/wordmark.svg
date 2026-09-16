@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 104" role="img" aria-label="SKALA">
+  <g fill="none" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M70 22 C 42 8, 14 20, 20 40 C 26 58, 66 52, 70 70 C 74 90, 40 96, 12 84"/>
+    <path d="M92 12 L88 92 M132 14 L92 54 L134 92"/>
+    <path d="M148 94 L172 10 L196 94 M158 66 L186 66"/>
+    <path d="M214 12 L210 92 L252 90"/>
+    <path d="M262 94 L286 10 L310 94 M272 66 L300 66"/>
+  </g>
+</svg>
