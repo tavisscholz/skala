@@ -170,8 +170,15 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 
 .hero__media { position: relative; background: var(--color-ink); color: var(--color-acid); }
 .media-slot { position: relative; overflow: hidden; }
-.media-slot__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.15); }
-.media-slot__img ~ .poster { background: linear-gradient(180deg, rgba(5,5,5,0.05) 0%, rgba(5,5,5,0.7) 100%); }
+.media-slot__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--focus-x, 60%) 40%; filter: grayscale(1) contrast(1.12); }
+/* When a photograph is present the poster becomes a caption layer: no giant wordmark, no crown (the photos carry them). */
+.media-slot__img ~ .poster { background: linear-gradient(180deg, rgba(5,5,5,0.08) 0%, rgba(5,5,5,0.18) 55%, rgba(5,5,5,0.78) 100%); }
+.media-slot__img ~ .poster::after { opacity: 0.08; }
+.media-slot__img ~ .poster .poster__wordmark, .media-slot__img ~ .poster .poster__crown { display: none; }
+.media-slot__img ~ .campaign__poster-copy { text-shadow: 0 2px 24px rgba(5,5,5,0.6); }
+.campaign__media .media-slot__img { z-index: 0; }
+.campaign__media::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(5,5,5,0) 30%, rgba(5,5,5,0.8) 100%); pointer-events: none; z-index: 0; }
+.campaign__media:not(:has(.media-slot__img))::before { display: none; }
 .poster {
   position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: var(--space-8);
   background:
@@ -204,6 +211,8 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
   .hero__copy .button--ink { background: var(--color-acid); color: var(--color-ink); border-color: var(--color-acid); }
   .hero__note { color: var(--color-muted-light); }
   .hero__media { min-height: 200px; }
+  .hero__media:has(.media-slot__img) { aspect-ratio: 4 / 3; min-height: 0; }
+  .hero__media .media-slot__img { object-position: 50% 30%; filter: grayscale(1) contrast(1.1) brightness(0.85); }
   .poster { padding: var(--space-5) var(--gutter); flex-direction: row; align-items: flex-end; justify-content: space-between; }
   .poster__wordmark { display: none; }   /* header already carries the wordmark on mobile */
   .poster__crown { margin: 0; width: 56px; }
@@ -336,6 +345,15 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
   .workboard__table td:nth-child(3)::before { content: "Next · "; font-weight: 600; }
   .workboard__table td:nth-child(4) { padding-top: var(--space-3); }
 }
+
+/* ---------- Editorial figures (approach, field notes) ---------- */
+.figure { position: relative; margin: 0; overflow: hidden; background: var(--color-ink); }
+.figure img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.1); display: block; }
+.figure--tall { aspect-ratio: 4 / 3; }
+.figure__caption { position: absolute; left: 0; bottom: 0; margin: 0; padding: var(--space-3) var(--space-4); background: var(--color-acid); color: var(--color-ink); font-size: var(--text-label); font-weight: 700; letter-spacing: var(--tracking-label); text-transform: uppercase; }
+.approach__grid { display: grid; grid-template-columns: 7fr 5fr; gap: var(--space-8) var(--space-9); align-items: end; }
+.notes__grid { display: grid; grid-template-columns: 5fr 7fr; gap: var(--space-8) var(--space-9); align-items: end; }
+@media (max-width: 1023px) { .approach__grid, .notes__grid { grid-template-columns: 1fr; gap: var(--space-7); } }
 
 /* ---------- Field notes ---------- */
 .note-list { margin-top: var(--space-8); border-top: 3px solid var(--color-ink); }
