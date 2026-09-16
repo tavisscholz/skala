@@ -238,5 +238,7 @@
       });
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
     Array.prototype.forEach.call(reveals, function (el) { io.observe(el); });
+    /* Safety net: nothing stays parked invisible if the observer never fires */
+    window.setTimeout(function () { Array.prototype.forEach.call(reveals, function (el) { el.classList.add('is-in'); }); }, 2500);
   }
 })();
