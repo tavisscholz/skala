@@ -11,7 +11,7 @@ const rootDir = resolve(new URL('..', import.meta.url).pathname);
 const outDir = resolve(process.argv[2] || 'preview-out');
 mkdirSync(outDir, { recursive: true });
 
-const types = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.md': 'text/markdown' };
+const types = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.md': 'text/markdown', '.webp': 'image/webp', '.png': 'image/png' };
 const server = createServer(async (req, res) => {
   const path = req.url === '/' ? '/index.html' : req.url.split('?')[0];
   try {

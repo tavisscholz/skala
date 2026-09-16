@@ -48,13 +48,13 @@ Internal record for the website trial. Nothing in this file renders on the site.
 
 ## Missing assets and fallbacks
 
-- **No photography was supplied**, and no image generation was available in
-  this environment. Both photo slots (`data-image-slot="hero"` and
-  `data-image-slot="secondary"`) are completed as intentional black poster
-  compositions. See `docs/asset-manifest.md` for how to drop images in.
-- **No founder portrait.** The About aside uses the wordmark and a
-  field-notebook detail as the brief instructs. Nothing anonymous stands in
-  for Tavis.
+- **Photography supplied** on 16 September: five black-and-white documentary
+  frames, placed as hero, campaign, approach, tool, and About figures. See
+  `docs/asset-manifest.md`. Photos are converted to greyscale WebP by
+  `tools/prepare-images.py`; CSS applies a light contrast lift.
+- **No founder portrait.** The About aside carries an operator seen from
+  behind with the notebook card over it. It is not captioned or presented as
+  Tavis. Swap in a real portrait when one exists.
 - **Wordmark** is Permanent Marker set with a slight rotation. It is a trial
   approximation, not finished logo artwork. A rough stroked SVG wordmark
   (`assets/wordmark.svg`, also inlined as `#mark-wordmark`) is swapped in

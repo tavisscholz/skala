@@ -88,6 +88,7 @@
       </div>
       <!-- Image slot: drop a 1600×1200 black-and-white photograph here as <img class="media-slot__img"> and the poster below becomes the caption layer. See docs/asset-manifest.md. -->
       <div class="hero__media media-slot" data-image-slot="hero">
+        <img class="media-slot__img" src="assets/images/hero-store-floor.webp" width="1536" height="1024" alt="Two SKALA operators walking the store floor before opening, one carrying a crate" fetchpriority="high">
         <div class="poster poster--hero" aria-hidden="true">
           <span class="poster__wordmark brush">SKALA</span>
           <svg class="poster__crown mark-crown" focusable="false"><use href="#mark-crown"/></svg>
@@ -195,6 +196,7 @@
     <section class="campaign" aria-label="Campaign">
       <!-- Image slot: 1200×900 secondary photograph (training moment, marked-up notebook, opening prep). -->
       <div class="campaign__media media-slot" data-image-slot="secondary">
+        <img class="media-slot__img" src="assets/images/campaign-team-training.webp" width="1200" height="800" alt="A store leader talking through the work with four team members on the sales floor, one taking notes" loading="lazy">
         <p class="campaign__poster-copy" aria-hidden="true">Operators make a brighter tomorrow.</p>
       </div>
       <div class="campaign__panel">
@@ -206,10 +208,16 @@
     <!-- Approach -->
     <section class="section section--paper approach" id="approach" aria-labelledby="approach-title">
       <div class="container">
-        <div class="approach__intro reveal">
-          <p class="eyebrow">How we work</p>
-          <h2 class="section-title" id="approach-title">Get close to the work. Then build.</h2>
-          <p class="section-intro">We start where the operation happens. The work is finished when people can use it, own it, and keep improving it.</p>
+        <div class="approach__grid">
+          <div class="approach__intro reveal">
+            <p class="eyebrow">How we work</p>
+            <h2 class="section-title" id="approach-title">Get close to the work. Then build.</h2>
+            <p class="section-intro">We start where the operation happens. The work is finished when people can use it, own it, and keep improving it.</p>
+          </div>
+          <figure class="figure figure--wide reveal">
+            <img src="assets/images/approach-before-doors-open.webp" width="1200" height="800" alt="A storefront at first light with the security shutter half raised and an operator inside setting up" loading="lazy">
+            <figcaption class="figure__caption">Before the doors open</figcaption>
+          </figure>
         </div>
         <ol class="steps reveal">
           <li class="step">
@@ -244,9 +252,15 @@
     <!-- Illustrative operating tool -->
     <section class="section section--ink tool" aria-labelledby="tool-title">
       <div class="container">
-        <div class="tool__intro reveal">
-          <h2 class="section-title" id="tool-title">Put the work where everyone can see it.</h2>
-          <p class="section-intro">A useful operating rhythm makes ownership visible.</p>
+        <div class="tool__grid">
+          <div class="tool__intro reveal">
+            <h2 class="section-title" id="tool-title">Put the work where everyone can see it.</h2>
+            <p class="section-intro">A useful operating rhythm makes ownership visible.</p>
+          </div>
+          <figure class="figure figure--wide reveal">
+            <img src="assets/images/tool-opening-checklist.webp" width="1200" height="800" alt="A hand ticking through an opening checklist on a clipboard at the store entrance" loading="lazy">
+            <figcaption class="figure__caption">Opening checklist</figcaption>
+          </figure>
         </div>
         <div class="workboard reveal">
           <div class="workboard__head">
@@ -351,7 +365,11 @@
         </div>
         <!-- Portrait slot: only a portrait supplied by Tavis goes here. Until then the wordmark and notebook detail hold the space. -->
         <div class="about__aside reveal" data-image-slot="portrait">
-          <div class="notebook" aria-hidden="true">
+          <figure class="figure figure--portrait">
+            <img src="assets/images/about-operator-in-aisle.webp" width="900" height="1350" alt="An operator in a SKALA t-shirt walking the aisle of a store with a notebook under one arm" loading="lazy">
+            <figcaption class="figure__caption">Close to the work</figcaption>
+          </figure>
+          <div class="notebook notebook--card" aria-hidden="true">
             <span class="notebook__wordmark brush">SKALA</span>
             <ul class="notebook__list">
               <li>Standards the team can use</li>

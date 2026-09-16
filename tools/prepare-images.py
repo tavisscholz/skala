@@ -11,10 +11,11 @@ from PIL import Image, ImageOps
 
 # source filename (any extension) -> (output name, target width)
 MAPPING = {
-    "hero-operators-walking": ("hero-operators-walking.webp", 1600),
-    "campaign-team-huddle": ("campaign-team-huddle.webp", 1200),
-    "approach-opening-prep": ("approach-opening-prep.webp", 1200),
-    "notes-review-desk": ("notes-review-desk.webp", 1200),
+    "hero-store-floor": ("hero-store-floor.webp", 1600),
+    "campaign-team-training": ("campaign-team-training.webp", 1200),
+    "approach-before-doors-open": ("approach-before-doors-open.webp", 1200),
+    "tool-opening-checklist": ("tool-opening-checklist.webp", 1200),
+    "about-operator-in-aisle": ("about-operator-in-aisle.webp", 900),
 }
 
 src = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else "assets/images/source")
