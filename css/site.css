@@ -263,7 +263,8 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .service-row__list { columns: 2; column-gap: var(--space-5); font-size: 0.9375rem; line-height: 1.45; color: var(--color-ink); }
 .service-row__list li { break-inside: avoid; padding: 3px 0 3px 14px; position: relative; }
 .service-row__list li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 7px; height: 3px; background: var(--color-ink); }
-.service-row__note { margin-top: var(--space-4); font-size: 0.8125rem; line-height: 1.45; color: var(--color-muted-dark); border-left: 3px solid var(--color-ink); padding-left: var(--space-3); }
+.service-row__label--quiet { background: transparent; border: 1.5px solid var(--color-ink); padding: 1px 6px; }
+.service-row__note { font-size: 0.875rem; line-height: 1.5; color: var(--color-muted-dark); max-width: 56ch; }
 .service-row__col { max-width: 56ch; }
 .service-row__col--build { max-width: none; }
 .service-row__list { max-width: 64ch; }

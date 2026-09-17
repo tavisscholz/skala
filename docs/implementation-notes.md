@@ -38,16 +38,15 @@ Internal record for the website trial. Nothing in this file renders on the site.
 
 ## Capability section revision (16 September, experience-aligned architecture)
 
-The `#work` section now carries the four experience lanes from the
-experience-aligned capability handoff: Store Operations, Store Development,
+The `#work` section carries the four experience lanes from the final
+experience-aligned capability handoff (copy used verbatim): Store Operations, Store Development,
 Real Estate & Leasing, Franchise Development. It replaces both the original
 Strategy / Operations / People / Expansion rows and the intermediate taxonomy;
 the two were not merged. Heading and intro are the handoff's closed-state copy.
 Each row expands to What breaks · What we build · What becomes possible in the
 sans system. The first row is open by default; below 768px only one row is
-open at a time; desktop may hold several open. Lanes 03 and 04 carry a short
-scope note so the copy cannot be read as brokerage, legal representation, or
-legal drafting of the FDD. Nothing else on the page changed.
+open at a time; desktop may hold several open. Lanes 03 and 04 carry the handoff's
+scope notes between What we build and What becomes possible. Nothing else on the page changed.
 
 ## Departures from the brief, and why
 
