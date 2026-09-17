@@ -48,6 +48,18 @@ sans system. The first row is open by default; below 768px only one row is
 open at a time; desktop may hold several open. Lanes 03 and 04 carry the handoff's
 scope notes between What we build and What becomes possible. Nothing else on the page changed.
 
+## Voice and index revision (17 September)
+
+- Brand voice is third person: SKALA is the subject wherever a capability is
+  described, Tavis is the subject only where experience is the point. "Let's
+  build →" stays as the primary CTA; the visitor's own voice in the contact
+  draft is untouched.
+- Index numerals are brush figures without leading zeros across the
+  capability rows, approach steps, and field notes; the field notes carry a
+  hand-drawn ring like the board.
+- One brush pull quote in Field notes, taken from note 1. Extra vertical
+  space before About and Contact on desktop.
+
 ## Departures from the brief, and why
 
 | Brief | Built | Reason |

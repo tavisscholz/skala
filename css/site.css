@@ -246,7 +246,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
   background: none; border: 0; cursor: pointer;
 }
 .service-row__toggle:hover .service-row__name { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 4px; }
-.service-row__num { font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.5rem); font-weight: 400; letter-spacing: -0.02em; color: var(--color-muted-dark); min-width: 2.2ch; font-variant-numeric: tabular-nums; }
+.service-row__num { font-size: clamp(2rem, 1.5rem + 1.6vw, 3rem); line-height: 1; color: var(--color-ink); min-width: 2.2ch; text-align: center; transform: rotate(-4deg); }
 .service-row__body { display: flex; flex-direction: column; gap: var(--space-1); }
 .service-row__name { font-size: var(--text-subhead); font-weight: 800; letter-spacing: var(--tracking-tight); }
 .service-row__summary { color: var(--color-ink); font-size: var(--text-body); font-weight: 500; max-width: 60ch; text-wrap: balance; }
@@ -309,7 +309,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin-top: var(--space-8); border-top: 3px solid var(--color-ink); counter-reset: step; }
 .step { padding: var(--space-5) var(--space-5) var(--space-6) 0; border-right: 2px solid var(--color-ink); margin-right: var(--space-5); }
 .step:last-child { border-right: 0; margin-right: 0; }
-.step__num { display: inline-block; font-size: var(--text-label); font-weight: 700; letter-spacing: var(--tracking-label); background: var(--color-ink); color: var(--color-acid); padding: 4px 8px; }
+.step__num { display: inline-block; font-size: 1.75rem; line-height: 1; background: var(--color-ink); color: var(--color-acid); padding: 6px 12px 4px; transform: rotate(-3deg); }
 .step__title { margin-top: var(--space-4); font-size: var(--text-subhead); font-weight: 800; letter-spacing: var(--tracking-tight); }
 .step__text { margin-top: var(--space-2); font-size: 1rem; }
 @media (max-width: 1023px) {
@@ -373,7 +373,9 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 /* ---------- Field notes ---------- */
 .note-list { margin-top: var(--space-8); border-top: 3px solid var(--color-ink); }
 .note { position: relative; display: grid; grid-template-columns: minmax(96px, 160px) 1fr; gap: var(--space-6); padding: var(--space-7) 0; border-bottom: 2px solid var(--color-ink); align-items: start; }
-.note__num { font-size: clamp(4rem, 2.5rem + 6vw, 8rem); font-weight: 900; letter-spacing: -0.06em; line-height: 0.85; color: var(--color-ink); font-variant-numeric: tabular-nums; }
+.note__num { position: relative; display: inline-grid; place-items: center; width: clamp(88px, 6vw + 48px, 128px); aspect-ratio: 1; font-size: clamp(3rem, 2rem + 3vw, 4.5rem); line-height: 1; color: var(--color-ink); transform: rotate(-3deg); }
+.note__ring { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--color-ink); }
+.notes__pull { margin-top: var(--space-6); font-size: var(--text-campaign); line-height: 1.05; max-width: 14ch; transform: rotate(-1.5deg); }
 .note__accent { position: absolute; width: 18px; height: 18px; left: 0; top: var(--space-4); }
 .note__accent--orange { background: var(--color-orange); transform: rotate(-3deg); }
 .note__accent--periwinkle { background: var(--color-periwinkle); transform: rotate(2deg); }
@@ -383,11 +385,12 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .note__body .text-button { margin-top: var(--space-4); }
 @media (max-width: 767px) {
   .note { grid-template-columns: 1fr; gap: var(--space-3); padding-block: var(--space-6); }
-  .note__num { font-size: 3.5rem; }
+  .note__num { width: 72px; font-size: 2.5rem; }
   .note__accent { top: var(--space-6); left: auto; right: 0; }
 }
 
 /* ---------- About ---------- */
+@media (min-width: 1024px) { .about, .contact { padding-top: calc(var(--section-y) + var(--space-6)); } }
 .about__grid { display: grid; grid-template-columns: 7fr 5fr; gap: var(--space-8) var(--space-9); align-items: start; }
 .about__copy p + p { margin-top: var(--space-4); }
 .about__copy .section-title { margin-bottom: var(--space-6); max-width: 14ch; }
