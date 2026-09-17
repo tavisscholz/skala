@@ -396,7 +396,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .about__engagements strong { font-weight: 700; background: var(--color-acid); color: var(--color-ink); padding: 4px 8px; box-decoration-break: clone; -webkit-box-decoration-break: clone; line-height: 1.9; }
 .about__aside { position: relative; }
 .notebook { position: relative; background: var(--color-acid); color: var(--color-ink); padding: var(--space-6); transform: rotate(-1.5deg); min-height: 320px; display: flex; flex-direction: column; }
-.notebook--card { position: absolute; left: calc(-1 * var(--space-6)); bottom: var(--space-6); width: min(280px, 72%); min-height: 0; padding: var(--space-5); transform: rotate(-2.5deg); }
+.notebook--card { position: absolute; left: calc(-1 * var(--space-6)); bottom: var(--space-6); width: min(300px, 76%); min-height: 0; padding: var(--space-5); transform: rotate(-2.5deg); }
 .notebook--card .notebook__wordmark { font-size: 2.5rem; }
 .notebook--card .notebook__list { margin-top: var(--space-4); font-size: 1.0625rem; line-height: 1.45; }
 .notebook--card .notebook__crown { width: 40px; margin-top: var(--space-4); }
