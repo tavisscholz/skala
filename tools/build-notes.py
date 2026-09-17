@@ -1,0 +1,205 @@
+"""Build the Field notes from assets/articles/*.md.
+
+Writes:
+  - the compact "From the work" band on index.html (between notes markers)
+  - the article dialogs on index.html (between dialog markers)
+  - field-notes.html, the full page
+
+Usage: python3 tools/build-notes.py
+"""
+import re, html, pathlib
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+ARTICLES = [  # order on the page, lane tag, lane name
+    ("your-best-manager-cannot-be-the-whole-system", "OPS", "Store Operations"),
+    ("a-good-site-can-still-be-the-wrong-site", "RE", "Real Estate &amp; Leasing"),
+    ("financially-qualified-is-not-the-same-as-franchise-ready", "FRAN", "Franchise Development"),
+    ("opening-critical-dates-checklist", "DEV", "Store Development"),
+]
+ACCENTS = ["orange", "periwinkle", "orange", "periwinkle"]
+RINGS = [
+    "M60 8 C 92 4, 116 26, 113 58 C 110 92, 84 114, 54 111 C 22 108, 4 84, 8 54 C 12 24, 34 10, 60 8 Z",
+    "M58 9 C 90 3, 115 28, 112 60 C 109 90, 86 113, 56 110 C 24 107, 5 82, 9 52 C 13 22, 32 12, 58 9 Z",
+    "M62 7 C 94 6, 114 30, 112 62 C 110 92, 86 112, 56 110 C 26 108, 6 84, 8 54 C 10 26, 36 8, 62 7 Z",
+    "M57 8 C 90 2, 116 24, 114 56 C 112 90, 88 114, 56 112 C 24 110, 4 86, 8 56 C 12 26, 30 12, 57 8 Z",
+]
+PULL = "The strongest performer becomes the biggest single point of failure."
+MONTHS = "January February March April May June July August September October November December".split()
+
+def esc(t): return html.escape(t, quote=False).replace("--", "—")
+def inline(t):
+    t = esc(t)
+    t = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", t)
+    t = re.sub(r"\*(.+?)\*", r"<em>\1</em>", t)
+    return t
+
+def parse(slug):
+    md = (ROOT / "assets/articles" / f"{slug}.md").read_text().strip().split("\n")
+    title = md[0].lstrip("# ").strip()
+    y, m, d = md[2].strip().split("-")
+    date = f"{int(d)} {MONTHS[int(m)-1]} {y}"
+    stand = md[4].strip().strip("*")
+    kind = "Operator tool" if md[6].strip().strip("*").lower().startswith("operator") else "Field note"
+    body = md[7:]
+    out, k = [], 0
+    while k < len(body):
+        l = body[k].rstrip()
+        if not l: k += 1; continue
+        if l.startswith("## "):
+            out.append(f'<h3 class="note-article__sub">{esc(l[3:])}</h3>'); k += 1; continue
+        if l.startswith("|"):
+            tbl = []
+            while k < len(body) and body[k].startswith("|"):
+                tbl.append([c.strip() for c in body[k].strip().strip("|").split("|")]); k += 1
+            t = '<div class="note-table__wrap"><table class="note-table"><thead><tr>' + "".join(f'<th scope="col">{esc(h)}</th>' for h in tbl[0]) + "</tr></thead><tbody>"
+            for r in tbl[2:]: t += f"<tr><td>{inline(r[0])}</td><td>{inline(r[1])}</td></tr>"
+            out.append(t + "</tbody></table></div>"); continue
+        if l.startswith("**This week:**"):
+            out.append(f'<aside class="note-article__week"><p class="note-article__week-label">This week</p><p>{inline(l[len("**This week:**"):].strip())}</p></aside>'); k += 1; continue
+        out.append(f"<p>{inline(l)}</p>"); k += 1
+    return dict(slug=slug, title=title, date=date, stand=stand, kind=kind, body="\n        ".join(out))
+
+notes = []
+for i, (slug, tag, lane) in enumerate(ARTICLES, start=1):
+    n = parse(slug); n.update(i=i, tag=tag, lane=lane, accent=ACCENTS[i-1], ring=RINGS[i-1]); notes.append(n)
+
+# ---------- homepage band ----------
+rows = "\n".join(f'''          <li class="note-line">
+            <button class="note-line__button" type="button" data-open-note="note-{n['i']}">
+              <span class="note__tag" aria-hidden="true">{n['tag']}</span>
+              <span class="note-line__text">
+                <span class="note-line__title">{esc(n['title'])}</span>
+                <span class="note-line__stand"><span class="note-line__kind">{n['kind']}</span> {esc(n['stand'])}</span>
+              </span>
+              <span class="arrow" aria-hidden="true">→</span>
+            </button>
+          </li>''' for n in notes)
+band = f'''<!-- notes:start -->
+    <section class="section section--paper notes" id="field-notes" aria-labelledby="notes-title">
+      <div class="container notes__grid">
+        <div class="notes__intro reveal">
+          <p class="eyebrow">Field notes</p>
+          <h2 class="section-title" id="notes-title">From the work.</h2>
+          <p class="section-intro">Practical notes and working tools on building a business that can keep moving.</p>
+          <p class="notes__pull brush">{esc(PULL)}</p>
+        </div>
+        <ul class="note-lines reveal">
+{rows}
+          <li class="note-lines__all"><a class="text-link" href="field-notes.html">All field notes on one page <span class="arrow" aria-hidden="true">→</span></a></li>
+        </ul>
+      </div>
+    </section>
+    <!-- notes:end -->'''
+
+# ---------- dialogs ----------
+dialogs = "\n\n".join(f'''  <dialog class="note-dialog" id="note-{n['i']}" aria-labelledby="note-{n['i']}-heading">
+    <article class="note-article">
+      <div class="note-article__top">
+        <p class="eyebrow">{n['kind']} {n['i']} · <span class="note-article__lane">{n['lane']}</span></p>
+        <button class="text-button note-dialog__close" type="button" data-close-note><span class="arrow" aria-hidden="true">←</span> Back</button>
+      </div>
+      <h2 class="note-article__title" id="note-{n['i']}-heading" tabindex="-1">{esc(n['title'])}</h2>
+      <p class="note-article__stand">{esc(n['stand'])}</p>
+      <p class="note-article__byline">Tavis Scholz · {n['date']}</p>
+      <div class="note-article__body">
+        {n['body']}
+      </div>
+      <div class="note-article__foot">
+        <button class="button button--ink" type="button" data-close-note><span class="arrow" aria-hidden="true">←</span> Back</button>
+        <a class="text-link" href="field-notes.html#{n['slug']}">Open on the field notes page <span class="arrow" aria-hidden="true">→</span></a>
+      </div>
+    </article>
+  </dialog>''' for n in notes)
+dialogs = "<!-- dialogs:start -->\n" + dialogs + "\n  <!-- dialogs:end -->"
+
+idx = ROOT / "index.html"; s = idx.read_text()
+s = re.sub(r"<!-- notes:start -->.*?<!-- notes:end -->", lambda m: band, s, flags=re.S)
+s = re.sub(r"<!-- dialogs:start -->.*?<!-- dialogs:end -->", lambda m: dialogs, s, flags=re.S)
+idx.write_text(s)
+
+# ---------- full page ----------
+head = s[s.index("<head>"):s.index("</head>")+7]
+head = head.replace("<title>SKALA — Real operators. Bigger tomorrows.</title>", "<title>Field notes — SKALA</title>")
+head = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="description" content="Practical field notes and working tools from SKALA on store operations, store development, real estate, and franchise growth.">', head)
+head = head.replace('<link rel="preload" href="assets/fonts/inter-variable-latin.woff2"', '<link rel="preload" href="assets/fonts/inter-variable-latin.woff2"')
+svgdefs = s[s.index('  <svg class="svg-defs"'):s.index("</svg>", s.index('  <svg class="svg-defs"'))+6]
+header = s[s.index('  <header class="site-header"'):s.index("</header>")+9]
+header = header.replace('href="#top" aria-label="SKALA — back to top"', 'href="index.html" aria-label="SKALA — home"')
+header = header.replace('href="#work"', 'href="index.html#work"').replace('href="#approach"', 'href="index.html#approach"').replace('href="#about"', 'href="index.html#about"').replace('href="#contact"', 'href="index.html#contact"')
+header = header.replace('<a class="nav-link" href="#field-notes">Field notes</a>', '<a class="nav-link" href="field-notes.html" aria-current="page">Field notes</a>')
+footer = s[s.index('  <footer class="site-footer">'):s.index("</footer>")+9]
+footer = footer.replace('href="#top"', 'href="index.html"').replace('href="#work"', 'href="index.html#work"').replace('href="#about"', 'href="index.html#about"').replace('href="#contact"', 'href="index.html#contact"')
+
+index_links = "\n".join(f'            <li><a href="#{n["slug"]}"><span class="note__tag" aria-hidden="true">{n["tag"]}</span><span>{esc(n["title"])}</span></a></li>' for n in notes)
+articles = "\n\n".join(f'''        <article class="fn-article reveal" id="{n['slug']}" aria-labelledby="{n['slug']}-title">
+          <div class="note-article__top">
+            <p class="eyebrow"><span class="note__tag" aria-hidden="true">{n['tag']}</span> {n['kind']} {n['i']} · <span class="note-article__lane">{n['lane']}</span></p>
+          </div>
+          <h2 class="note-article__title" id="{n['slug']}-title">{esc(n['title'])}</h2>
+          <p class="note-article__stand">{esc(n['stand'])}</p>
+          <p class="note-article__byline">Tavis Scholz · {n['date']}</p>
+          <div class="note-article__body">
+            {n['body']}
+          </div>
+        </article>''' for n in notes)
+
+page = f'''<!doctype html>
+<html lang="en">
+{head}
+<body class="notes-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+{svgdefs}
+
+{header}
+
+  <main id="main">
+    <section class="section section--paper fn-hero" aria-labelledby="fn-title">
+      <div class="container fn-hero__grid">
+        <div class="fn-hero__copy reveal">
+          <p class="eyebrow">Field notes</p>
+          <h1 class="section-title" id="fn-title">From the work.</h1>
+          <p class="section-intro">Practical notes and working tools on building a business that can keep moving. Written from the store floor, the development schedule, the site walk, and the franchise pipeline.</p>
+          <p class="notes__pull brush">{esc(PULL)}</p>
+        </div>
+        <figure class="figure figure--tall reveal">
+          <img src="assets/images/notes-field-notebook.webp" width="1024" height="1536" alt="A SKALA field notebook and printed plans on a wooden worktable" fetchpriority="high">
+          <figcaption class="figure__caption">The field notebook</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section section--paper fn-body" aria-label="Field notes">
+      <div class="container fn-body__grid">
+        <nav class="fn-index reveal" aria-label="Field notes index">
+          <p class="eyebrow">In this collection</p>
+          <ol class="fn-index__list">
+{index_links}
+          </ol>
+          <a class="button button--ink fn-index__cta" href="index.html#contact">Let’s build <span class="arrow" aria-hidden="true">→</span></a>
+        </nav>
+        <div class="fn-articles">
+{articles}
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--acid fn-close" aria-labelledby="fn-close-title">
+      <div class="container fn-close__grid">
+        <h2 class="campaign-heading" id="fn-close-title">Build better brands for more people.</h2>
+        <div>
+          <p class="section-intro">Share what you are building and where the operation needs to get stronger.</p>
+          <a class="button button--ink" href="index.html#contact">Let’s build <span class="arrow" aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+{footer}
+
+  <script src="js/site.js" defer></script>
+</body>
+</html>
+'''
+(ROOT / "field-notes.html").write_text(page)
+print("built: index.html band + dialogs, field-notes.html")

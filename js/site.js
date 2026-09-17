@@ -172,7 +172,7 @@
     });
     return firstBad;
   }
-  Object.keys(fields).forEach(function (k) {
+  if (form) Object.keys(fields).forEach(function (k) {
     var f = fields[k];
     f.el.addEventListener('input', function () { if (f.el.getAttribute('aria-invalid') === 'true' && f.valid(f.el.value)) setError(f, false); });
   });

@@ -69,7 +69,10 @@ carries the standfirst, a byline and date from the file, the body, any table
 (as a scrollable table), and the closing "This week" callout on acid. Copy is
 verbatim from the files; the articles keep their author's first person because
 they are bylined writing, not brand copy. `tools/build-notes.py` regenerates
-the section from the folder.
+the homepage band, the dialogs, and `field-notes.html` from the folder. The
+homepage keeps a compact list (tag, title, standfirst) that opens each note in
+place; the page carries all four in full with a sticky index and per-article
+anchors, and is the shareable destination.
 
 ## Departures from the brief, and why
 

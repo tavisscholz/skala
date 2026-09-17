@@ -16,7 +16,8 @@ npx http-server . -p 8080
 
 | Path | What it is |
 |---|---|
-| `index.html` | Single long-form homepage with `#work`, `#approach`, `#field-notes`, `#about`, `#contact` |
+| `index.html` | Long-form homepage with `#work`, `#approach`, `#field-notes`, `#about`, `#contact` |
+| `field-notes.html` | All four field notes in full, built from `assets/articles` by `tools/build-notes.py` |
 | `css/tokens.css` | Locked trial tokens plus the type, spacing, and motion scale |
 | `css/site.css` | Component styles (Header, Hero, CampaignStrip, ServiceRow, ApproachStep, OperatingTool, FieldNote, AboutBlock, ContactForm, Footer) |
 | `css/fonts.css` | Self-hosted Inter and Permanent Marker |

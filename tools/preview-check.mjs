@@ -145,6 +145,17 @@ await m.locator('[data-open-note="note-1"]').click();
 await m.screenshot({ path: join(outDir, 'note-dialog-390.png') });
 await m.close();
 
+// Field notes page
+const fn = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+const fnErrors = []; fn.on('pageerror', e => fnErrors.push(e.message));
+await fn.goto(url + 'field-notes.html', { waitUntil: 'networkidle' });
+note('field-notes page loads without errors', fnErrors.length === 0, fnErrors.join(' | '));
+note('field-notes page has four articles', (await fn.locator('.fn-article').count()) === 4);
+note('field-notes page: no horizontal overflow', (await fn.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)) <= 0);
+await fn.setViewportSize({ width: 390, height: 844 });
+note('field-notes page 390: no overflow', (await fn.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)) <= 0);
+await fn.close();
+
 // Reduced motion
 const rm = await browser.newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
 await rm.goto(url, { waitUntil: 'networkidle' });
