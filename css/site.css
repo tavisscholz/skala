@@ -246,7 +246,8 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
   background: none; border: 0; cursor: pointer;
 }
 .service-row__toggle:hover .service-row__name { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 4px; }
-.service-row__num { font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.5rem); font-weight: 400; letter-spacing: -0.02em; line-height: 1; color: var(--color-muted-dark); min-width: 2.2ch; font-variant-numeric: tabular-nums; }
+.service-row__tag { display: inline-flex; align-items: center; justify-content: center; width: 3.5rem; padding: 6px 4px; font-size: 0.8125rem; font-weight: 800; letter-spacing: 0.08em; line-height: 1; text-transform: uppercase; background: var(--color-ink); color: var(--color-acid); transform: rotate(-2deg); }
+.service-row.is-open .service-row__tag { background: var(--color-acid); color: var(--color-ink); }
 .service-row__body { display: flex; flex-direction: column; gap: var(--space-1); }
 .service-row__name { font-size: var(--text-subhead); font-weight: 800; letter-spacing: var(--tracking-tight); }
 .service-row__summary { color: var(--color-ink); font-size: var(--text-body); font-weight: 500; max-width: 60ch; text-wrap: balance; }
@@ -257,7 +258,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .service-row__icon::before { width: 22px; height: 3px; transform: translate(-50%, -50%); }
 .service-row__icon::after { width: 3px; height: 22px; transform: translate(-50%, -50%); }
 .service-row__toggle[aria-expanded="true"] .service-row__icon::after { transform: translate(-50%, -50%) rotate(90deg); }
-.service-row__panel { display: grid; grid-template-columns: 1fr; gap: var(--space-5) var(--space-6); padding: 0 var(--space-2) var(--space-7) calc(2.2ch + var(--space-5) + 1.6rem); }
+.service-row__panel { display: grid; grid-template-columns: 1fr; gap: var(--space-5) var(--space-6); padding: 0 var(--space-2) var(--space-7) calc(3.5rem + var(--space-5)); }
 .service-row__col > p:not(.service-row__label) { color: var(--color-ink); }
 .service-row__label { font-size: var(--text-label); font-weight: 600; letter-spacing: var(--tracking-label); text-transform: uppercase; margin-bottom: var(--space-3); background: var(--color-acid); display: inline-block; padding: 2px 6px; }
 .service-row__list { columns: 2; column-gap: var(--space-5); font-size: 0.9375rem; line-height: 1.45; color: var(--color-ink); }
