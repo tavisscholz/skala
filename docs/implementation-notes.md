@@ -60,6 +60,17 @@ scope notes between What we build and What becomes possible. Nothing else on the
 - One brush pull quote in Field notes, taken from note 1. Extra vertical
   space before About and Contact on desktop.
 
+## Field notes from `assets/articles` (17 September)
+
+Four markdown articles are rendered as the Field notes section: three field
+notes and one operator tool, each tagged with its capability lane (OPS, RE,
+FRAN, DEV). The row shows title, standfirst, lane tag, and kind; the dialog
+carries the standfirst, a byline and date from the file, the body, any table
+(as a scrollable table), and the closing "This week" callout on acid. Copy is
+verbatim from the files; the articles keep their author's first person because
+they are bylined writing, not brand copy. `tools/build-notes.py` regenerates
+the section from the folder.
+
 ## Departures from the brief, and why
 
 | Brief | Built | Reason |
