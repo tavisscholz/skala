@@ -249,7 +249,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .service-row__num { font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.5rem); font-weight: 400; letter-spacing: -0.02em; color: var(--color-muted-dark); min-width: 2.2ch; font-variant-numeric: tabular-nums; }
 .service-row__body { display: flex; flex-direction: column; gap: var(--space-1); }
 .service-row__name { font-size: var(--text-subhead); font-weight: 800; letter-spacing: var(--tracking-tight); }
-.service-row__summary { color: var(--color-ink); font-size: var(--text-body); font-weight: 500; max-width: 48ch; }
+.service-row__summary { color: var(--color-ink); font-size: var(--text-body); font-weight: 500; max-width: 60ch; text-wrap: balance; }
 .service-row__icon { position: relative; width: 44px; height: 44px; flex: none; }
 .service-row__icon::before, .service-row__icon::after {
   content: ""; position: absolute; left: 50%; top: 50%; background: var(--color-ink); transition: transform 200ms var(--ease-out);
