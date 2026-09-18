@@ -86,18 +86,27 @@
     btn.setAttribute('data-status', key);
     btn.querySelector('.status-btn__text').textContent = STATUSES[statusIndex(key)].label;
   }
+  var stamp = document.getElementById('board-stamp');
+  function allInUse() {
+    return statusButtons.length > 0 && statusButtons.every(function (b) { return b.getAttribute('data-status') === 'in-use'; });
+  }
+  function checkReady(message) {
+    var ready = allInUse();
+    if (stamp) stamp.hidden = !ready;
+    boardLive.textContent = ready ? message + ' Every row is in use. Expansion ready.' : message;
+  }
   statusButtons.forEach(function (btn) {
     btn.addEventListener('click', function () {
       var next = STATUSES[(statusIndex(btn.getAttribute('data-status')) + 1) % STATUSES.length];
       setStatus(btn, next.key);
-      boardLive.textContent = btn.getAttribute('data-work') + ' is now ' + next.label + '.';
+      checkReady(btn.getAttribute('data-work') + ' is now ' + next.label + '.');
     });
   });
   var resetBtn = document.getElementById('board-reset');
   if (resetBtn) {
     resetBtn.addEventListener('click', function () {
       statusButtons.forEach(function (btn) { setStatus(btn, btn.getAttribute('data-initial')); });
-      boardLive.textContent = 'Example reset to its starting statuses.';
+      checkReady('Example reset to its starting statuses.');
     });
   }
 

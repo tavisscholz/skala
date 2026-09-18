@@ -371,6 +371,32 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .notes__grid .figure img { object-position: 50% 42%; }
 @media (max-width: 1023px) { .approach__grid, .notes__grid, .tool__grid { grid-template-columns: 1fr; gap: var(--space-7); } }
 
+/* ---------- Expansion Ready: readiness ladder + stamp ---------- */
+.ladder { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin-top: var(--space-8); border-top: 2px solid rgba(255,255,255,0.35); }
+.ladder__step { padding: var(--space-5) var(--space-4) var(--space-6) 0; margin-right: var(--space-4); border-right: 1px solid rgba(255,255,255,0.25); }
+.ladder__step:last-child { border-right: 0; margin-right: 0; }
+.ladder__num { display: inline-block; font-size: var(--text-label); font-weight: 700; letter-spacing: var(--tracking-label); border: 1.5px solid var(--color-muted-light); color: var(--color-muted-light); padding: 4px 8px; }
+.ladder__name { margin-top: var(--space-4); font-size: 1.125rem; font-weight: 800; letter-spacing: var(--tracking-tight); color: var(--color-white); }
+.ladder__text { margin-top: var(--space-2); font-size: 0.9375rem; line-height: 1.45; color: var(--color-muted-light); }
+.ladder__step--ready { background: var(--color-acid); color: var(--color-ink); padding-left: var(--space-4); margin-left: calc(-1 * var(--space-4)); transform: rotate(-1.5deg); }
+.ladder__step--ready .ladder__num { border-color: var(--color-ink); color: var(--color-ink); background: transparent; }
+.ladder__step--ready .ladder__name, .ladder__step--ready .ladder__text { color: var(--color-ink); }
+.workboard__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4); margin-top: var(--space-4); }
+.workboard__foot .workboard__live { margin-top: 0; }
+.board-stamp { display: inline-flex; align-items: baseline; gap: var(--space-3); padding: var(--space-2) var(--space-4); background: var(--color-ink); color: var(--color-acid); transform: rotate(-2deg); }
+.board-stamp__word { font-size: 1.5rem; line-height: 1; }
+.board-stamp__line { font-size: 0.875rem; font-weight: 600; color: var(--color-white); }
+.ready__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-5); margin-top: var(--space-6); }
+.ready__foot .tool__caption { margin-top: 0; max-width: 52ch; }
+@media (max-width: 1023px) {
+  .ladder { grid-template-columns: 1fr; border-top: 0; }
+  .ladder__step { display: grid; grid-template-columns: 48px 1fr; column-gap: var(--space-3); border-right: 0; border-top: 1px solid rgba(255,255,255,0.25); margin: 0; padding: var(--space-4) 0; }
+  .ladder__num { grid-row: 1 / span 2; margin-top: 2px; text-align: center; }
+  .ladder__name { margin-top: 0; }
+  .ladder__text { grid-column: 2; }
+  .ladder__step--ready { margin: var(--space-2) 0 0; padding: var(--space-4); transform: rotate(-1deg); }
+}
+
 /* ---------- Field notes ---------- */
 .note-list { margin-top: var(--space-8); border-top: 3px solid var(--color-ink); }
 .note { position: relative; display: grid; grid-template-columns: minmax(96px, 160px) 1fr; gap: var(--space-6); padding: var(--space-7) 0; border-bottom: 2px solid var(--color-ink); align-items: start; }

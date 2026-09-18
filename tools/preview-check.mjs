@@ -73,6 +73,15 @@ await status.click(); await status.click();
 note('status cycles back to Building', (await status.getAttribute('data-status')) === 'building');
 await status.click();
 await page.locator('#board-reset').click();
+// Expansion-ready stamp: move every row to In use
+{
+  const btns = page.locator('.status-btn');
+  for (let i = 0; i < 3; i++) { let guard = 0; while ((await btns.nth(i).getAttribute('data-status')) !== 'in-use' && guard++ < 3) await btns.nth(i).click(); }
+  note('stamp appears when every row is in use', await page.locator('#board-stamp').isVisible() && (await page.locator('#board-live').textContent()).includes('Expansion ready'));
+  await page.locator('#ready').screenshot({ path: join(outDir, 'ready-stamp-1440.png') });
+  await page.locator('#board-reset').click();
+  note('reset hides the stamp', !(await page.locator('#board-stamp').isVisible()));
+}
 note('reset restores initial statuses', (await status.getAttribute('data-status')) === 'building' && (await page.locator('#board-live').textContent()).includes('reset'));
 
 // Field note dialog

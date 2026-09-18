@@ -144,3 +144,14 @@ territory.
 - About heading is "An operator who builds." with the owner's expanded first
   paragraph (12 years, four departments, 7× system sales growth, 160 store
   projects, U.S. and Canada franchise infrastructure).
+
+## Expansion Ready (18 September)
+
+The operating-tool section became "Expansion Ready" (`#ready`): a five-level
+readiness ladder (Person-dependent · Emerging · Defined · Managed · Expansion
+ready) in SKALA language, then the workboard as "the same scale, on a real
+board". When every row reaches In use, a brush stamp reads "Expansion ready.
+Now it can repeat." and the live region announces it; Reset hides it. CTA
+"Find out where you stand" goes to contact. The ladder is derived from the
+Institution Ready maturity scale but the site never uses that name, the ™,
+programme lengths, or investor language; those stay with TS Advisory.

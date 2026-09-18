@@ -339,26 +339,56 @@
       </div>
     </section>
 
-    <!-- Illustrative operating tool -->
-    <section class="section section--ink tool" aria-labelledby="tool-title">
+    <!-- Expansion Ready -->
+    <section class="section section--ink tool ready" id="ready" aria-labelledby="ready-title">
       <div class="container">
         <div class="tool__grid">
           <div class="tool__intro reveal">
-            <h2 class="section-title" id="tool-title">Put the work where everyone can see it.</h2>
-            <p class="section-intro">A useful operating rhythm makes ownership visible.</p>
+            <p class="eyebrow eyebrow--acid">Expansion ready</p>
+            <h2 class="section-title" id="ready-title">Know when the business is ready to grow.</h2>
+            <p class="section-intro">Every piece of the operation sits somewhere on this scale. The work is done when it holds without the person who built it.</p>
           </div>
           <figure class="figure figure--wide reveal">
             <img src="assets/images/tool-opening-checklist.webp" width="1200" height="800" alt="A hand ticking through an opening checklist on a clipboard at the store entrance" loading="lazy">
             <figcaption class="figure__caption">Opening checklist</figcaption>
           </figure>
         </div>
+
+        <ol class="ladder reveal" aria-label="Readiness scale">
+          <li class="ladder__step">
+            <span class="ladder__num" aria-hidden="true">1</span>
+            <h3 class="ladder__name">Person-dependent</h3>
+            <p class="ladder__text">Knowledge and decisions live in a few people.</p>
+          </li>
+          <li class="ladder__step">
+            <span class="ladder__num" aria-hidden="true">2</span>
+            <h3 class="ladder__name">Emerging</h3>
+            <p class="ladder__text">Some process exists. Execution varies.</p>
+          </li>
+          <li class="ladder__step">
+            <span class="ladder__num" aria-hidden="true">3</span>
+            <h3 class="ladder__name">Defined</h3>
+            <p class="ladder__text">The core work is written down and owned.</p>
+          </li>
+          <li class="ladder__step">
+            <span class="ladder__num" aria-hidden="true">4</span>
+            <h3 class="ladder__name">Managed</h3>
+            <p class="ladder__text">It is measured, reviewed, and done the same way everywhere.</p>
+          </li>
+          <li class="ladder__step ladder__step--ready">
+            <span class="ladder__num" aria-hidden="true">5</span>
+            <h3 class="ladder__name">Expansion ready</h3>
+            <p class="ladder__text">It holds without the person who built it, and the next location inherits it.</p>
+          </li>
+        </ol>
+
         <div class="workboard reveal">
           <div class="workboard__head">
-            <p class="eyebrow eyebrow--acid">Illustrative working tool</p>
+            <p class="eyebrow">The same scale, on a real board</p>
             <button class="button button--ghost button--small" type="button" id="board-reset">Reset example</button>
           </div>
           <table class="workboard__table">
-            <caption class="visually-hidden">Example workboard. Select a status to cycle it through Building, Testing, and In use.</caption>
+            <caption class="visually-hidden">Example workboard. Select a status to cycle it through Building, Testing, and In use. When every row is in use, the board is expansion ready.</caption>
             <thead>
               <tr>
                 <th scope="col">Work</th>
@@ -406,9 +436,18 @@
               </tr>
             </tbody>
           </table>
-          <p class="workboard__live" id="board-live" aria-live="polite"></p>
+          <div class="workboard__foot">
+            <p class="workboard__live" id="board-live" aria-live="polite"></p>
+            <div class="board-stamp" id="board-stamp" hidden>
+              <span class="board-stamp__word brush">Expansion ready.</span>
+              <span class="board-stamp__line">Now it can repeat.</span>
+            </div>
+          </div>
         </div>
-        <p class="tool__caption reveal">A simple example of the tools SKALA builds around the way a business works.</p>
+        <div class="ready__foot reveal">
+          <p class="tool__caption">A simple example of the tools SKALA builds around the way a business works. Move every row to In use and see what ready looks like.</p>
+          <a class="button button--acid" href="#contact">Find out where you stand <span class="arrow" aria-hidden="true">→</span></a>
+        </div>
       </div>
     </section>
 
