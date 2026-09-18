@@ -1,0 +1,32 @@
+# SKALA static site on Hostinger (Apache)
+
+# No directory listings
+Options -Indexes
+
+# Keep build tooling, notes and source photography out of reach on the live site
+RedirectMatch 404 ^/(tools|docs|node_modules|preview-out)(/|$)
+RedirectMatch 404 ^/assets/images/source(/|$)
+RedirectMatch 404 ^/assets/articles(/|$)
+RedirectMatch 404 ^/(README\.md|\.gitignore|\.git(/|$))
+
+# Correct types for self-hosted fonts and webp
+AddType font/woff2 .woff2
+AddType image/webp .webp
+
+# Compression
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript image/svg+xml
+</IfModule>
+
+# Caching: fonts and images for a year, pages and code for an hour
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType application/pdf "access plus 1 day"
+  ExpiresByType text/css "access plus 1 hour"
+  ExpiresByType text/javascript "access plus 1 hour"
+  ExpiresByType application/javascript "access plus 1 hour"
+  ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
