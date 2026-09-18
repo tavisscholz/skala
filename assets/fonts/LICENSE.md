@@ -6,6 +6,7 @@ Google Fonts, used unmodified for this website prototype.
 
 - **Inter** — Copyright 2016 The Inter Project Authors (https://github.com/rsms/inter). OFL-1.1.
 - **Permanent Marker** — Copyright 2010 Font Diner, Inc. (https://fonts.google.com/specimen/Permanent+Marker). OFL-1.1.
+- **Newsreader** — Copyright 2020 The Newsreader Project Authors (https://github.com/productiontype/Newsreader). OFL-1.1. Variable latin subsets (roman and italic) served by Google Fonts; the editorial serif for playbook articles.
 
 Permanent Marker is the brush face for campaign lines and handwritten notes.
 

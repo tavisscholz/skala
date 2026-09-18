@@ -33,8 +33,15 @@ QUOTES = {  # one line from each piece, shown while its row is hovered
 MONTHS = "January February March April May June July August September October November December".split()
 
 def esc(t): return html.escape(t, quote=False).replace("--", "—")
+def smart(t):
+    """Typographer's quotes and apostrophes for the editorial layout."""
+    t = re.sub(r"(^|[\s(\[\u2014])\"", "\\1\u201c", t)
+    t = t.replace('"', "\u201d")
+    t = re.sub(r"(^|[\s(\[\u2014])'", "\\1\u2018", t)
+    t = t.replace("'", "\u2019")
+    return t
 def inline(t):
-    t = esc(t)
+    t = smart(esc(t))
     t = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", t)
     t = re.sub(r"\*(.+?)\*", r"<em>\1</em>", t)
     return t
@@ -63,7 +70,14 @@ def parse(slug):
         if l.startswith("**This week:**"):
             out.append(f'<aside class="note-article__week"><p class="note-article__week-label">This week</p><p>{inline(l[len("**This week:**"):].strip())}</p></aside>'); k += 1; continue
         out.append(f"<p>{inline(l)}</p>"); k += 1
-    return dict(slug=slug, title=title, date=date, stand=stand, kind=kind, body="\n        ".join(out))
+    # Pull quote after the second paragraph, magazine style
+    quote = QUOTES.get(slug)
+    paras = [j for j, o in enumerate(out) if o.startswith("<p>")]
+    if quote and len(paras) > 2:
+        out.insert(paras[1] + 1, f'<blockquote class="note-article__pull"><p>{esc(quote)}</p></blockquote>')
+    words = len(re.findall(r"[A-Za-z0-9\u2019']+", " ".join(body)))
+    minutes = max(1, round(words / 200))
+    return dict(slug=slug, title=title, date=date, stand=stand, kind=kind, minutes=minutes, body="\n        ".join(out))
 
 notes = []
 for i, (slug, tag, lane) in enumerate(ARTICLES, start=1):
@@ -110,7 +124,7 @@ dialogs = "\n\n".join(f'''  <dialog class="note-dialog" id="note-{n['i']}" aria-
       </div>
       <h2 class="note-article__title" id="note-{n['i']}-heading" tabindex="-1">{esc(n['title'])}</h2>
       <p class="note-article__stand">{esc(n['stand'])}</p>
-      <p class="note-article__byline">Tavis Scholz · {n['date']}</p>
+      <p class="note-article__byline"><span class="note-article__author">Tavis Scholz</span> · {n['date']} · {n['minutes']} min read</p>
       <div class="note-article__body">
         {n['body']}
       </div>
@@ -147,7 +161,7 @@ articles = "\n\n".join(f'''        <article class="fn-article reveal" id="{n['sl
           </div>
           <h2 class="note-article__title" id="{n['slug']}-title">{esc(n['title'])}</h2>
           <p class="note-article__stand">{esc(n['stand'])}</p>
-          <p class="note-article__byline">Tavis Scholz · {n['date']}</p>
+          <p class="note-article__byline"><span class="note-article__author">Tavis Scholz</span> · {n['date']} · {n['minutes']} min read</p>
           <div class="note-article__body">
             {n['body']}
           </div>
