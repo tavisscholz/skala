@@ -101,6 +101,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .no-brush .wordmark__svg { display: block; }
 /* A, L and the final A each tuck in under the letter before them (Oracle Brush sets them a touch wide). */
 .wordmark__tuck { display: inline-block; margin-left: var(--tuck, -0.14em); }
+.wordmark__tuck--l { margin-left: -0.10em; }
 .wordmark__crown { width: 0.85em; height: auto; font-size: var(--wordmark-header); margin-left: 0.2em; margin-top: -0.3em; transform: rotate(4deg); flex: none; }
 .site-footer .wordmark__crown { display: none; }
 
