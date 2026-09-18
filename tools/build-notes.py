@@ -144,6 +144,16 @@ dialogs = "\n\n".join(f'''  <dialog class="note-dialog" id="note-{n['i']}" aria-
 dialogs = "<!-- dialogs:start -->\n" + dialogs + "\n  <!-- dialogs:end -->"
 
 idx = ROOT / "index.html"; s = idx.read_text()
+
+# ---------- cache busting: stamp each stylesheet and script link with a hash of its contents ----------
+import hashlib
+def asset_version(rel):
+    return hashlib.sha1((ROOT / rel).read_bytes()).hexdigest()[:8]
+def stamp_assets(html):
+    for rel in ("css/fonts.css", "css/tokens.css", "css/site.css", "js/site.js"):
+        html = re.sub(r'(["\'])' + re.escape(rel) + r'(\?v=[0-9a-f]+)?(["\'])', lambda m: m.group(1) + rel + "?v=" + asset_version(rel) + m.group(3), html)
+    return html
+s = stamp_assets(s)
 s = re.sub(r"<!-- notes:start -->.*?<!-- notes:end -->", lambda m: band, s, flags=re.S)
 s = re.sub(r"<!-- dialogs:start -->.*?<!-- dialogs:end -->", lambda m: dialogs, s, flags=re.S)
 s = clean_links(s)
