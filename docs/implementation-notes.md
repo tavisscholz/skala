@@ -60,16 +60,16 @@ scope notes between What we build and What becomes possible. Nothing else on the
 - One brush pull quote in Field notes, taken from note 1. Extra vertical
   space before About and Contact on desktop.
 
-## Field notes from `assets/articles` (17 September)
+## Toolbox from `assets/articles` (17–18 September)
 
-Four markdown articles are rendered as the Field notes section: three field
+Four markdown articles are rendered as the Toolbox section (nav: Toolbox; heading "Tools from the work."): three field
 notes and one operator tool, each tagged with its capability lane (OPS, RE,
 FRAN, DEV). The row shows title, standfirst, lane tag, and kind; the dialog
 carries the standfirst, a byline and date from the file, the body, any table
 (as a scrollable table), and the closing "This week" callout on acid. Copy is
 verbatim from the files; the articles keep their author's first person because
 they are bylined writing, not brand copy. `tools/build-notes.py` regenerates
-the homepage band, the dialogs, and `field-notes.html` from the folder. The
+the homepage band, the dialogs, and `toolbox.html` from the folder. The
 homepage keeps a compact list (tag, title, standfirst) that opens each note in
 place; the page carries all four in full with a sticky index and per-article
 anchors, and is the shareable destination.
@@ -131,3 +131,14 @@ touch behaviour on a physical device.
 Hide `.wordmark` and `.poster__wordmark`: the acid fields, torn edge, brush
 underline, numbered rows, crown, and black poster surfaces still identify the
 territory.
+
+## Labels and About (18 September)
+
+- Navigation reads What We Do · How We Do It · Toolbox · About; the approach
+  eyebrow reads "How we do it". These reintroduce "we" in labels by the
+  owner's decision; body copy stays third person.
+- Toolbox row kinds are Note and Tool. Nothing is downloadable yet; if that
+  promise is wanted, generate PDFs from the markdown in `tools/build-notes.py`.
+- About heading is "An operator who builds." with the owner's expanded first
+  paragraph (12 years, four departments, 7× system sales growth, 160 store
+  projects, U.S. and Canada franchise infrastructure).

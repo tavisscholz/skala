@@ -117,7 +117,7 @@ await page.locator('#draft-edit').click();
 note('edit draft returns to form with values', await page.locator('#contact-form').isVisible() && (await page.inputValue('#f-name')) === 'Jordan Reyes');
 
 // Anchor + skip link + landmarks
-const anchors = await page.evaluate(() => ['#work', '#approach', '#field-notes', '#about', '#contact', '#main', '#top'].filter(id => !document.querySelector(id)));
+const anchors = await page.evaluate(() => ['#work', '#approach', '#toolbox', '#about', '#contact', '#main', '#top'].filter(id => !document.querySelector(id)));
 note('all nav anchors resolve', anchors.length === 0, anchors.join(','));
 const h1s = await page.locator('h1').count();
 note('exactly one H1 (dialog headings are H2 inside dialogs)', h1s === 1, `${h1s}`);
@@ -148,12 +148,12 @@ await m.close();
 // Field notes page
 const fn = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 const fnErrors = []; fn.on('pageerror', e => fnErrors.push(e.message));
-await fn.goto(url + 'field-notes.html', { waitUntil: 'networkidle' });
-note('field-notes page loads without errors', fnErrors.length === 0, fnErrors.join(' | '));
-note('field-notes page has four articles', (await fn.locator('.fn-article').count()) === 4);
-note('field-notes page: no horizontal overflow', (await fn.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)) <= 0);
+await fn.goto(url + 'toolbox.html', { waitUntil: 'networkidle' });
+note('toolbox page loads without errors', fnErrors.length === 0, fnErrors.join(' | '));
+note('toolbox page has four articles', (await fn.locator('.fn-article').count()) === 4);
+note('toolbox page: no horizontal overflow', (await fn.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)) <= 0);
 await fn.setViewportSize({ width: 390, height: 844 });
-note('field-notes page 390: no overflow', (await fn.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)) <= 0);
+note('toolbox page 390: no overflow', (await fn.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)) <= 0);
 await fn.close();
 
 // Reduced motion
