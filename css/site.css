@@ -233,6 +233,11 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
   .strip__words > span:nth-child(3), .strip__words > span:nth-child(7) { text-align: left; }
   .strip__sep { display: none; }
 }
+@media (max-width: 479px) {
+  /* Phones: "Momentum." no longer fits half the width, so the four words stack one per line. */
+  .strip__words { grid-template-columns: 1fr; }
+  .strip__words > span:nth-child(n) { text-align: center; }
+}
 .torn-edge { position: absolute; left: 0; right: 0; bottom: -1px; width: 100%; height: 28px; color: var(--color-ink); transform: scaleY(-1); z-index: 1; }
 .strip + .section { position: relative; }
 
