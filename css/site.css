@@ -95,7 +95,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 
 /* ---------- Wordmark ---------- */
 .wordmark { display: inline-flex; align-items: center; text-decoration: none; color: var(--color-acid); line-height: 1; }
-.wordmark__text { font-family: var(--font-brush); font-size: var(--wordmark-header); letter-spacing: -0.02em; transform: rotate(-2deg); display: inline-block; }
+.wordmark__text { font-family: var(--font-wordmark); font-size: var(--wordmark-header); letter-spacing: -0.02em; transform: rotate(-2deg); display: inline-block; }
 .wordmark__svg { display: none; width: 8.25em; height: 2.6em; font-size: 1rem; }
 .no-brush .wordmark__text { display: none; }
 .no-brush .wordmark__svg { display: block; }
@@ -487,7 +487,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .notebook--card .notebook__signoff-line { font-size: 1.25rem; }
 .notebook--card .notebook__crown--drawn { width: 44px; }
 .about__aside .figure__caption { left: auto; right: 0; }
-.notebook__wordmark { font-size: clamp(3.5rem, 2.5rem + 3vw, 5rem); line-height: 1; transform: rotate(-2deg); display: inline-block; }
+.notebook__wordmark { font-family: var(--font-wordmark); font-size: clamp(3.5rem, 2.5rem + 3vw, 5rem); line-height: 1; transform: rotate(-2deg); display: inline-block; }
 .notebook__list { margin-top: var(--space-6); font-family: var(--font-brush); font-size: 1.375rem; line-height: 1.5; }
 .notebook__list li::before { content: "—"; margin-right: 0.4em; }
 .notebook__crown { width: 56px; margin-top: auto; align-self: flex-end; transform: rotate(4deg); }
