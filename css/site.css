@@ -361,7 +361,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
   display: flex; flex-direction: column; justify-content: center; padding: var(--space-8) max(var(--gutter), calc((100vw - var(--container)) / 2 + var(--gutter))) var(--space-8) var(--space-8);
 }
 /* Campaign line: the wordmark face, stacked one word per line and staggered like a hand-lettered poster. */
-.campaign__line { font-family: var(--font-wordmark); text-transform: uppercase; letter-spacing: -0.06em; font-size: var(--campaign-mark, clamp(2.75rem, 0.6rem + 5.3vw, 5.75rem)); line-height: 0.95; transform: rotate(-2deg); display: flex; flex-direction: column; align-items: flex-start; }
+.campaign__line { font-family: var(--font-wordmark); text-transform: uppercase; letter-spacing: -0.06em; font-size: var(--campaign-mark, clamp(2.75rem, 0.6rem + 5.3vw, 5.6rem)); line-height: 0.95; transform: rotate(-2deg); display: flex; flex-direction: column; align-items: flex-start; }
 .campaign__word { display: block; white-space: nowrap; }
 .campaign__word:nth-child(2) { margin-left: 0.22em; }
 .campaign__word:nth-child(3) { margin-left: 0.44em; }
