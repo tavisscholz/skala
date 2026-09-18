@@ -133,6 +133,11 @@
     });
   }
 
+  /* ---------- Notebook card: a tap signs it on touch screens (hover does it elsewhere) ---------- */
+  Array.prototype.forEach.call(document.querySelectorAll('.notebook'), function (card) {
+    card.addEventListener('click', function () { card.classList.toggle('is-signed'); });
+  });
+
   /* ---------- Field note articles ---------- */
   var supportsModal = typeof window.HTMLDialogElement === 'function' &&
     typeof window.HTMLDialogElement.prototype.showModal === 'function';

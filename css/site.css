@@ -299,7 +299,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
   display: flex; flex-direction: column; justify-content: center; padding: var(--space-8) max(var(--gutter), calc((100vw - var(--container)) / 2 + var(--gutter))) var(--space-8) var(--space-8);
 }
 .campaign__line { font-size: var(--text-campaign); line-height: 1.05; max-width: 9ch; transform: rotate(-2deg); }
-.campaign__smile { width: 72px; height: 72px; margin-top: var(--space-6); align-self: flex-end; transform: rotate(6deg); }
+.campaign__smile { width: 84px; height: auto; margin-top: var(--space-6); align-self: flex-end; transform: rotate(4deg); }
 @media (max-width: 767px) {
   .campaign { grid-template-columns: 1fr; min-height: 0; }
   .campaign__media { min-height: 260px; padding: var(--space-6) var(--gutter); }
@@ -429,16 +429,36 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .about__engagements { color: var(--color-white) !important; margin-top: var(--space-6) !important; }
 .about__engagements strong { font-weight: 700; background: var(--color-acid); color: var(--color-ink); padding: 4px 8px; box-decoration-break: clone; -webkit-box-decoration-break: clone; line-height: 1.9; }
 .about__aside { position: relative; }
-.notebook { position: relative; background: var(--color-acid); color: var(--color-ink); padding: var(--space-6); transform: rotate(-1.5deg); min-height: 320px; display: flex; flex-direction: column; }
+.notebook { cursor: default; position: relative; background: var(--color-acid); color: var(--color-ink); padding: var(--space-6); transform: rotate(-1.5deg); min-height: 320px; display: flex; flex-direction: column; }
 .notebook--card { position: absolute; left: calc(-1 * var(--space-6)); bottom: var(--space-6); width: min(300px, 76%); min-height: 0; padding: var(--space-5); transform: rotate(-2.5deg); }
 .notebook--card .notebook__wordmark { font-size: 2.5rem; }
 .notebook--card .notebook__list { margin-top: var(--space-4); font-size: 1.0625rem; line-height: 1.45; }
 .notebook--card .notebook__crown { width: 40px; margin-top: var(--space-4); }
+.notebook--card .notebook__signoff-line { font-size: 1.0625rem; }
+.notebook--card .notebook__signoff-name { font-size: 1.875rem; }
+.notebook--card .notebook__crown--drawn { width: 44px; }
 .about__aside .figure__caption { left: auto; right: 0; }
 .notebook__wordmark { font-size: clamp(3.5rem, 2.5rem + 3vw, 5rem); line-height: 1; transform: rotate(-2deg); display: inline-block; }
 .notebook__list { margin-top: var(--space-6); font-family: var(--font-brush); font-size: 1.375rem; line-height: 1.5; }
 .notebook__list li::before { content: "—"; margin-right: 0.4em; }
 .notebook__crown { width: 56px; margin-top: auto; align-self: flex-end; transform: rotate(4deg); }
+/* Signature: written in, then the crown is drawn */
+.notebook__sign { margin-top: auto; display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-4); padding-top: var(--space-5); }
+.notebook__signoff { display: flex; flex-direction: column; line-height: 1; transform: rotate(-3deg); }
+.notebook__signoff-line { font-size: 1.25rem; }
+.notebook__signoff-name { font-size: 2.25rem; margin-top: 4px; }
+.notebook__crown--drawn { width: 56px; margin: 0; flex: none; transform: rotate(4deg); }
+.notebook__crown--drawn path { stroke-dasharray: 1; stroke-dashoffset: 0; }
+.js .notebook__signoff-line, .js .notebook__signoff-name { clip-path: inset(-10% 100% -10% -4%); }
+.js .notebook__crown--drawn path { stroke-dashoffset: 1; }
+.js .notebook:hover .notebook__signoff-line, .js .notebook.is-signed .notebook__signoff-line { clip-path: inset(-10% -4% -10% -4%); transition: clip-path 500ms var(--ease-out) 300ms; }
+.js .notebook:hover .notebook__signoff-name, .js .notebook.is-signed .notebook__signoff-name { clip-path: inset(-10% -4% -10% -4%); transition: clip-path 700ms var(--ease-out) 750ms; }
+.js .notebook:hover .notebook__crown--drawn path:first-child, .js .notebook.is-signed .notebook__crown--drawn path:first-child { stroke-dashoffset: 0; transition: stroke-dashoffset 600ms var(--ease-out) 1450ms; }
+.js .notebook:hover .notebook__crown--drawn path:last-child, .js .notebook.is-signed .notebook__crown--drawn path:last-child { stroke-dashoffset: 0; transition: stroke-dashoffset 250ms var(--ease-out) 2000ms; }
+@media (prefers-reduced-motion: reduce) {
+  .js .notebook__signoff-line, .js .notebook__signoff-name { clip-path: none; }
+  .js .notebook__crown--drawn path { stroke-dashoffset: 0; }
+}
 @media (max-width: 1023px) { .about__grid { grid-template-columns: 1fr; } .about__aside { max-width: 420px; } .notebook--card { left: 0; } }
 
 /* ---------- Contact ---------- */
