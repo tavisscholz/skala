@@ -248,7 +248,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
    ::before is the exposed white paper core, ::after is the sheet in --tear-color; both share
    a hand-shaped clip-path, and the parent's SVG filter (#tear-rough) roughens the cut. Remove
    the body class (or revert the commit) and the site is back to clean edges. */
-.tears .tear { position: absolute; left: -1%; right: -1%; height: 52px; pointer-events: none; z-index: 2; --tear-color: var(--color-ink); filter: url(#tear-rough) drop-shadow(0 1px 2px rgba(5,5,5,0.28)); }
+.tears .tear { position: absolute; left: -1%; right: -1%; height: 52px; pointer-events: none; z-index: 5; --tear-color: var(--color-ink); filter: url(#tear-rough) drop-shadow(0 1px 2px rgba(5,5,5,0.28)); }
 .tears .tear::before, .tears .tear::after { content: ""; position: absolute; inset: 0; }
 .tears .tear::before { background: var(--color-white); }
 .tears .tear::after { background: var(--tear-color); }
