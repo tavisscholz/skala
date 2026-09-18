@@ -79,11 +79,10 @@ note('playbook card carries the section line', (await page.locator('#playbook .n
 // Workboard
 const status = page.locator('.status-btn').first();
 await status.click();
-note('status cycles Testing → In use', (await status.getAttribute('data-status')) === 'in-use' && (await page.locator('#board-live').textContent()).includes('In use'));
-await status.click(); await status.click();
-note('status cycles back to Testing', (await status.getAttribute('data-status')) === 'testing');
+note('status switches Building → In use', (await status.getAttribute('data-status')) === 'in-use' && (await page.locator('#board-live').textContent()).includes('In use'));
 await status.click();
-await page.locator('#board-reset').click();
+note('status switches back to Building', (await status.getAttribute('data-status')) === 'building');
+
 // Readiness ladder drives the board
 {
   await page.locator('.ladder__step').first().scrollIntoViewIfNeeded();
@@ -106,16 +105,30 @@ await page.locator('#board-reset').click();
   await page.waitForTimeout(250);
 }
 
-// Expansion-ready stamp: move every row to In use
+// Progress sticks, stages light up, and completing all five is a celebration
 {
   const btns = page.locator('.status-btn');
-  for (let i = 0; i < 3; i++) { let guard = 0; while ((await btns.nth(i).getAttribute('data-status')) !== 'in-use' && guard++ < 3) await btns.nth(i).click(); }
-  note('stamp fills in when every row is in use', await page.locator('#board-stamp').isVisible() && !(await page.locator('#board-stamp').evaluate(el => el.classList.contains('is-pending'))) && (await page.locator('#board-live').textContent()).includes('Expansion ready'));
-  await page.locator('#ready').screenshot({ path: join(outDir, 'ready-stamp-1440.png') });
+  for (let i = 0; i < 3; i++) if ((await btns.nth(i).getAttribute('data-status')) !== 'in-use') await btns.nth(i).click();
+  note('stamp fills in when every step of the stage is in use', await page.locator('#board-stamp').isVisible() && !(await page.locator('#board-stamp').evaluate(el => el.classList.contains('is-pending'))));
+  note('a completed stage lights its tile', await page.evaluate(() => document.querySelectorAll('.ladder__step')[4].classList.contains('is-complete')));
+  await page.locator('.ladder__step').nth(0).click(); await page.mouse.move(5, 5); await page.waitForTimeout(200);
+  await page.locator('.ladder__step').nth(4).click(); await page.mouse.move(5, 5); await page.waitForTimeout(200);
+  note('progress persists when moving between stages', await page.evaluate(() => [...document.querySelectorAll('.status-btn')].every(b => b.getAttribute('data-status') === 'in-use')));
+  await page.reload({ waitUntil: 'networkidle' });
+  note('progress persists across a reload', await page.evaluate(() => document.querySelectorAll('.ladder__step')[4].classList.contains('is-complete')));
+  for (let s = 0; s < 4; s++) {
+    await page.locator('.ladder__step').nth(s).click(); await page.mouse.move(5, 5); await page.waitForTimeout(150);
+    for (let i = 0; i < 3; i++) if ((await btns.nth(i).getAttribute('data-status')) !== 'in-use') await btns.nth(i).click();
+  }
+  await page.waitForTimeout(400);
+  note('completing every stage opens the Ready to scale celebration', await page.locator('.hoopla.is-open').count() === 1 && (await page.locator('.hoopla__title').textContent()).includes('Ready'));
+  await page.screenshot({ path: join(outDir, 'ready-to-scale-1440.png') });
+  await page.locator('.hoopla__close').click();
+  note('closing the celebration leaves the board marked ready to scale', await page.locator('.hoopla.is-open').count() === 0 && await page.locator('.workboard').evaluate(el => el.classList.contains('is-scaled')) && await page.locator('.scale-banner').isVisible());
   await page.locator('#board-reset').click();
-  note('reset fades the stamp back behind its dashed ring', await page.locator('#board-stamp').evaluate(el => el.classList.contains('is-pending') && getComputedStyle(el).outlineStyle === 'dashed'));
+  note('reset clears every stage', await page.evaluate(() => !document.querySelector('.workboard').classList.contains('is-scaled') && document.querySelectorAll('.ladder__step.is-complete').length === 0 && document.querySelector('#board-stamp').classList.contains('is-pending')));
 }
-note('reset restores initial statuses', (await status.getAttribute('data-status')) === 'testing' && (await page.locator('#board-live').textContent()).includes('reset'));
+note('reset restores Building', (await status.getAttribute('data-status')) === 'building' && (await page.locator('#board-live').textContent()).includes('Building'));
 
 // Field note dialog
 const opener = page.locator('[data-open-note="note-1"]');

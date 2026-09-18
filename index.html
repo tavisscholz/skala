@@ -13,7 +13,7 @@
   <link rel="preload" href="assets/fonts/newsreader-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/fonts.css?v=34bdafdb">
   <link rel="stylesheet" href="css/tokens.css?v=d354f249">
-  <link rel="stylesheet" href="css/site.css?v=500e63a6">
+  <link rel="stylesheet" href="css/site.css?v=48a4fad3">
 </head>
 <body class="tears">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -335,7 +335,7 @@
           </div>
         </div>
 
-        <ol class="ladder reveal" aria-label="The SCALE readiness scale. Select a stage to see the board that gets a business there.">
+        <ol class="ladder reveal" aria-label="The SCALE readiness scale. Select a stage to work its board. A stage lights up when all three of its steps are in use.">
           <li class="ladder__step" tabindex="0">
             <span class="ladder__num">S</span>
             <h3 class="ladder__name">Siloed</h3>
@@ -364,12 +364,13 @@
         </ol>
 
         <div class="workboard reveal">
+          <p class="scale-banner brush" aria-hidden="true">Ready to scale. Every stage in use.</p>
           <div class="workboard__head">
             <p class="eyebrow">From Linked to Expansion-ready</p>
-            <button class="button button--ghost button--small" type="button" id="board-reset">Reset example</button>
+            <button class="button button--ghost button--small" type="button" id="board-reset">Reset progress</button>
           </div>
           <table class="workboard__table">
-            <caption class="visually-hidden">Example workboard for the selected stage. Select a status to cycle it through Building, Testing, and In use. When every step is in use, the stage is complete.</caption>
+            <caption class="visually-hidden">Workboard for the selected stage. Select a status to switch it between Building and In use. Progress is kept on this device. When every step of every stage is in use, the system is ready to scale.</caption>
             <thead>
               <tr>
                 <th scope="col">Step</th>
@@ -382,10 +383,10 @@
                 <th scope="row">1</th>
                 <td>Hand the tools to a new location without changes</td>
                 <td>
-                  <button class="status-btn" type="button" data-status="testing" data-initial="testing" data-work="Step 1">
+                  <button class="status-btn" type="button" data-status="building" data-initial="building" data-work="Step 1">
                     <span class="status-btn__glyph" aria-hidden="true"></span>
-                    <span class="status-btn__text">Testing</span>
-                    <span class="visually-hidden">. Change status</span>
+                    <span class="status-btn__text">Building</span>
+                    <span class="visually-hidden">. Switch between Building and In use</span>
                   </button>
                 </td>
               </tr>
@@ -393,10 +394,10 @@
                 <th scope="row">2</th>
                 <td>Run onboarding without the person who built it</td>
                 <td>
-                  <button class="status-btn" type="button" data-status="testing" data-initial="testing" data-work="Step 2">
+                  <button class="status-btn" type="button" data-status="building" data-initial="building" data-work="Step 2">
                     <span class="status-btn__glyph" aria-hidden="true"></span>
-                    <span class="status-btn__text">Testing</span>
-                    <span class="visually-hidden">. Change status</span>
+                    <span class="status-btn__text">Building</span>
+                    <span class="visually-hidden">. Switch between Building and In use</span>
                   </button>
                 </td>
               </tr>
@@ -404,10 +405,10 @@
                 <th scope="row">3</th>
                 <td>Start the review rhythm in every new location on day one</td>
                 <td>
-                  <button class="status-btn" type="button" data-status="in-use" data-initial="in-use" data-work="Step 3">
+                  <button class="status-btn" type="button" data-status="building" data-initial="building" data-work="Step 3">
                     <span class="status-btn__glyph" aria-hidden="true"></span>
-                    <span class="status-btn__text">In use</span>
-                    <span class="visually-hidden">. Change status</span>
+                    <span class="status-btn__text">Building</span>
+                    <span class="visually-hidden">. Switch between Building and In use</span>
                   </button>
                 </td>
               </tr>
@@ -417,7 +418,7 @@
             <p class="workboard__live visually-hidden" id="board-live" aria-live="polite"></p>
             <div class="board-stamp is-pending" id="board-stamp">
               <span class="board-stamp__word brush">Expansion ready.</span>
-              <span class="board-stamp__line">Now it can repeat.</span>
+              <span class="board-stamp__line">Take it to the next location.</span>
             </div>
           </div>
         </div>
@@ -684,6 +685,6 @@
   </dialog>
   <!-- dialogs:end -->
 
-  <script src="js/site.js?v=9c6ccc8d" defer></script>
+  <script src="js/site.js?v=6b496d2f" defer></script>
 </body>
 </html>

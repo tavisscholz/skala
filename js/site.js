@@ -115,105 +115,106 @@
     nudge.observe(hero);
   }
 
-  /* ---------- Illustrative workboard ---------- */
-  var STATUSES = [
-    { key: 'building', label: 'Building' },
-    { key: 'testing', label: 'Testing' },
-    { key: 'in-use', label: 'In use' }
-  ];
-  var boardLive = document.getElementById('board-live');
-  var statusButtons = Array.prototype.slice.call(document.querySelectorAll('.status-btn'));
-  function statusIndex(key) {
-    for (var i = 0; i < STATUSES.length; i++) if (STATUSES[i].key === key) return i;
-    return 0;
-  }
-  function setStatus(btn, key) {
-    btn.setAttribute('data-status', key);
-    btn.querySelector('.status-btn__text').textContent = STATUSES[statusIndex(key)].label;
-  }
-  var stamp = document.getElementById('board-stamp');
-  function allInUse() {
-    return statusButtons.length > 0 && statusButtons.every(function (b) { return b.getAttribute('data-status') === 'in-use'; });
-  }
-  function checkReady(message) {
-    var ready = allInUse();
-    if (stamp) stamp.classList.toggle('is-pending', !ready);
-    var word = stamp && stamp.querySelector('.board-stamp__word');
-    boardLive.textContent = ready ? (message + ' Every row is in use. ' + (word ? word.textContent : 'Expansion ready.')).trim() : message;
-  }
-  if (stamp) stamp.classList.toggle('is-pending', !allInUse());
-  statusButtons.forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var next = STATUSES[(statusIndex(btn.getAttribute('data-status')) + 1) % STATUSES.length];
-      setStatus(btn, next.key);
-      checkReady(btn.getAttribute('data-work') + ' is now ' + next.label + '.');
-    });
-  });
-  /* ---------- Readiness ladder drives the board ----------
-     Hover or focus a stage and the board shows the work that moves a business to the next stage.
-     Stage 5 (and the resting state) shows the board as it is. */
+  /* ---------- Readiness board: the SCALE stages, with progress that sticks ----------
+     Every stage has three steps. A step is Building or In use; click to switch. Progress is kept in
+     localStorage so it survives moving between stages and reloading. A stage whose three steps are
+     all in use lights its tile acid. When every step of every stage is in use, the system is ready
+     to scale and the page celebrates. */
   var STAGES = [
     { label: 'Start here: uncover the gaps.', stamp: 'Siloed.', line: 'You identified the know-how.', rows: [
-      ['Identify who people rely on to get critical work done', 'building'],
-      ['Observe how that work happens at different locations', 'building'],
-      ['Pinpoint where work stalls when those people are unavailable', 'building'] ] },
-    { label: 'From Siloed to Captured', stamp: 'Captured.', line: 'You got it out of people\u2019s heads.', rows: [
-      ['Agree on the standard for each critical task', 'testing'],
-      ['Turn it into a simple checklist or practical guide', 'building'],
-      ['Assign someone to keep it current and accessible', 'building'] ] },
-    { label: 'From Captured to Adopted', stamp: 'Adopted.', line: 'Make it part of everyday work.', rows: [
-      ['Train teams using the tools in the actual operation', 'testing'],
-      ['Observe execution and coach where standards slip', 'building'],
-      ['Fix what makes the tools difficult to use', 'testing'] ] },
-    { label: 'From Adopted to Linked', stamp: 'Linked.', line: 'Manage it across locations.', rows: [
-      ['Use the same measures and reporting across locations', 'testing'],
-      ['Review gaps regularly and assign corrective actions', 'building'],
-      ['Share improvements and update standards across the business', 'in-use'] ] },
+      'Identify who people rely on to get critical work done',
+      'Observe how that work happens at different locations',
+      'Pinpoint where work stalls when those people are unavailable' ] },
+    { label: 'From Siloed to Captured', stamp: 'Captured.', line: 'You got it out of people’s heads.', rows: [
+      'Agree on the standard for each critical task',
+      'Turn it into a simple checklist or practical guide',
+      'Assign someone to keep it current and accessible' ] },
+    { label: 'From Captured to Adopted', stamp: 'Adopted.', line: 'You made it part of everyday work.', rows: [
+      'Train teams using the tools in the actual operation',
+      'Observe execution and coach where standards slip',
+      'Fix what makes the tools difficult to use' ] },
+    { label: 'From Adopted to Linked', stamp: 'Linked.', line: 'You manage it across locations.', rows: [
+      'Use the same measures and reporting across locations',
+      'Review gaps regularly and assign corrective actions',
+      'Share improvements and update standards across the business' ] },
     { label: 'From Linked to Expansion-ready', stamp: 'Expansion ready.', line: 'Take it to the next location.', rows: [
-      ['Hand the tools to a new location without changes', 'testing'],
-      ['Run onboarding without the person who built it', 'testing'],
-      ['Start the review rhythm in every new location on day one', 'in-use'] ] }
+      'Hand the tools to a new location without changes',
+      'Run onboarding without the person who built it',
+      'Start the review rhythm in every new location on day one' ] }
   ];
+  var STORE_KEY = 'skala-scale-progress';
+  var boardLive = document.getElementById('board-live');
+  var board = document.querySelector('.workboard');
+  var stamp = document.getElementById('board-stamp');
+  var stampWord = stamp && stamp.querySelector('.board-stamp__word');
+  var stampLine = stamp && stamp.querySelector('.board-stamp__line');
   var ladder = document.querySelector('.ladder');
   var steps = ladder ? Array.prototype.slice.call(ladder.querySelectorAll('.ladder__step')) : [];
   var boardLabel = document.querySelector('.workboard__head .eyebrow');
   var boardRows = Array.prototype.slice.call(document.querySelectorAll('.workboard__table tbody tr'));
-  var stampWord = stamp && stamp.querySelector('.board-stamp__word');
-  var stampLine = stamp && stamp.querySelector('.board-stamp__line');
+  var readySection = document.getElementById('ready');
+
+  function freshProgress() { return STAGES.map(function (s) { return s.rows.map(function () { return false; }); }); }
+  function loadProgress() {
+    try {
+      var raw = localStorage.getItem(STORE_KEY);
+      var data = raw && JSON.parse(raw);
+      if (data && data.stages && data.stages.length === STAGES.length) return data;
+    } catch (e) {}
+    return { stages: freshProgress(), celebrated: false };
+  }
+  function saveProgress() { try { localStorage.setItem(STORE_KEY, JSON.stringify(progress)); } catch (e) {} }
+  var progress = loadProgress();
+  function stageDone(i) { return progress.stages[i].every(Boolean); }
+  function allDone() { return progress.stages.every(function (s) { return s.every(Boolean); }); }
+
+  function setStatus(btn, inUse) {
+    btn.setAttribute('data-status', inUse ? 'in-use' : 'building');
+    btn.setAttribute('aria-pressed', String(inUse));
+    btn.querySelector('.status-btn__text').textContent = inUse ? 'In use' : 'Building';
+  }
   var pinnedStage = STAGES.length - 1;
   var currentStage = pinnedStage;
+  function paintStamp() {
+    if (!stamp) return;
+    stamp.classList.toggle('is-pending', !stageDone(currentStage));
+  }
+  function paintSteps(active) {
+    steps.forEach(function (s, k) {
+      s.classList.toggle('is-active', k === active);
+      s.classList.toggle('is-muted', k !== active);
+      s.classList.toggle('is-complete', stageDone(k));
+      s.setAttribute('aria-current', k === pinnedStage ? 'true' : 'false');
+    });
+    if (board) board.classList.toggle('is-scaled', allDone());
+    if (readySection) readySection.classList.toggle('is-scaled', allDone());
+  }
   function showStage(i, announce) {
     var st = STAGES[i]; currentStage = i;
     if (boardLabel) boardLabel.textContent = st.label;
     boardRows.forEach(function (tr, r) {
-      var row = st.rows[r]; if (!row) return;
       var cells = tr.children;
-      cells[0].textContent = String(r + 1); cells[1].textContent = row[0];
+      cells[0].textContent = String(r + 1); cells[1].textContent = st.rows[r];
       var btn = tr.querySelector('.status-btn');
-      btn.setAttribute('data-initial', row[1]); btn.setAttribute('data-work', 'Step ' + (r + 1)); setStatus(btn, row[1]);
+      btn.setAttribute('data-work', 'Step ' + (r + 1));
+      setStatus(btn, progress.stages[i][r]);
     });
     if (stampWord) stampWord.textContent = st.stamp;
     if (stampLine) stampLine.textContent = st.line;
-    checkReady(announce ? 'Board now shows: ' + st.label + '.' : '');
-  }
-  function paintStep(i) {
-    steps.forEach(function (s, k) {
-      s.classList.toggle('is-active', k === i);
-      s.classList.toggle('is-muted', k !== i);
-      s.setAttribute('aria-current', k === pinnedStage ? 'true' : 'false');
-    });
+    paintStamp();
+    if (announce && boardLive) boardLive.textContent = 'Board now shows: ' + st.label + '.';
   }
   function previewStep(step) {
     var i = steps.indexOf(step);
     if (i === currentStage) return;
-    paintStep(i); showStage(i, false);
+    paintSteps(i); showStage(i, false);
   }
   function pinStep(step) {
     pinnedStage = steps.indexOf(step);
-    paintStep(pinnedStage); showStage(pinnedStage, true);
+    paintSteps(pinnedStage); showStage(pinnedStage, true);
   }
   function restStep() {
-    paintStep(pinnedStage);
+    paintSteps(pinnedStage);
     if (currentStage !== pinnedStage) showStage(pinnedStage, false);
   }
   steps.forEach(function (step) {
@@ -225,15 +226,88 @@
   if (ladder) {
     ladder.addEventListener('mouseleave', restStep);
     ladder.addEventListener('focusout', function (e) { if (!ladder.contains(e.relatedTarget)) restStep(); });
-    paintStep(pinnedStage);
   }
+
+  /* Status buttons toggle the step for the stage on show */
+  boardRows.forEach(function (tr, r) {
+    var btn = tr.querySelector('.status-btn');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var wasStageDone = stageDone(currentStage);
+      var next = !progress.stages[currentStage][r];
+      progress.stages[currentStage][r] = next;
+      setStatus(btn, next);
+      var msg = 'Step ' + (r + 1) + ' is now ' + (next ? 'In use' : 'Building') + '.';
+      if (!wasStageDone && stageDone(currentStage)) msg += ' ' + STAGES[currentStage].stamp + ' ' + STAGES[currentStage].line;
+      if (!next) progress.celebrated = false;
+      saveProgress();
+      paintStamp(); paintSteps(currentStage);
+      if (allDone() && !progress.celebrated) { progress.celebrated = true; saveProgress(); hoopla(); msg += ' Every stage is in use. Ready to scale.'; }
+      if (boardLive) boardLive.textContent = msg;
+    });
+  });
+
+  /* ---------- Ready to scale: the celebration ---------- */
+  var hooplaEl = null;
+  function hoopla() {
+    if (!readySection) return;
+    if (!hooplaEl) {
+      hooplaEl = document.createElement('div');
+      hooplaEl.className = 'hoopla';
+      hooplaEl.setAttribute('role', 'dialog');
+      hooplaEl.setAttribute('aria-modal', 'true');
+      hooplaEl.setAttribute('aria-labelledby', 'hoopla-title');
+      hooplaEl.innerHTML =
+        '<div class="hoopla__bits" aria-hidden="true"></div>' +
+        '<div class="hoopla__card">' +
+        '  <p class="eyebrow">Every stage in use</p>' +
+        '  <p class="hoopla__title brush" id="hoopla-title">Ready<br>to scale.</p>' +
+        '  <p class="hoopla__line">Siloed, Captured, Adopted, Linked, Expansion-ready. The system holds without the person who built it, and the next location inherits it.</p>' +
+        '  <svg class="hoopla__crown mark-crown" aria-hidden="true" focusable="false"><use href="#mark-crown"/></svg>' +
+        '  <button class="button button--ink hoopla__close" type="button">Keep building <span class="arrow" aria-hidden="true">→</span></button>' +
+        '</div>';
+      document.body.appendChild(hooplaEl);
+      hooplaEl.querySelector('.hoopla__close').addEventListener('click', closeHoopla);
+      hooplaEl.addEventListener('click', function (e) { if (e.target === hooplaEl) closeHoopla(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && hooplaEl.classList.contains('is-open')) closeHoopla(); });
+    }
+    var bits = hooplaEl.querySelector('.hoopla__bits');
+    bits.innerHTML = '';
+    if (!reduceMotion.matches) {
+      var colours = ['acid', 'acid', 'white', 'ink', 'acid'];
+      for (var i = 0; i < 140; i++) {
+        var bit = document.createElement('i');
+        bit.className = 'hoopla__bit hoopla__bit--' + colours[i % colours.length];
+        bit.style.left = (Math.random() * 100) + '%';
+        bit.style.animationDelay = (Math.random() * 1.6) + 's';
+        bit.style.animationDuration = (2.6 + Math.random() * 2.2) + 's';
+        bit.style.transform = 'rotate(' + Math.round(Math.random() * 360) + 'deg)';
+        bit.style.width = (8 + Math.random() * 8) + 'px';
+        bit.style.height = (12 + Math.random() * 12) + 'px';
+        bits.appendChild(bit);
+      }
+    }
+    hooplaEl.classList.add('is-open');
+    document.body.classList.add('has-hoopla');
+    hooplaEl.querySelector('.hoopla__close').focus();
+  }
+  function closeHoopla() {
+    if (!hooplaEl) return;
+    hooplaEl.classList.remove('is-open');
+    document.body.classList.remove('has-hoopla');
+    if (board) board.scrollIntoView({ block: 'center' });
+  }
+
   var resetBtn = document.getElementById('board-reset');
   if (resetBtn) {
     resetBtn.addEventListener('click', function () {
-      statusButtons.forEach(function (btn) { setStatus(btn, btn.getAttribute('data-initial')); });
-      checkReady('Example reset to its starting statuses.');
+      progress = { stages: freshProgress(), celebrated: false };
+      saveProgress();
+      showStage(currentStage, false); paintSteps(currentStage);
+      if (boardLive) boardLive.textContent = 'Every step is back to Building.';
     });
   }
+  if (ladder && boardRows.length) { paintSteps(pinnedStage); showStage(pinnedStage, false); }
 
   /* ---------- Playbook: hover a play, the pull quote changes ----------
      Every quote is in the DOM stacked on one grid cell, so the block keeps

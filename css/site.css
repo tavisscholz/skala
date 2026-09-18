@@ -449,7 +449,6 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .status-btn:hover { background: var(--color-acid); }
 .status-btn__glyph { width: 14px; height: 14px; border: 2px solid var(--color-ink); border-radius: 50%; flex: none; }
 .status-btn[data-status="building"] .status-btn__glyph { background: transparent; }
-.status-btn[data-status="testing"] .status-btn__glyph { background: linear-gradient(90deg, var(--color-ink) 50%, transparent 50%); }
 .status-btn[data-status="in-use"] { background: var(--color-acid); }
 .status-btn[data-status="in-use"] .status-btn__glyph { background: var(--color-ink); }
 .workboard__live { margin-top: var(--space-4); min-height: 1.5em; font-size: 0.9375rem; font-weight: 600; color: var(--color-muted-dark); }
@@ -513,6 +512,34 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .ladder__step--ready:not(.is-muted), .ladder__step.is-active { background: var(--color-acid); color: var(--color-ink); padding-left: var(--space-4); margin-left: calc(-1 * var(--space-4)); transform: rotate(-1.5deg); }
 .ladder__step--ready:not(.is-muted) .ladder__num, .ladder__step.is-active .ladder__num { border-color: var(--color-ink); color: var(--color-ink); background: transparent; }
 .ladder__step--ready:not(.is-muted) .ladder__name, .ladder__step--ready:not(.is-muted) .ladder__text, .ladder__step.is-active .ladder__name, .ladder__step.is-active .ladder__text { color: var(--color-ink); }
+/* A stage with all three steps in use is lit, whichever stage is being worked */
+.ladder__step.is-complete { background: var(--color-acid); color: var(--color-ink); }
+.ladder__step.is-complete .ladder__num { border-color: var(--color-ink); color: var(--color-acid); background: var(--color-ink); }
+.ladder__step.is-complete .ladder__num::after { content: " \2713"; }
+.ladder__step.is-complete .ladder__name, .ladder__step.is-complete .ladder__text { color: var(--color-ink); }
+.ladder__step.is-complete:not(.is-active) { padding-left: var(--space-3); margin-left: 0; }
+/* Ready to scale: banner on the board once every stage is in use */
+.scale-banner { display: none; margin: 0 0 var(--space-4); padding: var(--space-3) var(--space-5); background: var(--color-ink); color: var(--color-acid); font-size: 1.5rem; line-height: 1.1; transform: rotate(-1deg); transform-origin: left center; }
+.workboard.is-scaled .scale-banner { display: inline-block; }
+.workboard.is-scaled { border-color: var(--color-acid); box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-acid) 35%, transparent); }
+/* The celebration */
+.hoopla { position: fixed; inset: 0; z-index: 60; display: none; place-items: center; padding: var(--gutter); background: rgba(5, 5, 5, 0.88); overflow: hidden; }
+.hoopla.is-open { display: grid; }
+body.has-hoopla { overflow: hidden; }
+.hoopla__card { position: relative; z-index: 2; max-width: 40rem; padding: var(--space-7) var(--space-7) var(--space-6); background: var(--color-acid); color: var(--color-ink); transform: rotate(-2deg); box-shadow: 14px 14px 0 var(--color-white); animation: hoopla-in 480ms var(--ease-out) both; }
+.hoopla__card .eyebrow { color: var(--color-ink); }
+.hoopla__title { margin-top: var(--space-4); font-size: clamp(3.5rem, 2rem + 6vw, 7rem); line-height: 0.92; text-transform: uppercase; }
+.hoopla__line { margin-top: var(--space-5); max-width: 32rem; font-size: 1.125rem; font-weight: 500; line-height: 1.5; }
+.hoopla__crown { position: absolute; top: var(--space-5); right: var(--space-5); width: 72px; height: 54px; color: var(--color-ink); transform: rotate(8deg); }
+.hoopla__close { margin-top: var(--space-6); }
+.hoopla__bits { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.hoopla__bit { position: absolute; top: -6%; display: block; animation-name: hoopla-fall; animation-timing-function: linear; animation-iteration-count: infinite; }
+.hoopla__bit--acid { background: var(--color-acid); }
+.hoopla__bit--white { background: var(--color-white); }
+.hoopla__bit--ink { background: var(--color-ink); outline: 2px solid var(--color-acid); }
+@keyframes hoopla-fall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(112vh) rotate(720deg); opacity: 0.9; } }
+@keyframes hoopla-in { from { transform: rotate(-2deg) scale(0.6); opacity: 0; } to { transform: rotate(-2deg) scale(1); opacity: 1; } }
+@media (max-width: 767px) { .hoopla__card { padding: var(--space-6) var(--space-5); box-shadow: 8px 8px 0 var(--color-white); } .hoopla__crown { width: 48px; height: 36px; } .scale-banner { font-size: 1.25rem; } }
 .workboard__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4); margin-top: var(--space-6); padding: var(--space-2) var(--space-3) var(--space-2) 0; }
 .workboard__foot .workboard__live { margin-top: 0; }
 .board-stamp { display: inline-flex; align-items: baseline; gap: var(--space-3); padding: var(--space-3) var(--space-5); margin-block: var(--space-2); background: var(--color-ink); color: var(--color-acid); transform: rotate(-2deg); }
