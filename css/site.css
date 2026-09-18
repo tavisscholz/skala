@@ -494,7 +494,10 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 }
 .notes__grid { display: grid; grid-template-columns: 5fr 7fr; gap: var(--space-8) var(--space-9); align-items: start; }
 .notes__grid .figure img { object-position: 50% 42%; }
-@media (max-width: 1023px) { .approach__grid, .notes__grid, .tool__grid { grid-template-columns: 1fr; gap: var(--space-7); } }
+@media (max-width: 1023px) { .approach__grid, .tool__grid { grid-template-columns: 1fr; gap: var(--space-7); } }
+/* The playbook band keeps two columns down to 900px: it fits, and the artifact frame is often narrower than the window. */
+@media (max-width: 1023px) and (min-width: 900px) { .notes__grid { gap: var(--space-7) var(--space-7); } }
+@media (max-width: 899px) { .notes__grid { grid-template-columns: 1fr; gap: var(--space-6); } .notes__grid .note-lines { margin-top: 0; } }
 
 /* ---------- Expansion Ready: readiness ladder + stamp ---------- */
 .ladder { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin-top: var(--space-8); border-top: 2px solid rgba(255,255,255,0.35); }
