@@ -227,7 +227,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 }
 
 /* ---------- Campaign strip ---------- */
-.strip { position: relative; background: var(--color-ink); color: var(--color-acid); padding: var(--space-7) 0 calc(var(--space-7) + 28px); text-align: center; }
+.strip { position: relative; background: var(--color-ink); color: var(--color-white); padding: var(--space-7) 0 calc(var(--space-7) + 28px); text-align: center; }
 .strip__words { font-size: var(--text-campaign); line-height: 1.1; text-transform: uppercase; display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 0 0.9em; }
 .strip__note { margin-top: var(--space-4); color: var(--color-white); font-weight: 600; font-size: var(--text-ui); }
 @media (max-width: 1023px) {
