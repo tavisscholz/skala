@@ -151,8 +151,8 @@ The operating-tool section became "Expansion Ready" (`#ready`): a five-level
 readiness ladder (Person-dependent · Emerging · Defined · Managed · Expansion
 ready) in SKALA language, then the workboard as "the same scale, on a real
 board". When every row reaches In use, a brush stamp reads "Expansion ready.
-Now it can repeat." and the live region announces it; Reset hides it. CTA
-"Find out where you stand" goes to contact. The ladder is derived from the
+Now it can repeat." and the live region announces it. Until then the stamp sits faded in
+white behind a dashed ring; Reset fades it again. The ladder is derived from the
 Institution Ready maturity scale but the site never uses that name, the ™,
 programme lengths, or investor language; those stay with TS Advisory.
 

@@ -451,11 +451,9 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .board-stamp__word { font-size: 1.5rem; line-height: 1; }
 .board-stamp__line { font-size: 0.875rem; font-weight: 600; color: var(--color-white); }
 /* Pending: until every row is In use the stamp sits faded, ringed by a dashed line. */
-.board-stamp.is-pending { background: color-mix(in srgb, var(--color-ink) 16%, var(--color-paper)); color: color-mix(in srgb, var(--color-acid) 28%, var(--color-paper)); outline: 1.5px dashed color-mix(in srgb, var(--color-ink) 70%, var(--color-paper)); outline-offset: 0; }
+.board-stamp.is-pending { background: color-mix(in srgb, var(--color-ink) 16%, var(--color-paper)); color: rgba(255,255,255,0.85); outline: 1.5px dashed color-mix(in srgb, var(--color-ink) 70%, var(--color-paper)); outline-offset: 0; }
 .board-stamp.is-pending .board-stamp__line { color: rgba(255,255,255,0.55); }
-@supports not (color: color-mix(in srgb, red, blue)) { .board-stamp.is-pending { background: #c8c8c4; color: #eef4b8; outline-color: #4a4a48; } }
-.ready__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-5); margin-top: var(--space-6); }
-.ready__foot .tool__caption { margin-top: 0; max-width: 52ch; }
+@supports not (color: color-mix(in srgb, red, blue)) { .board-stamp.is-pending { background: #c8c8c4; outline-color: #4a4a48; } }
 @media (max-width: 1023px) {
   .ladder { grid-template-columns: 1fr; border-top: 0; }
   .ladder__step { display: grid; grid-template-columns: 48px 1fr; column-gap: var(--space-3); border-right: 0; border-top: 1px solid rgba(255,255,255,0.25); margin: 0; padding: var(--space-4) 0; }
