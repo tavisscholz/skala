@@ -509,7 +509,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .note { position: relative; display: grid; grid-template-columns: minmax(96px, 160px) 1fr; gap: var(--space-6); padding: var(--space-7) 0; border-bottom: 2px solid var(--color-ink); align-items: start; }
 .note__num { position: relative; display: inline-grid; place-items: center; width: clamp(88px, 6vw + 48px, 128px); aspect-ratio: 1; font-size: clamp(3rem, 2rem + 3vw, 4.5rem); line-height: 1; color: var(--color-ink); transform: rotate(-3deg); }
 .note__ring { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--color-ink); }
-.notes__pull { margin-top: var(--space-6); font-size: var(--text-campaign); line-height: 1.05; max-width: 14ch; box-sizing: content-box; padding: var(--space-5) var(--space-6) var(--space-6); background: var(--color-ink); color: var(--color-acid); transform: rotate(-2deg); transform-origin: left top; }   /* black card stays put; only the words inside swap */
+.notes__pull { margin-top: var(--space-6); font-size: calc(var(--text-campaign) * 0.75); line-height: 1.05; max-width: 14ch; box-sizing: content-box; padding: 0.45em 0.6em 0.6em; background: var(--color-ink); color: var(--color-acid); transform: rotate(-2deg); transform-origin: left top; }   /* black card stays put; only the words inside swap */
 .note__accent { position: absolute; width: 18px; height: 18px; left: 0; top: var(--space-4); }
 .note__accent--orange { background: var(--color-orange); transform: rotate(-3deg); }
 .note__accent--periwinkle { background: var(--color-periwinkle); transform: rotate(2deg); }
