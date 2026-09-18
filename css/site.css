@@ -450,6 +450,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .board-stamp { display: inline-flex; align-items: baseline; gap: var(--space-3); padding: var(--space-3) var(--space-5); margin-block: var(--space-2); background: var(--color-ink); color: var(--color-acid); transform: rotate(-2deg); }
 .board-stamp__word { font-size: 1.5rem; line-height: 1; }
 .board-stamp__line { font-size: 0.875rem; font-weight: 600; color: var(--color-white); }
+@media (max-width: 767px) { .board-stamp { flex-direction: column; align-items: flex-start; gap: var(--space-1); } .board-stamp__word, .board-stamp__line { white-space: nowrap; } }
 /* Pending: until every row is In use the stamp sits faded, ringed by a dashed line. */
 .board-stamp.is-pending { background: color-mix(in srgb, var(--color-ink) 16%, var(--color-paper)); color: rgba(255,255,255,0.85); outline: 1.5px dashed color-mix(in srgb, var(--color-ink) 70%, var(--color-paper)); outline-offset: 0; }
 .board-stamp.is-pending .board-stamp__line { color: rgba(255,255,255,0.55); }
