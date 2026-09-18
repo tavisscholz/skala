@@ -92,7 +92,7 @@ note('status switches back to Building', (await status.getAttribute('data-status
   note('hovering stage S swaps the board to the Siloed plan', (await page.locator('.workboard__head .eyebrow').textContent()).trim() === 'Start here: uncover the gaps.' && (await page.locator('.board-stamp__word').textContent()).trim() === 'Siloed.' && (await page.locator('.workboard__table tbody tr').first().locator('td').first().textContent()).includes('who people rely on'));
   await page.locator('.ladder__step').nth(4).hover();
   await page.waitForTimeout(150);
-  note('hovering stage 5 shows the expansion plan and stamp', (await page.locator('.workboard__head .eyebrow').textContent()).trim() === 'From Linked to Expansion-ready' && (await page.locator('.board-stamp__word').textContent()).trim() === 'Expansion ready.');
+  note('hovering stage 5 shows the expansion plan and stamp', (await page.locator('.workboard__head .eyebrow').textContent()).trim() === 'From Linked to Expansion-ready' && (await page.locator('.board-stamp__word').textContent()).trim() === 'You\u2019re ready to scale.');
   await page.mouse.move(10, 10);
   await page.waitForTimeout(150);
   note('leaving the ladder falls back to the pinned expansion stage', (await page.locator('.workboard__head .eyebrow').textContent()).trim() === 'From Linked to Expansion-ready' && !(await page.evaluate(() => document.querySelector('.ladder__step--ready').classList.contains('is-muted'))));
@@ -129,6 +129,23 @@ note('status switches back to Building', (await status.getAttribute('data-status
   note('reset clears every stage', await page.evaluate(() => !document.querySelector('.workboard').classList.contains('is-scaled') && document.querySelectorAll('.ladder__step.is-complete').length === 0 && document.querySelector('#board-stamp').classList.contains('is-pending')));
 }
 note('reset restores Building', (await status.getAttribute('data-status')) === 'building' && (await page.locator('#board-live').textContent()).includes('Building'));
+
+// Phones: board hidden, tiles are the checklist
+{
+  const ph = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  await ph.goto(url + 'index.html', { waitUntil: 'networkidle' });
+  await ph.evaluate(() => localStorage.clear());
+  await ph.reload({ waitUntil: 'networkidle' });
+  note('phone: the workboard is hidden', !(await ph.locator('.workboard').isVisible()));
+  for (let i = 0; i < 5; i++) { await ph.locator('.ladder__step').nth(i).click(); await ph.waitForTimeout(120); }
+  note('phone: tapping all five tiles lights them and opens the celebration', await ph.evaluate(() => document.querySelectorAll('.ladder__step.is-complete').length === 5) && await ph.locator('.hoopla.is-open').count() === 1);
+  await ph.screenshot({ path: join(outDir, 'ready-to-scale-390.png') });
+  await ph.locator('.hoopla__close').click();
+  await ph.locator('.ladder__step').nth(2).click();
+  note('phone: tapping a lit tile turns it back off', await ph.evaluate(() => document.querySelectorAll('.ladder__step.is-complete').length === 4 && !document.querySelector('#ready').classList.contains('is-scaled')));
+  await ph.evaluate(() => localStorage.clear());
+  await ph.close();
+}
 
 // Field note dialog
 const opener = page.locator('[data-open-note="note-1"]');

@@ -518,6 +518,14 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .ladder__step.is-complete .ladder__num::after { content: " \2713"; }
 .ladder__step.is-complete .ladder__name, .ladder__step.is-complete .ladder__text { color: var(--color-ink); }
 .ladder__step.is-complete:not(.is-active) { padding-left: var(--space-3); margin-left: 0; }
+/* Phones: the board is hidden and the tiles are the checklist */
+.ladder__hint { display: none; }
+@media (max-width: 767px) {
+  .ready .workboard { display: none; }
+  .ladder__hint { display: block; margin-top: var(--space-4); color: var(--color-muted-light); font-size: var(--text-ui); }
+  .ready .ladder__step { cursor: pointer; }
+  .ready .ladder__step.is-complete { transform: none; margin: var(--space-2) 0; padding: var(--space-4); }
+}
 /* Ready to scale: banner on the board once every stage is in use */
 .scale-banner { display: none; margin: 0 0 var(--space-4); padding: var(--space-3) var(--space-5); background: var(--color-ink); color: var(--color-acid); font-size: 1.5rem; line-height: 1.1; transform: rotate(-1deg); transform-origin: left center; }
 .workboard.is-scaled .scale-banner { display: inline-block; }
@@ -543,7 +551,7 @@ body.has-hoopla { overflow: hidden; }
 .workboard__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4); margin-top: var(--space-6); padding: var(--space-2) var(--space-3) var(--space-2) 0; }
 .workboard__foot .workboard__live { margin-top: 0; }
 .board-stamp { display: inline-flex; align-items: baseline; gap: var(--space-3); padding: var(--space-3) var(--space-5); margin-block: var(--space-2); background: var(--color-ink); color: var(--color-acid); transform: rotate(-2deg); }
-@media (min-width: 768px) { .board-stamp { min-width: 28rem; box-sizing: border-box; } }   /* sized to the longest stage stamp so it never shifts */
+@media (min-width: 768px) { .board-stamp { min-width: 34rem; box-sizing: border-box; } }   /* sized to the longest stage stamp so it never shifts */
 .board-stamp__word { font-size: 1.5rem; line-height: 1; }
 .board-stamp__line { font-size: 0.875rem; font-weight: 600; color: var(--color-white); }
 @media (max-width: 767px) { .board-stamp { flex-direction: column; align-items: flex-start; gap: var(--space-1); } .board-stamp__word, .board-stamp__line { white-space: nowrap; } }
@@ -553,8 +561,8 @@ body.has-hoopla { overflow: hidden; }
 @supports not (color: color-mix(in srgb, red, blue)) { .board-stamp.is-pending { background: #c8c8c4; outline-color: #4a4a48; } }
 @media (max-width: 1023px) {
   .ladder { grid-template-columns: 1fr; border-top: 0; }
-  .ladder__step { display: grid; grid-template-columns: 48px 1fr; column-gap: var(--space-3); border-right: 0; border-top: 1px solid rgba(255,255,255,0.25); margin: 0; padding: var(--space-4) 0; }
-  .ladder__num { grid-row: 1 / span 2; margin-top: 2px; text-align: center; align-self: start; }
+  .ladder__step { display: grid; grid-template-columns: minmax(48px, auto) 1fr; column-gap: var(--space-3); border-right: 0; border-top: 1px solid rgba(255,255,255,0.25); margin: 0; padding: var(--space-4) 0; }
+  .ladder__num { grid-row: 1 / span 2; margin-top: 2px; text-align: center; align-self: start; white-space: nowrap; }
   .ladder__name { margin-top: 0; }
   .ladder__text { grid-column: 2; }
   .ladder__step--ready:not(.is-muted), .ladder__step.is-active { margin: var(--space-2) 0; padding: var(--space-4); transform: rotate(-1deg); }

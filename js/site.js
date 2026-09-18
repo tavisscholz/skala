@@ -137,7 +137,7 @@
       'Use the same measures and reporting across locations',
       'Review gaps regularly and assign corrective actions',
       'Share improvements and update standards across the business' ] },
-    { label: 'From Linked to Expansion-ready', stamp: 'Expansion ready.', line: 'Take it to the next location.', rows: [
+    { label: 'From Linked to Expansion-ready', stamp: 'You\u2019re ready to scale.', line: 'Take it to the next location.', rows: [
       'Hand the tools to a new location without changes',
       'Run onboarding without the person who built it',
       'Start the review rhythm in every new location on day one' ] }
@@ -217,11 +217,26 @@
     paintSteps(pinnedStage);
     if (currentStage !== pinnedStage) showStage(pinnedStage, false);
   }
+  /* On phones the board is hidden: tapping a tile checks the whole stage off (or back on). */
+  var phone = window.matchMedia('(max-width: 767px)');
+  function toggleStage(step) {
+    var i = steps.indexOf(step);
+    var done = !stageDone(i);
+    progress.stages[i] = progress.stages[i].map(function () { return done; });
+    if (!done) progress.celebrated = false;
+    saveProgress();
+    pinnedStage = i; currentStage = i;
+    showStage(i, false); paintSteps(i);
+    var msg = STAGES[i].stamp + (done ? ' ' + STAGES[i].line : ' Back to building.');
+    if (allDone() && !progress.celebrated) { progress.celebrated = true; saveProgress(); hoopla(); msg += ' Every stage is in use. Ready to scale.'; }
+    if (boardLive) boardLive.textContent = msg;
+  }
+  function activate(step) { if (phone.matches) toggleStage(step); else pinStep(step); }
   steps.forEach(function (step) {
-    step.addEventListener('mouseenter', function () { previewStep(step); });
-    step.addEventListener('focus', function () { previewStep(step); });
-    step.addEventListener('click', function () { pinStep(step); });
-    step.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pinStep(step); } });
+    step.addEventListener('mouseenter', function () { if (!phone.matches) previewStep(step); });
+    step.addEventListener('focus', function () { if (!phone.matches) previewStep(step); });
+    step.addEventListener('click', function () { activate(step); });
+    step.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(step); } });
   });
   if (ladder) {
     ladder.addEventListener('mouseleave', restStep);
@@ -295,7 +310,8 @@
     if (!hooplaEl) return;
     hooplaEl.classList.remove('is-open');
     document.body.classList.remove('has-hoopla');
-    if (board) board.scrollIntoView({ block: 'center' });
+    var target = phone.matches ? ladder : board;
+    if (target) target.scrollIntoView({ block: 'center' });
   }
 
   var resetBtn = document.getElementById('board-reset');
