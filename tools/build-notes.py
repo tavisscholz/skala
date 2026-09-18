@@ -14,7 +14,7 @@ ARTICLES = [  # order on the page, lane tag, lane name
     ("your-best-manager-cannot-be-the-whole-system", "OPS", "Store Operations"),
     ("a-good-site-can-still-be-the-wrong-site", "RE", "Real Estate &amp; Leasing"),
     ("opening-critical-dates-checklist", "DEV", "Store Development"),
-    ("financially-qualified-is-not-the-same-as-franchise-ready", "FRAN", "Franchise Development"),
+    ("how-your-item-19-will-break-your-sales-pipeline", "FRAN", "Franchise Development"),
 ]
 ACCENTS = ["orange", "periwinkle", "orange", "periwinkle"]
 RINGS = [
@@ -27,7 +27,7 @@ PULL = "The strongest performer becomes the biggest single point of failure."
 QUOTES = {  # one line from each piece, shown while its row is hovered
     "your-best-manager-cannot-be-the-whole-system": "The strongest performer becomes the biggest single point of failure.",
     "a-good-site-can-still-be-the-wrong-site": "The address was fine. The market wasn\u2019t.",
-    "financially-qualified-is-not-the-same-as-franchise-ready": "Proxies get treated as the whole answer.",
+    "how-your-item-19-will-break-your-sales-pipeline": "Any daylight between the two is exactly where your pipeline is leaking.",
     "opening-critical-dates-checklist": "A schedule with no room for either isn\u2019t a schedule, it\u2019s a hope.",
 }
 MONTHS = "January February March April May June July August September October November December".split()

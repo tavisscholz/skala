@@ -87,7 +87,7 @@ await page.locator('#board-reset').click();
   await page.locator('.ladder__step').first().hover();
   await page.waitForTimeout(150);
   note('hovering stage 1 lights its tile and mutes stage 5', await page.evaluate(() => document.querySelector('.ladder__step').classList.contains('is-active') && document.querySelector('.ladder__step--ready').classList.contains('is-muted')));
-  note('hovering stage S swaps the board to the Scrappy plan', (await page.locator('.workboard__head .eyebrow').textContent()).trim() === 'From ad hoc to Scrappy' && (await page.locator('.board-stamp__word').textContent()).trim() === 'Scrappy.' && (await page.locator('.workboard__table tbody tr').first().locator('td').nth(1).textContent()).includes('best opener'));
+  note('hovering stage S swaps the board to the Siloed plan', (await page.locator('.workboard__head .eyebrow').textContent()).trim() === 'From ad hoc to Siloed' && (await page.locator('.board-stamp__word').textContent()).trim() === 'Siloed.' && (await page.locator('.workboard__table tbody tr').first().locator('td').nth(1).textContent()).includes('best opener'));
   await page.locator('.ladder__step').nth(4).hover();
   await page.waitForTimeout(150);
   note('hovering stage 5 shows the expansion plan and stamp', (await page.locator('.workboard__head .eyebrow').textContent()).trim() === 'From Linked to Expansion-ready' && (await page.locator('.board-stamp__word').textContent()).trim() === 'Expansion ready.');

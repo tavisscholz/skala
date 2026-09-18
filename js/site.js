@@ -145,11 +145,11 @@
      Hover or focus a stage and the board shows the work that moves a business to the next stage.
      Stage 5 (and the resting state) shows the board as it is. */
   var STAGES = [
-    { label: 'From ad hoc to Scrappy', stamp: 'Scrappy.', line: 'Now someone owns it.', rows: [
+    { label: 'From ad hoc to Siloed', stamp: 'Siloed.', line: 'Now someone owns it.', rows: [
       ['Opening checklist', 'Development lead', 'Name the best opener and shadow a full opening', 'building'],
       ['Manager onboarding', 'Field leader', 'Pair every new manager with one experienced one', 'building'],
       ['Weekly store review', 'Store manager', 'Walk the store together once a week', 'building'] ] },
-    { label: 'From Scrappy to Captured', stamp: 'Captured.', line: 'Now it is written down.', rows: [
+    { label: 'From Siloed to Captured', stamp: 'Captured.', line: 'Now it is written down.', rows: [
       ['Opening checklist', 'Development lead', 'Write down the steps the best opener already does', 'building'],
       ['Manager onboarding', 'Field leader', 'Capture the first two weeks as a simple guide', 'building'],
       ['Weekly store review', 'Store manager', 'Set a fixed day and a short agenda', 'testing'] ] },
