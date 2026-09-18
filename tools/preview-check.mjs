@@ -79,9 +79,9 @@ note('playbook card carries the section line', (await page.locator('#playbook .n
 // Workboard
 const status = page.locator('.status-btn').first();
 await status.click();
-note('status switches Building → In use', (await status.getAttribute('data-status')) === 'in-use' && (await page.locator('#board-live').textContent()).includes('In use'));
+note('status switches Working on → Done', (await status.getAttribute('data-status')) === 'in-use' && (await page.locator('#board-live').textContent()).includes('Done'));
 await status.click();
-note('status switches back to Building', (await status.getAttribute('data-status')) === 'building');
+note('status switches back to Working on', (await status.getAttribute('data-status')) === 'building');
 
 // Readiness ladder drives the board
 {
@@ -128,7 +128,7 @@ note('status switches back to Building', (await status.getAttribute('data-status
   await page.locator('#board-reset').click();
   note('reset clears every stage', await page.evaluate(() => !document.querySelector('.workboard').classList.contains('is-scaled') && document.querySelectorAll('.ladder__step.is-complete').length === 0 && document.querySelector('#board-stamp').classList.contains('is-pending')));
 }
-note('reset restores Building', (await status.getAttribute('data-status')) === 'building' && (await page.locator('#board-live').textContent()).includes('Building'));
+note('reset restores Working on', (await status.getAttribute('data-status')) === 'building' && (await page.locator('#board-live').textContent()).includes('Working on'));
 
 // Phones: board hidden, tiles are the checklist
 {

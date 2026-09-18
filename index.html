@@ -335,7 +335,7 @@
           </div>
         </div>
 
-        <ol class="ladder reveal" aria-label="The SCALE readiness scale. Select a stage to work its board. A stage lights up when all three of its steps are in use.">
+        <ol class="ladder reveal" aria-label="The SCALE readiness scale. Select a stage to work its board. A stage lights up when all three of its steps are done.">
           <li class="ladder__step" tabindex="0">
             <span class="ladder__num">S</span>
             <h3 class="ladder__name">Siloed</h3>
@@ -362,16 +362,16 @@
             <p class="ladder__text">The system works without its original builder and transfers to new locations.</p>
           </li>
         </ol>
-        <p class="ladder__hint">Tap a stage when its work is in use. Light up all five and you’re ready to scale.</p>
+        <p class="ladder__hint">Tap a stage when its work is done. Light up all five and you’re ready to scale.</p>
 
         <div class="workboard reveal">
-          <p class="scale-banner brush" aria-hidden="true">Ready to scale. Every stage in use.</p>
+          <p class="scale-banner brush" aria-hidden="true">Ready to scale. Every stage done.</p>
           <div class="workboard__head">
             <p class="eyebrow">From Linked to Expansion-ready</p>
             <button class="button button--ghost button--small" type="button" id="board-reset">Reset progress</button>
           </div>
           <table class="workboard__table">
-            <caption class="visually-hidden">Workboard for the selected stage. Select a status to switch it between Building and In use. Progress is kept on this device. When every step of every stage is in use, the system is ready to scale.</caption>
+            <caption class="visually-hidden">Workboard for the selected stage. Select a status to switch it between Working on and Done. Progress is kept on this device. When every step of every stage is done, the system is ready to scale.</caption>
             <thead>
               <tr>
                 <th scope="col">Step</th>
@@ -386,8 +386,8 @@
                 <td>
                   <button class="status-btn" type="button" data-status="building" data-initial="building" data-work="Step 1">
                     <span class="status-btn__glyph" aria-hidden="true"></span>
-                    <span class="status-btn__text">Building</span>
-                    <span class="visually-hidden">. Switch between Building and In use</span>
+                    <span class="status-btn__text">Working on</span>
+                    <span class="visually-hidden">. Switch between Working on and Done</span>
                   </button>
                 </td>
               </tr>
@@ -397,8 +397,8 @@
                 <td>
                   <button class="status-btn" type="button" data-status="building" data-initial="building" data-work="Step 2">
                     <span class="status-btn__glyph" aria-hidden="true"></span>
-                    <span class="status-btn__text">Building</span>
-                    <span class="visually-hidden">. Switch between Building and In use</span>
+                    <span class="status-btn__text">Working on</span>
+                    <span class="visually-hidden">. Switch between Working on and Done</span>
                   </button>
                 </td>
               </tr>
@@ -408,8 +408,8 @@
                 <td>
                   <button class="status-btn" type="button" data-status="building" data-initial="building" data-work="Step 3">
                     <span class="status-btn__glyph" aria-hidden="true"></span>
-                    <span class="status-btn__text">Building</span>
-                    <span class="visually-hidden">. Switch between Building and In use</span>
+                    <span class="status-btn__text">Working on</span>
+                    <span class="visually-hidden">. Switch between Working on and Done</span>
                   </button>
                 </td>
               </tr>
@@ -686,6 +686,6 @@
   </dialog>
   <!-- dialogs:end -->
 
-  <script src="js/site.js?v=0bb8a041" defer></script>
+  <script src="js/site.js?v=2fc3df79" defer></script>
 </body>
 </html>

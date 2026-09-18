@@ -171,7 +171,7 @@
   function setStatus(btn, inUse) {
     btn.setAttribute('data-status', inUse ? 'in-use' : 'building');
     btn.setAttribute('aria-pressed', String(inUse));
-    btn.querySelector('.status-btn__text').textContent = inUse ? 'In use' : 'Building';
+    btn.querySelector('.status-btn__text').textContent = inUse ? 'Done' : 'Working on';
   }
   var pinnedStage = STAGES.length - 1;
   var currentStage = pinnedStage;
@@ -227,8 +227,8 @@
     saveProgress();
     pinnedStage = i; currentStage = i;
     showStage(i, false); paintSteps(i);
-    var msg = STAGES[i].stamp + (done ? ' ' + STAGES[i].line : ' Back to building.');
-    if (allDone() && !progress.celebrated) { progress.celebrated = true; saveProgress(); hoopla(); msg += ' Every stage is in use. Ready to scale.'; }
+    var msg = STAGES[i].stamp + (done ? ' ' + STAGES[i].line : ' Back to working on it.');
+    if (allDone() && !progress.celebrated) { progress.celebrated = true; saveProgress(); hoopla(); msg += ' Every stage is done. Ready to scale.'; }
     if (boardLive) boardLive.textContent = msg;
   }
   function activate(step) { if (phone.matches) toggleStage(step); else pinStep(step); }
@@ -252,12 +252,12 @@
       var next = !progress.stages[currentStage][r];
       progress.stages[currentStage][r] = next;
       setStatus(btn, next);
-      var msg = 'Step ' + (r + 1) + ' is now ' + (next ? 'In use' : 'Building') + '.';
+      var msg = 'Step ' + (r + 1) + ' is now ' + (next ? 'Done' : 'Working on') + '.';
       if (!wasStageDone && stageDone(currentStage)) msg += ' ' + STAGES[currentStage].stamp + ' ' + STAGES[currentStage].line;
       if (!next) progress.celebrated = false;
       saveProgress();
       paintStamp(); paintSteps(currentStage);
-      if (allDone() && !progress.celebrated) { progress.celebrated = true; saveProgress(); hoopla(); msg += ' Every stage is in use. Ready to scale.'; }
+      if (allDone() && !progress.celebrated) { progress.celebrated = true; saveProgress(); hoopla(); msg += ' Every stage is done. Ready to scale.'; }
       if (boardLive) boardLive.textContent = msg;
     });
   });
@@ -275,7 +275,7 @@
       hooplaEl.innerHTML =
         '<div class="hoopla__bits" aria-hidden="true"></div>' +
         '<div class="hoopla__card">' +
-        '  <p class="eyebrow">Every stage in use</p>' +
+        '  <p class="eyebrow">Every stage done</p>' +
         '  <p class="hoopla__title brush" id="hoopla-title">Ready<br>to scale.</p>' +
         '  <p class="hoopla__line">Siloed, Captured, Adopted, Linked, Expansion-ready. The system holds without the person who built it, and the next location inherits it.</p>' +
         '  <svg class="hoopla__crown mark-crown" aria-hidden="true" focusable="false"><use href="#mark-crown"/></svg>' +
@@ -320,7 +320,7 @@
       progress = { stages: freshProgress(), celebrated: false };
       saveProgress();
       showStage(currentStage, false); paintSteps(currentStage);
-      if (boardLive) boardLive.textContent = 'Every step is back to Building.';
+      if (boardLive) boardLive.textContent = 'Every step is back to Working on.';
     });
   }
   if (ladder && boardRows.length) { paintSteps(pinnedStage); showStage(pinnedStage, false); }

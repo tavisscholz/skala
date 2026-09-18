@@ -107,7 +107,7 @@ Run with `node tools/preview-check.mjs` in headless Chromium (Playwright 1.56).
 - At 390 × 844 the wordmark, complete H1, business explanation, and primary
   CTA are all inside the first viewport.
 - Service rows: expand/collapse with correct `aria-expanded` and hidden panel.
-- Workboard: each step switches Building ↔ In use; progress per SCALE stage is kept in localStorage; a stage with every step in use lights its tile, and all five complete opens the Ready to scale celebration; live region
+- Workboard: each step switches Working on ↔ Done; progress per SCALE stage is kept in localStorage; a stage with every step in use lights its tile, and all five complete opens the Ready to scale celebration; live region
   updates; Reset restores initial statuses.
 - Field notes: dialog opens, focus lands on the heading, Escape closes and
   returns focus to the opener; the in-article back button also closes.
