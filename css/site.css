@@ -446,15 +446,9 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .ladder__step--ready .ladder__name, .ladder__step--ready .ladder__text { color: var(--color-ink); }
 .workboard__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4); margin-top: var(--space-4); }
 .workboard__foot .workboard__live { margin-top: 0; }
-.board-stamp { display: inline-flex; align-items: baseline; gap: var(--space-3); padding: var(--space-2) var(--space-4); border: 2px solid var(--color-ink); background: var(--color-ink); color: var(--color-acid); transform: rotate(-2deg); }
-.board-stamp__word { font-size: 1.5rem; line-height: 1; height: 1.05em; width: 9.2em; overflow: visible; display: block; }
-.board-stamp__text { font: inherit; fill: currentColor; }
+.board-stamp { display: inline-flex; align-items: baseline; gap: var(--space-3); padding: var(--space-2) var(--space-4); background: var(--color-ink); color: var(--color-acid); transform: rotate(-2deg); }
+.board-stamp__word { font-size: 1.5rem; line-height: 1; }
 .board-stamp__line { font-size: 0.875rem; font-weight: 600; color: var(--color-white); }
-/* Pending: until every row is In use the stamp is only an outline — dashed border, white fill, the word traced in a dashed black line. */
-.board-stamp.is-pending { border-style: dashed; background: var(--color-white); color: var(--color-ink); }
-.board-stamp.is-pending .board-stamp__word { font-family: var(--font-sans); font-weight: 900; letter-spacing: -0.02em; }  /* brush glyphs turn to noise under a dashed stroke; the bold sans holds it */
-.board-stamp.is-pending .board-stamp__text { fill: none; stroke: var(--color-ink); stroke-width: 1; stroke-dasharray: 5 3; stroke-linecap: round; stroke-linejoin: round; }
-.board-stamp.is-pending .board-stamp__line { color: var(--color-ink); }
 .ready__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-5); margin-top: var(--space-6); }
 .ready__foot .tool__caption { margin-top: 0; max-width: 52ch; }
 @media (max-width: 1023px) {

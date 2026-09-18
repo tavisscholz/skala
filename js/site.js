@@ -102,19 +102,9 @@
   }
   function checkReady(message) {
     var ready = allInUse();
-    if (stamp) stamp.classList.toggle('is-pending', !ready);
+    if (stamp) stamp.hidden = !ready;
     boardLive.textContent = ready ? message + ' Every row is in use. Expansion ready.' : message;
   }
-  /* The stamp word is SVG text (so the pending state can trace it with a dashed stroke); size the box to the glyphs once fonts settle. */
-  var stampWord = stamp && stamp.querySelector('.board-stamp__word');
-  function fitStamp() {
-    if (!stampWord) return;
-    var t = stampWord.querySelector('text');
-    try { stampWord.style.width = Math.ceil(t.getComputedTextLength() + 4) + 'px'; } catch (err) { /* keep the CSS width */ }
-  }
-  fitStamp();
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitStamp);
-  if (stamp) stamp.classList.toggle('is-pending', !allInUse());
   statusButtons.forEach(function (btn) {
     btn.addEventListener('click', function () {
       var next = STATUSES[(statusIndex(btn.getAttribute('data-status')) + 1) % STATUSES.length];
