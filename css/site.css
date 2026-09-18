@@ -491,7 +491,6 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
   .ready .workboard__foot { margin-top: var(--space-4); }
   .ready .board-stamp { margin-block: 0; }
 }
-}
 .notes__grid { display: grid; grid-template-columns: 5fr 7fr; gap: var(--space-8) var(--space-9); align-items: start; }
 .notes__grid .figure img { object-position: 50% 42%; }
 @media (max-width: 1023px) { .approach__grid, .tool__grid { grid-template-columns: 1fr; gap: var(--space-7); } }

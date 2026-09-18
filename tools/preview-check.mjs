@@ -68,6 +68,13 @@ note('second row collapses', await row2.getAttribute('aria-expanded') === 'false
 // Playbook band: the tilted card carries the section line
 note('playbook card carries the section line', (await page.locator('#playbook .notes__pull').textContent()).includes('Practical notes and working tools') && (await page.locator('#playbook .section-intro').count()) === 0);
 
+// Stylesheet sanity: an unbalanced brace silently drops every rule after it
+{
+  const css = await readFile(resolve(rootDir, 'css/site.css'), 'utf8');
+  const opens = (css.match(/{/g) || []).length, closes = (css.match(/}/g) || []).length;
+  note('site.css braces balance', opens === closes, `${opens} open / ${closes} close`);
+}
+
 // Workboard
 const status = page.locator('.status-btn').first();
 await status.click();
