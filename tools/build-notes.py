@@ -13,8 +13,8 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 ARTICLES = [  # order on the page, lane tag, lane name
     ("your-best-manager-cannot-be-the-whole-system", "OPS", "Store Operations"),
     ("a-good-site-can-still-be-the-wrong-site", "RE", "Real Estate &amp; Leasing"),
-    ("financially-qualified-is-not-the-same-as-franchise-ready", "FRAN", "Franchise Development"),
     ("opening-critical-dates-checklist", "DEV", "Store Development"),
+    ("financially-qualified-is-not-the-same-as-franchise-ready", "FRAN", "Franchise Development"),
 ]
 ACCENTS = ["orange", "periwinkle", "orange", "periwinkle"]
 RINGS = [
