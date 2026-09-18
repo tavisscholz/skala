@@ -212,4 +212,63 @@ page = f'''<!doctype html>
 </html>
 '''
 (ROOT / "playbook.html").write_text(page)
-print("built: index.html band + dialogs, playbook.html")
+
+# ---------- merch page ----------
+MERCH = [
+    {"slug": "tee", "name": "SKALA tee", "price": 25, "img": "merch-tee.webp", "alt": "SKALA tee, black with the acid wordmark"},
+    {"slug": "hat", "name": "SKALA hat", "price": 25, "img": "merch-hat.webp", "alt": "SKALA hat, black with the crown"},
+    {"slug": "jacket", "name": "SKALA jacket", "price": 75, "img": "merch-jacket.webp", "alt": "SKALA jacket"},
+    {"slug": "field-book", "name": "Field book", "price": 15, "img": "merch-field-book.webp", "alt": "The SKALA field book", "fallback": "notes-field-notebook.webp"},
+]
+merch_head = head.replace("<title>Playbook — SKALA</title>", "<title>Merch — SKALA</title>")
+merch_head = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="description" content="SKALA merch: the tee, the hat, the jacket, and the field book.">', merch_head)
+merch_header = s[s.index('  <header class="site-header"'):s.index("</header>")+9]
+merch_header = merch_header.replace('href="#top" aria-label="SKALA — back to top"', 'href="index.html" aria-label="SKALA — home"')
+for a in ("work", "approach", "playbook", "about", "contact"):
+    merch_header = merch_header.replace(f'href="#{a}"', f'href="index.html#{a}"')
+merch_header = merch_header.replace('<a class="nav-link" href="merch.html">Merch</a>', '<a class="nav-link" href="merch.html" aria-current="page">Merch</a>')
+def card(m):
+    fb = m.get("fallback")
+    onerror = (f"if(!this.dataset.fb){{this.dataset.fb=1;this.src='assets/images/{fb}'}}else{{this.hidden=true}}" if fb else "this.hidden=true")
+    return f'''        <li class="merch-card reveal">
+          <div class="merch-card__media">
+            <span class="merch-card__placeholder brush" aria-hidden="true">Photo coming</span>
+            <img class="merch-card__img" src="assets/images/{m['img']}" alt="{esc(m['alt'])}" loading="lazy" onerror="{onerror}">
+          </div>
+          <h2 class="merch-card__name">{esc(m['name'])}</h2>
+          <p class="merch-card__price">${m['price']}</p>
+        </li>'''
+cards = "\n".join(card(m) for m in MERCH)
+merch = f'''<!doctype html>
+<html lang="en">
+{merch_head}
+<body class="merch-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+{svgdefs}
+
+{merch_header}
+
+  <main id="main">
+    <section class="section section--paper merch" aria-labelledby="merch-title">
+      <div class="container">
+        <div class="merch__intro reveal">
+          <p class="eyebrow">Merch</p>
+          <h1 class="section-title" id="merch-title">Wear the work.</h1>
+        </div>
+        <ul class="merch__grid">
+{cards}
+        </ul>
+        <p class="merch__note reveal"><a class="text-link" href="index.html#contact">Ask about an order <span class="arrow" aria-hidden="true">→</span></a></p>
+      </div>
+    </section>
+  </main>
+
+{footer}
+
+  <script src="js/site.js" defer></script>
+</body>
+</html>
+'''
+(ROOT / "merch.html").write_text(merch)
+print("built: index.html band + dialogs, playbook.html, merch.html")

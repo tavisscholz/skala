@@ -17,19 +17,27 @@ MAPPING = {
     "tool-opening-checklist": ("tool-opening-checklist.webp", 1200),
     "about-operator-in-aisle": ("about-operator-in-aisle.webp", 900),
     "SKALA_09_the_field_notebook": ("notes-field-notebook.webp", 1200),
+    # merch product shots, uploaded to assets/images as "SKALA <item>.png"; kept in colour
+    "SKALA tee": ("merch-tee.webp", 1200),
+    "SKALA cap": ("merch-hat.webp", 1200),
+    "SKALA jacket": ("merch-jacket.webp", 1200),
+    "SKALA book": ("merch-field-book.webp", 1200),
 }
+COLOUR = {name for stem, (name, _) in MAPPING.items() if stem.startswith("SKALA ")}
 
 src = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else "assets/images/source")
 out = pathlib.Path("assets/images"); out.mkdir(parents=True, exist_ok=True)
 found = 0
 for stem, (name, width) in MAPPING.items():
-    matches = [p for p in src.iterdir() if p.stem == stem] if src.exists() else []
+    matches = [p for d in (src, out) if d.exists() for p in d.iterdir() if p.stem == stem and p.suffix.lower() != ".webp"]
     if not matches:
         print(f"missing  {stem}.*  (expected in {src})"); continue
-    im = Image.open(matches[0]); im = ImageOps.exif_transpose(im).convert("L")
+    im = Image.open(matches[0]); im = ImageOps.exif_transpose(im)
+    im = im.convert("RGB") if name in COLOUR else im.convert("L")
     if im.width > width:
         im = im.resize((width, round(im.height * width / im.width)), Image.LANCZOS)
-    im = ImageOps.autocontrast(im, cutoff=1)
+    if name not in COLOUR:
+        im = ImageOps.autocontrast(im, cutoff=1)
     im.save(out / name, "WEBP", quality=82, method=6)
     print(f"wrote    {out / name}  {im.width}x{im.height}"); found += 1
 print(f"{found}/{len(MAPPING)} images prepared")

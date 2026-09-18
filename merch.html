@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Merch — SKALA</title>
+  <meta name="description" content="SKALA merch: the tee, the hat, the jacket, and the field book.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#050505">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/inter-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/permanent-marker-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/oracle-brush-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body class="merch-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <svg class="svg-defs" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="mark-crown" viewBox="0 0 64 48">
+      <path d="M5 39 L11 13 L24 27 L32 5 L41 25 L54 12 L59 40" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M7 45 Q32 42 57 45" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="mark-smile" viewBox="0 0 64 64">
+      <path d="M32 6 C 47 5, 59 18, 58 33 C 57 48, 45 59, 31 58 C 17 57, 6 45, 7 31 C 8 18, 19 7, 32 6 Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="23" cy="26" r="3.2" fill="currentColor"/>
+      <circle cx="41" cy="25" r="3.2" fill="currentColor"/>
+      <path d="M20 38 Q32 51 45 37" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+    </symbol>
+    <filter id="tear-rough" x="-4%" y="-40%" width="108%" height="180%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.014 0.06" numOctaves="3" seed="4" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="12" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <symbol id="mark-torn" viewBox="0 0 1440 40" preserveAspectRatio="none">
+      <path d="M0 0 H1440 V14 L1380 22 L1310 10 L1240 26 L1160 12 L1080 24 L1000 8 L920 20 L840 30 L760 14 L690 26 L600 10 L520 24 L440 12 L360 28 L280 14 L200 26 L120 10 L60 22 L0 12 Z" fill="currentColor"/>
+    </symbol>
+    <symbol id="mark-wordmark" viewBox="0 0 330 104">
+      <g fill="none" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M70 22 C 42 8, 14 20, 20 40 C 26 58, 66 52, 70 70 C 74 90, 40 96, 12 84"/>
+        <path d="M92 12 L88 92 M132 14 L92 54 L134 92"/>
+        <path d="M148 94 L172 10 L196 94 M158 66 L186 66"/>
+        <path d="M214 12 L210 92 L252 90"/>
+        <path d="M262 94 L286 10 L310 94 M272 66 L300 66"/>
+      </g>
+    </symbol>
+  </svg>
+
+  <header class="site-header" id="top">
+    <div class="container site-header__inner">
+      <a class="wordmark wordmark--header" href="index.html" aria-label="SKALA — home">
+        <span class="wordmark__text" aria-hidden="true">SK<span class="wordmark__tuck">A</span><span class="wordmark__tuck wordmark__tuck--l">L</span><span class="wordmark__tuck">A</span></span>
+        <svg class="wordmark__svg" aria-hidden="true" focusable="false"><use href="#mark-wordmark"/></svg>
+        <svg class="wordmark__crown mark-crown" aria-hidden="true" focusable="false"><use href="#mark-crown"/></svg>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel">
+          <span class="nav-toggle__bars" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="nav-toggle__label">Menu</span>
+        </button>
+        <div class="nav-panel" id="nav-panel">
+          <ul class="nav-list">
+            <li><a class="nav-link" href="index.html#work">What We Do</a></li>
+            <li><a class="nav-link" href="index.html#approach">How We Do It</a></li>
+            <li><a class="nav-link" href="index.html#playbook">Playbook</a></li>
+            <li><a class="nav-link" href="index.html#about">About</a></li>
+            <li><a class="nav-link" href="merch.html" aria-current="page">Merch</a></li>
+            <li class="nav-list__cta"><a class="button button--acid" href="index.html#contact">Let’s build <span class="arrow" aria-hidden="true">→</span></a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section section--paper merch" aria-labelledby="merch-title">
+      <div class="container">
+        <div class="merch__intro reveal">
+          <p class="eyebrow">Merch</p>
+          <h1 class="section-title" id="merch-title">Wear the work.</h1>
+        </div>
+        <ul class="merch__grid">
+        <li class="merch-card reveal">
+          <div class="merch-card__media">
+            <span class="merch-card__placeholder brush" aria-hidden="true">Photo coming</span>
+            <img class="merch-card__img" src="assets/images/merch-tee.webp" alt="SKALA tee, black with the acid wordmark" loading="lazy" onerror="this.hidden=true">
+          </div>
+          <h2 class="merch-card__name">SKALA tee</h2>
+          <p class="merch-card__price">$25</p>
+        </li>
+        <li class="merch-card reveal">
+          <div class="merch-card__media">
+            <span class="merch-card__placeholder brush" aria-hidden="true">Photo coming</span>
+            <img class="merch-card__img" src="assets/images/merch-hat.webp" alt="SKALA hat, black with the crown" loading="lazy" onerror="this.hidden=true">
+          </div>
+          <h2 class="merch-card__name">SKALA hat</h2>
+          <p class="merch-card__price">$25</p>
+        </li>
+        <li class="merch-card reveal">
+          <div class="merch-card__media">
+            <span class="merch-card__placeholder brush" aria-hidden="true">Photo coming</span>
+            <img class="merch-card__img" src="assets/images/merch-jacket.webp" alt="SKALA jacket" loading="lazy" onerror="this.hidden=true">
+          </div>
+          <h2 class="merch-card__name">SKALA jacket</h2>
+          <p class="merch-card__price">$75</p>
+        </li>
+        <li class="merch-card reveal">
+          <div class="merch-card__media">
+            <span class="merch-card__placeholder brush" aria-hidden="true">Photo coming</span>
+            <img class="merch-card__img" src="assets/images/merch-field-book.webp" alt="The SKALA field book" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='assets/images/notes-field-notebook.webp'}else{this.hidden=true}">
+          </div>
+          <h2 class="merch-card__name">Field book</h2>
+          <p class="merch-card__price">$15</p>
+        </li>
+        </ul>
+        <p class="merch__note reveal"><a class="text-link" href="index.html#contact">Ask about an order <span class="arrow" aria-hidden="true">→</span></a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__grid">
+      <div class="site-footer__brand">
+        <a class="wordmark wordmark--footer" href="index.html" aria-label="SKALA — back to top">
+          <span class="wordmark__text" aria-hidden="true">SK<span class="wordmark__tuck">A</span><span class="wordmark__tuck wordmark__tuck--l">L</span><span class="wordmark__tuck">A</span></span>
+          <svg class="wordmark__svg" aria-hidden="true" focusable="false"><use href="#mark-wordmark"/></svg>
+        </a>
+        <div class="site-footer__tag">
+          <p class="site-footer__line">Real operators. Bigger tomorrows.</p>
+          <p class="site-footer__desc">Multiunit retail and franchise operating support.</p>
+        </div>
+      </div>
+      <nav class="site-footer__nav" aria-label="Footer">
+        <a href="index.html#work">What We Do</a>
+        <a href="index.html#about">About</a>
+        <a href="merch.html">Merch</a>
+        <a href="index.html#contact">Let’s build</a>
+      </nav>
+      <p class="site-footer__copy">© 2026 SKALA</p>
+    </div>
+  </footer>
+
+  <script src="js/site.js" defer></script>
+</body>
+</html>

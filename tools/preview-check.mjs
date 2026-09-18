@@ -181,6 +181,25 @@ note('playbook page 390: no overflow', (await fn.evaluate(() => document.documen
 await fn.close();
 
 // Reduced motion
+// Merch page
+{
+  const mp = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  const merr = [];
+  mp.on('pageerror', e => merr.push(e.message));
+  await mp.goto(url + 'merch.html', { waitUntil: 'networkidle' });
+  note('merch page loads without errors', merr.length === 0, merr.join('; '));
+  note('merch page lists four items with prices', await mp.evaluate(() => [...document.querySelectorAll('.merch-card__price')].map(e => e.textContent.trim()).join(',') === '$25,$25,$75,$15'));
+  note('merch photos all load', await mp.evaluate(() => [...document.querySelectorAll('.merch-card__img')].every(i => i.complete && i.naturalWidth > 0 && !i.hidden)));
+  note('merch page: no horizontal overflow', (await mp.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)) <= 0);
+  note('merch nav item is current', await mp.evaluate(() => (document.querySelector('.nav-link[aria-current="page"]') || {}).textContent?.trim() === 'Merch'));
+  await mp.evaluate(() => document.querySelectorAll('.reveal').forEach(e => e.classList.add('is-in')));
+  await mp.screenshot({ path: join(outDir, 'merch-1440.png'), fullPage: true });
+  await mp.setViewportSize({ width: 390, height: 800 });
+  await mp.waitForTimeout(200);
+  note('merch page 390: no overflow', (await mp.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)) <= 0);
+  await mp.close();
+}
+
 const rm = await browser.newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
 await rm.goto(url, { waitUntil: 'networkidle' });
 note('reduced motion: content visible without scrolling', await rm.evaluate(() => [...document.querySelectorAll('.reveal')].every(el => getComputedStyle(el).opacity === '1')));
