@@ -509,7 +509,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .note { position: relative; display: grid; grid-template-columns: minmax(96px, 160px) 1fr; gap: var(--space-6); padding: var(--space-7) 0; border-bottom: 2px solid var(--color-ink); align-items: start; }
 .note__num { position: relative; display: inline-grid; place-items: center; width: clamp(88px, 6vw + 48px, 128px); aspect-ratio: 1; font-size: clamp(3rem, 2rem + 3vw, 4.5rem); line-height: 1; color: var(--color-ink); transform: rotate(-3deg); }
 .note__ring { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--color-ink); }
-.notes__pull { margin-top: var(--space-6); font-size: var(--text-campaign); line-height: 1.05; max-width: 14ch; transform: rotate(-1.5deg); }
+.notes__pull { margin-top: var(--space-6); font-size: var(--text-campaign); line-height: 1.05; max-width: 14ch; box-sizing: content-box; padding: var(--space-5) var(--space-6) var(--space-6); background: var(--color-ink); color: var(--color-acid); transform: rotate(-2deg); transform-origin: left top; }   /* black card stays put; only the words inside swap */
 .note__accent { position: absolute; width: 18px; height: 18px; left: 0; top: var(--space-4); }
 .note__accent--orange { background: var(--color-orange); transform: rotate(-3deg); }
 .note__accent--periwinkle { background: var(--color-periwinkle); transform: rotate(2deg); }
@@ -653,7 +653,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .note-line__button { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--space-5); width: 100%; min-height: 72px; padding: var(--space-4) var(--space-2) var(--space-4) 0; text-align: left; background: none; border: 0; cursor: pointer; }
 .note-line__button:hover .note__tag, .note-line__button:focus-visible .note__tag, .fn-index__list a:hover .note__tag, .fn-index__list a:focus-visible .note__tag { background: var(--color-acid); color: var(--color-ink); }
 .note__tag { transition: background-color 150ms, color 150ms; }
-.notes__pull { display: grid; }
+.notes__pull { display: grid; align-items: center; }   /* card is sized to the longest quote; shorter ones sit centred */
 .notes__pull-item { grid-area: 1 / 1; opacity: 0; transition: opacity 160ms var(--ease-out); }
 .notes__pull-item.is-active { opacity: 1; }
 .note-line__text { display: flex; flex-direction: column; gap: 2px; }
