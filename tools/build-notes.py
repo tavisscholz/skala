@@ -1,9 +1,9 @@
-"""Build the Toolbox from assets/articles/*.md.
+"""Build the Playbook from assets/articles/*.md.
 
 Writes:
-  - the compact Toolbox band on index.html (between notes markers)
+  - the compact Playbook band on index.html (between notes markers)
   - the article dialogs on index.html (between dialog markers)
-  - toolbox.html, the full page
+  - playbook.html, the full page
 
 Usage: python3 tools/build-notes.py
 """
@@ -39,7 +39,7 @@ def parse(slug):
     y, m, d = md[2].strip().split("-")
     date = f"{int(d)} {MONTHS[int(m)-1]} {y}"
     stand = md[4].strip().strip("*")
-    kind = "Tool" if md[6].strip().strip("*").lower().startswith("operator") else "Note"
+    kind = "Play"
     body = md[7:]
     out, k = [], 0
     while k < len(body):
@@ -75,17 +75,17 @@ rows = "\n".join(f'''          <li class="note-line">
             </button>
           </li>''' for n in notes)
 band = f'''<!-- notes:start -->
-    <section class="section section--paper notes" id="toolbox" aria-labelledby="notes-title">
+    <section class="section section--paper notes" id="playbook" aria-labelledby="notes-title">
       <div class="container notes__grid">
         <div class="notes__intro reveal">
-          <p class="eyebrow">Toolbox</p>
-          <h2 class="section-title" id="notes-title">Tools from the work.</h2>
-          <p class="section-intro">Practical notes and working tools on building a business that can keep moving. Open one here, or take the whole toolbox with you.</p>
+          <p class="eyebrow">Playbook</p>
+          <h2 class="section-title" id="notes-title">Plays from the work.</h2>
+          <p class="section-intro">Practical notes and working tools on building a business that can keep moving. Open one here, or take the whole playbook with you.</p>
           <p class="notes__pull brush">{esc(PULL)}</p>
         </div>
         <ul class="note-lines reveal">
 {rows}
-          <li class="note-lines__all"><a class="text-link" href="toolbox.html">Open the full toolbox <span class="arrow" aria-hidden="true">→</span></a></li>
+          <li class="note-lines__all"><a class="text-link" href="playbook.html">Open the full playbook <span class="arrow" aria-hidden="true">→</span></a></li>
         </ul>
       </div>
     </section>
@@ -106,7 +106,7 @@ dialogs = "\n\n".join(f'''  <dialog class="note-dialog" id="note-{n['i']}" aria-
       </div>
       <div class="note-article__foot">
         <button class="button button--ink" type="button" data-close-note><span class="arrow" aria-hidden="true">←</span> Back</button>
-        <a class="text-link" href="toolbox.html#{n['slug']}">Open in the toolbox <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="text-link" href="playbook.html#{n['slug']}">Open in the playbook <span class="arrow" aria-hidden="true">→</span></a>
       </div>
     </article>
   </dialog>''' for n in notes)
@@ -119,14 +119,14 @@ idx.write_text(s)
 
 # ---------- full page ----------
 head = s[s.index("<head>"):s.index("</head>")+7]
-head = head.replace("<title>SKALA — Real operators. Bigger tomorrows.</title>", "<title>Toolbox — SKALA</title>")
-head = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="description" content="The SKALA toolbox: practical notes and working tools on store operations, store development, real estate, and franchise growth.">', head)
+head = head.replace("<title>SKALA — Real operators. Bigger tomorrows.</title>", "<title>Playbook — SKALA</title>")
+head = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="description" content="The SKALA playbook: practical plays and working tools on store operations, store development, real estate, and franchise growth.">', head)
 head = head.replace('<link rel="preload" href="assets/fonts/inter-variable-latin.woff2"', '<link rel="preload" href="assets/fonts/inter-variable-latin.woff2"')
 svgdefs = s[s.index('  <svg class="svg-defs"'):s.index("</svg>", s.index('  <svg class="svg-defs"'))+6]
 header = s[s.index('  <header class="site-header"'):s.index("</header>")+9]
 header = header.replace('href="#top" aria-label="SKALA — back to top"', 'href="index.html" aria-label="SKALA — home"')
 header = header.replace('href="#work"', 'href="index.html#work"').replace('href="#approach"', 'href="index.html#approach"').replace('href="#about"', 'href="index.html#about"').replace('href="#contact"', 'href="index.html#contact"')
-header = header.replace('<a class="nav-link" href="#toolbox">Toolbox</a>', '<a class="nav-link" href="toolbox.html" aria-current="page">Toolbox</a>')
+header = header.replace('<a class="nav-link" href="#playbook">Playbook</a>', '<a class="nav-link" href="playbook.html" aria-current="page">Playbook</a>')
 footer = s[s.index('  <footer class="site-footer">'):s.index("</footer>")+9]
 footer = footer.replace('href="#top"', 'href="index.html"').replace('href="#work"', 'href="index.html#work"').replace('href="#about"', 'href="index.html#about"').replace('href="#contact"', 'href="index.html#contact"')
 
@@ -157,8 +157,8 @@ page = f'''<!doctype html>
     <section class="section section--paper fn-hero" aria-labelledby="fn-title">
       <div class="container fn-hero__grid">
         <div class="fn-hero__copy reveal">
-          <p class="eyebrow">Toolbox</p>
-          <h1 class="section-title" id="fn-title">Tools from the work.</h1>
+          <p class="eyebrow">Playbook</p>
+          <h1 class="section-title" id="fn-title">Plays from the work.</h1>
           <p class="section-intro">Practical notes and working tools on building a business that can keep moving. Written from the store floor, the development schedule, the site walk, and the franchise pipeline.</p>
           <p class="notes__pull brush">{esc(PULL)}</p>
         </div>
@@ -169,10 +169,10 @@ page = f'''<!doctype html>
       </div>
     </section>
 
-    <section class="section section--paper fn-body" aria-label="Toolbox">
+    <section class="section section--paper fn-body" aria-label="Playbook">
       <div class="container fn-body__grid">
-        <nav class="fn-index reveal" aria-label="Toolbox index">
-          <p class="eyebrow">In the toolbox</p>
+        <nav class="fn-index reveal" aria-label="Playbook index">
+          <p class="eyebrow">In the playbook</p>
           <ol class="fn-index__list">
 {index_links}
           </ol>
@@ -201,5 +201,5 @@ page = f'''<!doctype html>
 </body>
 </html>
 '''
-(ROOT / "toolbox.html").write_text(page)
-print("built: index.html band + dialogs, toolbox.html")
+(ROOT / "playbook.html").write_text(page)
+print("built: index.html band + dialogs, playbook.html")
