@@ -153,7 +153,7 @@ await m.locator('#nav-panel a[href="#work"]').click();
 note('menu closes on selection', !(await m.locator('#nav-panel').isVisible()));
 await m.waitForTimeout(600);
 note('selection scrolled to #work', await m.evaluate(() => { const r = document.querySelector('#work').getBoundingClientRect(); return r.top >= 0 && r.top < 200; }));
-note('torn seams present and gated', await m.evaluate(() => document.body.classList.contains('tears') && document.querySelectorAll('.tear').length === 5 && [...document.querySelectorAll('.tear')].every(t => { const r = t.getBoundingClientRect(); return r.height > 30; })));
+note('torn seams present and gated', await m.evaluate(() => document.body.classList.contains('tears') && document.querySelectorAll('.tear').length === 6 && [...document.querySelectorAll('.tear')].every(t => { const r = t.getBoundingClientRect(); return r.height > 30; })));
 note('header crown sits beside the wordmark', await m.evaluate(() => { const c = document.querySelector('.wordmark--header .wordmark__crown'); if (!c) return false; const r = c.getBoundingClientRect(), t = document.querySelector('.wordmark__text').getBoundingClientRect(); return r.width > 20 && r.left >= t.right - 4; }));
 await m.locator('.wordmark--header').click();
 await m.waitForTimeout(900);
