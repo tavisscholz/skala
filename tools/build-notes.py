@@ -138,7 +138,7 @@ header = header.replace('href="#top" aria-label="SKALA — back to top"', 'href=
 header = header.replace('href="#work"', 'href="index.html#work"').replace('href="#approach"', 'href="index.html#approach"').replace('href="#about"', 'href="index.html#about"').replace('href="#contact"', 'href="index.html#contact"')
 header = header.replace('<a class="nav-link" href="#playbook">Playbook</a>', '<a class="nav-link" href="playbook.html" aria-current="page">Playbook</a>')
 footer = s[s.index('  <footer class="site-footer">'):s.index("</footer>")+9]
-footer = footer.replace('href="#top"', 'href="index.html"').replace('href="#work"', 'href="index.html#work"').replace('href="#about"', 'href="index.html#about"').replace('href="#contact"', 'href="index.html#contact"')
+footer = footer.replace('href="#top"', 'href="index.html"').replace('href="#work"', 'href="index.html#work"').replace('href="#approach"', 'href="index.html#approach"').replace('href="#about"', 'href="index.html#about"').replace('href="#contact"', 'href="index.html#contact"')
 
 index_links = "\n".join(f'            <li data-quote-for="{n["slug"] if QUOTES[n["slug"]] != PULL else "default"}"><a href="#{n["slug"]}"><span class="note__tag" aria-hidden="true">{n["tag"]}</span><span>{esc(n["title"])}</span></a></li>' for n in notes)
 articles = "\n\n".join(f'''        <article class="fn-article reveal" id="{n['slug']}" aria-labelledby="{n['slug']}-title">
