@@ -156,7 +156,7 @@ note('selection scrolled to #work', await m.evaluate(() => { const r = document.
 await m.evaluate(() => { const r = document.querySelector('.hero').getBoundingClientRect(); window.scrollBy(0, r.bottom + 20); });
 await m.waitForTimeout(500);
 note('first row tugs once the hero has scrolled away', await m.evaluate(() => document.querySelector('.service-row').classList.contains('is-nudged')));
-note('torn seams present and gated', await m.evaluate(() => document.body.classList.contains('tears') && document.querySelectorAll('.tear').length === 6 && [...document.querySelectorAll('.tear')].every(t => { const r = t.getBoundingClientRect(); return r.height > 30; })));
+note('torn seams present and gated', await m.evaluate(() => document.body.classList.contains('tears') && document.querySelectorAll('.tear').length === 7 && [...document.querySelectorAll('.tear')].every(t => { const r = t.getBoundingClientRect(); return r.height > 30; })));
 note('header crown sits beside the wordmark', await m.evaluate(() => { const c = document.querySelector('.wordmark--header .wordmark__crown'); if (!c) return false; const r = c.getBoundingClientRect(), t = document.querySelector('.wordmark__text').getBoundingClientRect(); return r.width > 20 && r.left >= t.right - 4; }));
 await m.locator('.wordmark--header').click();
 await m.waitForTimeout(900);
