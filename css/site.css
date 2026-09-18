@@ -220,7 +220,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
   .hero__media { min-height: 200px; }
   .hero__media:has(.media-slot__img) { aspect-ratio: 4 / 3; min-height: 0; }
   .hero__media .media-slot__img { object-position: 50% 30%; filter: grayscale(1) contrast(1.1) brightness(0.85); }
-  .poster { padding: var(--space-5) var(--gutter); flex-direction: row; align-items: flex-end; justify-content: space-between; }
+  .poster { padding: var(--space-5) var(--gutter) calc(var(--space-5) + 34px); flex-direction: row; align-items: flex-end; justify-content: space-between; }   /* bottom clears the strip's top tear */
   .poster__wordmark { display: none; }   /* header already carries the wordmark on mobile */
   .poster__crown { margin: 0; width: 56px; }
   .poster__line { margin: 0; font-size: 1.75rem; }

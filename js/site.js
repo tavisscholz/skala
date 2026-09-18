@@ -8,10 +8,18 @@
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   /* ---------- Brush font fallback ---------- */
-  if (document.fonts && document.fonts.load) {
-    document.fonts.load('1em "Permanent Marker"').then(function (faces) {
-      if (!faces || !faces.length) root.classList.add('no-brush');
-    }).catch(function () { root.classList.add('no-brush'); });
+  /* Fall back to the drawn mark only when the wordmark face itself fails to load.
+     (Safari answers fonts.load() with an empty list even when the face is fine, so that is not a signal.) */
+  if (document.fonts && document.fonts.forEach) {
+    var wordmarkFace = null;
+    document.fonts.forEach(function (face) {
+      if (!wordmarkFace && face.family.replace(/["']/g, '') === 'Oracle Brush') wordmarkFace = face;
+    });
+    if (wordmarkFace) {
+      wordmarkFace.load().then(function () {
+        if (wordmarkFace.status === 'error') root.classList.add('no-brush');
+      }).catch(function () { root.classList.add('no-brush'); });
+    }
   }
 
   /* ---------- Header state ---------- */
