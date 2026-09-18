@@ -435,7 +435,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .notebook--card .notebook__list { margin-top: var(--space-4); font-size: 1.0625rem; line-height: 1.45; }
 .notebook--card .notebook__crown { width: 40px; margin-top: var(--space-4); }
 .notebook--card .notebook__signoff-line { font-size: 1.25rem; }
-.notebook--card .notebook__crown--drawn { width: 52px; }
+.notebook--card .notebook__crown--drawn { width: 44px; }
 .about__aside .figure__caption { left: auto; right: 0; }
 .notebook__wordmark { font-size: clamp(3.5rem, 2.5rem + 3vw, 5rem); line-height: 1; transform: rotate(-2deg); display: inline-block; }
 .notebook__list { margin-top: var(--space-6); font-family: var(--font-brush); font-size: 1.375rem; line-height: 1.5; }
@@ -445,7 +445,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .notebook__sign { margin-top: auto; display: flex; align-items: center; justify-content: flex-end; gap: var(--space-3); padding-top: var(--space-5); }
 .notebook__signoff { display: flex; flex-direction: column; line-height: 1; transform: rotate(-3deg); }
 .notebook__signoff-line { font-size: 1.5rem; }
-.notebook__crown--drawn { width: 64px; margin: 0; flex: none; transform: rotate(-2deg); }
+.notebook__crown--drawn { width: 56px; margin: 0; flex: none; transform: rotate(4deg); }
 .notebook__crown--drawn path { stroke-dasharray: 1; stroke-dashoffset: 0; }
 .js .notebook__signoff-line { clip-path: inset(-10% 100% -10% -4%); }
 .js .notebook__crown--drawn path { stroke-dashoffset: 1; }
