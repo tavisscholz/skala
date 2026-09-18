@@ -80,6 +80,22 @@
     });
   });
 
+  /* First time the section lands in view, the first row tugs and yo-yos twice to show it opens. */
+  var work = document.getElementById('work');
+  var firstRow = rowToggles.length ? rowToggles[0].closest('.service-row') : null;
+  if (work && firstRow && !reduceMotion.matches && 'IntersectionObserver' in window) {
+    var nudge = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        nudge.disconnect();
+        window.setTimeout(function () {
+          if (rowToggles[0].getAttribute('aria-expanded') !== 'true') firstRow.classList.add('is-nudged');
+        }, 450);
+      });
+    }, { threshold: 0.35 });
+    nudge.observe(work);
+  }
+
   /* ---------- Illustrative workboard ---------- */
   var STATUSES = [
     { key: 'building', label: 'Building' },

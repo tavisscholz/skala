@@ -314,6 +314,13 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .service-row__icon::before { width: 22px; height: 3px; transform: translate(-50%, -50%); }
 .service-row__icon::after { width: 3px; height: 22px; transform: translate(-50%, -50%); }
 .service-row__toggle[aria-expanded="true"] .service-row__icon::after { transform: translate(-50%, -50%) rotate(90deg); }
+/* First landing on the section: the Store Operations row tugs down and yo-yos twice, a hint that rows open. */
+@keyframes row-tug { 0% { transform: translateY(0); } 22% { transform: translateY(7px); } 44% { transform: translateY(0); } 62% { transform: translateY(4px); } 80% { transform: translateY(0); } 100% { transform: translateY(0); } }
+@keyframes tag-flash { 0%, 100% { background: var(--color-ink); color: var(--color-acid); } 20%, 75% { background: var(--color-acid); color: var(--color-ink); } }
+@keyframes icon-tug { 0%, 100% { transform: translate(-50%, -50%) rotate(0deg); } 22% { transform: translate(-50%, -50%) rotate(35deg); } 62% { transform: translate(-50%, -50%) rotate(18deg); } }
+.service-row.is-nudged .service-row__toggle { animation: row-tug 1100ms var(--ease-out) both; }
+.service-row.is-nudged .service-row__tag { animation: tag-flash 1100ms var(--ease-out) both; }
+.service-row.is-nudged .service-row__icon::after { animation: icon-tug 1100ms var(--ease-out) both; }
 .service-row__panel { display: grid; grid-template-columns: 1fr; gap: var(--space-5) var(--space-6); padding: 0 var(--space-2) var(--space-7) calc(4.5rem + var(--space-5)); }
 .service-row__col > p:not(.service-row__label) { color: var(--color-ink); }
 .service-row__label { font-size: var(--text-label); font-weight: 600; letter-spacing: var(--tracking-label); text-transform: uppercase; margin-bottom: var(--space-3); background: var(--color-acid); display: inline-block; padding: 2px 6px; }
@@ -354,12 +361,12 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
   display: flex; flex-direction: column; justify-content: center; padding: var(--space-8) max(var(--gutter), calc((100vw - var(--container)) / 2 + var(--gutter))) var(--space-8) var(--space-8);
 }
 /* Campaign line: the wordmark face, stacked one word per line and staggered like a hand-lettered poster. */
-.campaign__line { font-family: var(--font-wordmark); text-transform: uppercase; letter-spacing: -0.06em; font-size: var(--campaign-mark, clamp(3rem, 0.7rem + 5.9vw, 6.25rem)); line-height: 0.95; transform: rotate(-2deg); display: flex; flex-direction: column; align-items: flex-start; }
+.campaign__line { font-family: var(--font-wordmark); text-transform: uppercase; letter-spacing: -0.06em; font-size: var(--campaign-mark, clamp(2.75rem, 0.6rem + 5.3vw, 5.75rem)); line-height: 0.95; transform: rotate(-2deg); display: flex; flex-direction: column; align-items: flex-start; }
 .campaign__word { display: block; white-space: nowrap; }
 .campaign__word:nth-child(2) { margin-left: 0.22em; }
-.campaign__word:nth-child(3) { margin-left: 0.08em; }
-.campaign__word:nth-child(4) { margin-left: 0.2em; }
-.campaign__word:nth-child(5) { margin-left: 0.14em; }
+.campaign__word:nth-child(3) { margin-left: 0.44em; }
+.campaign__word:nth-child(4) { margin-left: 0.66em; }
+.campaign__word:nth-child(5) { margin-left: 0.88em; }
 .campaign__word--underlined { position: relative; padding-bottom: 0.14em; }
 .campaign__underline { position: absolute; left: -0.02em; bottom: -0.06em; width: 100%; height: 0.24em; overflow: visible; }
 .campaign__smile { width: 84px; height: auto; margin-top: var(--space-6); align-self: flex-end; transform: rotate(4deg); }
