@@ -47,5 +47,6 @@ mapping at the top of that script names which source feeds which slot.
 | `campaign-team-training` (SKALA_02) | Campaign poster | |
 | `approach-before-doors-open` (SKALA_03) | How we work | |
 | `about-between-locations` (SKALA_18, cropped 2:3) | About | Not presented as Tavis |
+| `join-opening-huddle` (SKALA_13) | Work with us | |
 | `SKALA_09_the_field_notebook` | Field notes | |
 | SKALA_06 manager coaching · 07 stockroom systems · 08 workshop in progress · 10 site walk · 11 measuring the space · 12 merchandising together · 13 the opening huddle · 14 store review · 15 quiet leadership · 16 hands-on training · 17 opening preparation · 18 between locations · 19 the working table · 20 end of day | Not placed | Alternates for the slots above, or for the field-note article views and future pages. 08, 10, 11 and 19 suit an Expansion story; 15 and 20 are portraits and should not stand in for Tavis. |

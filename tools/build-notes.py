@@ -366,31 +366,33 @@ for slug, spec in LEGAL.items():
 # ---------- work with us ----------
 def work_page():
     whead = head.replace("<title>Playbook — SKALA</title>", "<title>Work With Us — SKALA</title>")
-    whead = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="description" content="SKALA is connecting with experienced multiunit operators who want to help brands get ready for their next stage of growth.">', whead)
+    whead = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="description" content="Operators wanted. SKALA is connecting with experienced operators across specialties who want to help multiunit brands get ready for their next stage of growth.">', whead)
+    chips = ["Brand &amp; growth marketing", "Finance &amp; unit economics", "Merchandising &amp; category management", "People operations", "Data &amp; automation", "Supply chain &amp; logistics", "Program &amp; launch management"]
+    chip_html = "\n".join(f'            <li class="join__chip">{t}</li>' for t in chips)
+    underline = '<svg class="brush-underline" viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path class="underline-stroke" d="M4 18 C 120 15, 260 10, 396 6" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" pathLength="1"/><path class="underline-stroke underline-stroke--2" d="M12 22 C 130 20, 250 16, 384 12" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" pathLength="1"/></svg>'
     parts = [
         "<!doctype html>", '<html lang="en">', whead, '<body class="join-page">',
         '  <a class="skip-link" href="#main">Skip to content</a>', "", svgdefs, "",
         merch_header.replace(' aria-current="page"', ''), "",
         '  <main id="main">',
         '    <section class="section section--paper join" aria-labelledby="join-title">',
-        '      <div class="container">',
+        '      <div class="container join__grid">',
         '        <div class="join__intro reveal">',
         '          <p class="eyebrow">Work with us</p>',
-        '          <h1 class="section-title" id="join-title">You’ve opened doors. Come build what’s next.</h1>',
-        '          <p class="section-intro">You’ve been there before opening day. And after, when the real work begins.</p>',
-        '          <p class="section-intro">You’ve helped bring new locations to life, worked through the problems, and made the next opening better. You know what it takes because you’ve had to make it work.</p>',
-        '          <p class="section-intro join__punch">That’s the experience we want at SKALA.</p>',
+        f'          <h1 class="section-title join__title is-drawn" id="join-title">Operators <span class="join__title-line">wanted.{underline}</span></h1>',
+        '          <p class="join__dek">Different specialties. Real-world experience.</p>',
+        '          <p class="section-intro">You\u2019ve opened locations, rolled out something that stuck, or helped a growing business run better. You know your specialty, and what happens when it meets the rest of the operation. <strong>That\u2019s the experience we want at SKALA.</strong></p>',
         '        </div>',
+        '        <figure class="figure figure--wide reveal">',
+        '          <img src="assets/images/join-opening-huddle.webp" width="1200" height="800" alt="A store team in a huddle on the sales floor before opening, listening to the manager" loading="lazy">',
+        '          <figcaption class="figure__caption">Real operators</figcaption>',
+        '        </figure>',
         '        <div class="join__body reveal">',
-        '          <h2 class="join__sub">Different specialties. Same hands-on instinct.</h2>',
-        '          <p class="join__disciplines">Field operations. Real estate. Store development. Franchising. People and training. Finance. Marketing. Technology. Supply chain.</p>',
-        '          <p>Whatever your discipline, you understand how your work lands in a real location, with a real team and customers walking through the door.</p>',
-        '          <p>You get close to the work. Take ownership. Leave people better equipped to run it.</p>',
-        '          <h2 class="join__sub">Bring what you’ve learned. Build what’s next.</h2>',
-        '          <p>We’re connecting with experienced operators who want to help multiunit brands get ready for their next stage of growth.</p>',
-        '          <p>Tell us what you’ve opened, improved, or put into practice, and where you do your best work.</p>',
+        '          <ul class="join__chips" aria-label="Specialties we are looking for">', chip_html, '          </ul>',
+        '          <h2 class="join__sub">Bring your expertise. Help build what\u2019s next.</h2>',
+        '          <p>Help multiunit brands get ready for their next stage of growth. Tell us what you\u2019ve opened, improved, or put into practice, and where you do your best work.</p>',
         '          <div class="join__cta">',
-        '            <a class="button button--ink" href="index.html#contact">Let’s build <span class="arrow" aria-hidden="true">→</span></a>',
+        '            <a class="button button--ink" href="index.html#contact">Let\u2019s build <span class="arrow" aria-hidden="true">\u2192</span></a>',
         '            <p class="join__note">A short introduction and a link to your experience are a good place to start.</p>',
         '          </div>',
         '        </div>',

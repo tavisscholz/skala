@@ -221,7 +221,7 @@ await fn.close();
     const lp = await browser.newPage({ viewport: { width: 1440, height: 900 } });
     lp.on('pageerror', e => lerr.push(e.message));
     await lp.goto(url + file, { waitUntil: 'networkidle' });
-    note(`${file} loads and is titled ${title}`, lerr.length === 0 && (await lp.title()).startsWith(title) && (await lp.locator('.legal__body h2, .join__sub').count()) >= 2);
+    note(`${file} loads and is titled ${title}`, lerr.length === 0 && (await lp.title()).startsWith(title) && (await lp.locator('.legal__body h2, .join__sub, .join__dek').count()) >= 2);
     await lp.close();
   }
   note('footer links to Work With Us', await mp.evaluate(() => !!document.querySelector('.site-footer a[href="/work-with-us"]')));
