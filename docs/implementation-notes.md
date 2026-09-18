@@ -11,7 +11,7 @@ Internal record for the website trial. Nothing in this file renders on the site.
 - Sections in order: Header · Hero (7/5 acid + black poster) · Campaign strip ·
   The work (`#work`, four expandable numbered rows) · Campaign poster
   (black poster + acid brush panel with the one smile use) · How we work
-  (`#approach`, five steps) · Illustrative operating tool (interactive
+  (`#approach`, headline and one paragraph; the five-step sequence moved into the conversation) · Illustrative operating tool (interactive
   three-row workboard with live region and reset) · Field notes
   (`#field-notes`, two rows opening full articles in native dialogs) ·
   About (`#about`) · Contact (`#contact`, validating form that produces a
@@ -55,7 +55,7 @@ scope notes between What we build and What becomes possible. Nothing else on the
   build →" stays as the primary CTA; the visitor's own voice in the contact
   draft is untouched.
 - Index numerals are brush figures without leading zeros across the
-  capability rows, approach steps, and field notes; the field notes carry a
+  capability rows and field notes; the field notes carry a
   hand-drawn ring like the board.
 - One brush pull quote in Field notes, taken from note 1. Extra vertical
   space before About and Contact on desktop.
