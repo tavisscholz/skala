@@ -474,10 +474,10 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 /* Expansion Ready on desktop: two columns so the whole section fits a laptop window.
    Copy and photo on the left; the SCALE list (vertical, compact) and the board on the right. */
 @media (min-width: 1024px) {
-  .ready .container { display: grid; grid-template-columns: 5fr 7fr; grid-template-areas: "copy ladder" "figure board"; column-gap: var(--space-8); row-gap: var(--space-6); align-items: start; }
+  .ready .container { display: grid; grid-template-columns: 5fr 7fr; grid-template-areas: "copy ladder" "copy board"; column-gap: var(--space-8); row-gap: var(--space-6); align-items: start; }
+  @media (max-width: 1439px) { .ready .container { grid-template-columns: 4fr 8fr; column-gap: var(--space-7); } .ready .ladder__text { font-size: 0.875rem; } }
   .ready .tool__grid { display: contents; }
   .ready .tool__intro { grid-area: copy; max-width: none; }
-  .ready .tool__grid .figure { grid-area: figure; align-self: end; }
   .ready .ladder { grid-area: ladder; margin-top: 0; grid-template-columns: 1fr; border-top: 0; align-self: start; }
   .ready .ladder__step { display: grid; grid-template-columns: 2.25rem 8.5rem 1fr; column-gap: var(--space-3); align-items: baseline; padding: var(--space-3) 0; margin: 0; border-right: 0; border-top: 1px solid rgba(255,255,255,0.25); }
   .ready .ladder__step:first-child { border-top: 0; padding-top: 0; }
@@ -525,7 +525,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 @media (max-width: 1023px) {
   .ladder { grid-template-columns: 1fr; border-top: 0; }
   .ladder__step { display: grid; grid-template-columns: 48px 1fr; column-gap: var(--space-3); border-right: 0; border-top: 1px solid rgba(255,255,255,0.25); margin: 0; padding: var(--space-4) 0; }
-  .ladder__num { grid-row: 1 / span 2; margin-top: 2px; text-align: center; }
+  .ladder__num { grid-row: 1 / span 2; margin-top: 2px; text-align: center; align-self: start; }
   .ladder__name { margin-top: 0; }
   .ladder__text { grid-column: 2; }
   .ladder__step--ready:not(.is-muted), .ladder__step.is-active { margin: var(--space-2) 0; padding: var(--space-4); transform: rotate(-1deg); }

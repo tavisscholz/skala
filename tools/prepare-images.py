@@ -14,7 +14,6 @@ MAPPING = {
     "hero-store-floor": ("hero-store-floor.webp", 1600),
     "campaign-team-training": ("campaign-team-training.webp", 1200),
     "approach-before-doors-open": ("approach-before-doors-open.webp", 1200),
-    "SKALA_19_the_working_table": ("ready-working-table.webp", 1200),
     "SKALA_18_between_locations": ("about-between-locations.webp", 900),
     "SKALA_09_the_field_notebook": ("notes-field-notebook.webp", 1200),
     # merch product shots, uploaded to assets/images as "SKALA <item>.png"; kept in colour
