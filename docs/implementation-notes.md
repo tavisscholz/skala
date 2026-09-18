@@ -155,3 +155,11 @@ Now it can repeat." and the live region announces it; Reset hides it. CTA
 "Find out where you stand" goes to contact. The ladder is derived from the
 Institution Ready maturity scale but the site never uses that name, the ™,
 programme lengths, or investor language; those stay with TS Advisory.
+
+## Torn paper (18 September)
+
+Five seams tear the way the campaign mockup does: the hero copy sheet tears diagonally across the photograph (a horizontal rip over the top of the photo once the hero stacks), the brand strip tears into the hero above and the paper below, the Expansion Ready block tears over the Playbook band, and the contact sheet tears up into About. Paper sections carry a whisper of grain.
+
+How it works: each seam is an empty `<i class="tear tear--top|bottom|hero">` inside the section that owns the sheet. Its `::before` is the exposed white paper core, its `::after` the sheet colour; both share a hand-shaped `clip-path` polygon (generated once with a seeded random walk, baked into `css/site.css`), and the parent's SVG filter `#tear-rough` (turbulence + displacement) roughens the cut. No image assets.
+
+Revertable by design: every rule lives under `body.tears` in one marked block of `css/site.css`. Remove the class from `<body>` in `index.html` and the site is back to clean edges and the old serrated strip; or revert the single commit that added it.

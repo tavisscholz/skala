@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/site.css">
 </head>
-<body>
+<body class="tears">
   <a class="skip-link" href="#main">Skip to content</a>
 
   <!-- Shared vector marks. Every use is decorative and hidden from assistive technology. -->
@@ -29,6 +29,10 @@
       <circle cx="41" cy="25" r="3.2" fill="currentColor"/>
       <path d="M20 38 Q32 51 45 37" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
     </symbol>
+    <filter id="tear-rough" x="-4%" y="-40%" width="108%" height="180%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.014 0.06" numOctaves="3" seed="4" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="12" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
     <symbol id="mark-torn" viewBox="0 0 1440 40" preserveAspectRatio="none">
       <path d="M0 0 H1440 V14 L1380 22 L1310 10 L1240 26 L1160 12 L1080 24 L1000 8 L920 20 L840 30 L760 14 L690 26 L600 10 L520 24 L440 12 L360 28 L280 14 L200 26 L120 10 L60 22 L0 12 Z" fill="currentColor"/>
     </symbol>
@@ -89,6 +93,7 @@
       </div>
       <!-- Image slot: drop a 1600×1200 black-and-white photograph here as <img class="media-slot__img"> and the poster below becomes the caption layer. See docs/asset-manifest.md. -->
       <div class="hero__media media-slot" data-image-slot="hero">
+        <i class="tear tear--hero" aria-hidden="true"></i>
         <img class="media-slot__img" src="assets/images/hero-store-floor.webp" width="1536" height="1024" alt="Two SKALA operators walking the store floor before opening, one carrying a crate" fetchpriority="high">
         <div class="poster poster--hero" aria-hidden="true">
           <span class="poster__wordmark brush">SKALA</span>
@@ -100,6 +105,7 @@
 
     <!-- Campaign strip -->
     <section class="strip" aria-label="Brand vocabulary">
+      <i class="tear tear--top" aria-hidden="true"></i>
       <div class="container">
         <p class="strip__words brush">
           <span>People.</span><span class="strip__sep" aria-hidden="true">·</span>
@@ -110,6 +116,7 @@
         <p class="strip__note">Good operators deserve better systems.</p>
       </div>
       <svg class="torn-edge" aria-hidden="true" focusable="false"><use href="#mark-torn"/></svg>
+      <i class="tear tear--bottom" aria-hidden="true"></i>
     </section>
 
     <!-- The work -->
@@ -342,6 +349,7 @@
 
     <!-- Expansion Ready -->
     <section class="section section--ink tool ready" id="ready" aria-labelledby="ready-title">
+      <i class="tear tear--bottom tear--alt" aria-hidden="true"></i>
       <div class="container">
         <div class="tool__grid">
           <div class="tool__intro reveal">
@@ -548,6 +556,7 @@
 
     <!-- Contact -->
     <section class="section section--acid contact" id="contact" aria-labelledby="contact-title">
+      <i class="tear tear--top tear--alt" aria-hidden="true"></i>
       <div class="container contact__grid">
         <div class="contact__intro reveal">
           <h2 class="campaign-heading" id="contact-title">Build better brands for more people.</h2>
