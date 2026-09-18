@@ -14,8 +14,8 @@ MAPPING = {
     "hero-store-floor": ("hero-store-floor.webp", 1600),
     "campaign-team-training": ("campaign-team-training.webp", 1200),
     "approach-before-doors-open": ("approach-before-doors-open.webp", 1200),
-    "tool-opening-checklist": ("tool-opening-checklist.webp", 1200),
-    "about-operator-in-aisle": ("about-operator-in-aisle.webp", 900),
+    "SKALA_19_the_working_table": ("ready-working-table.webp", 1200),
+    "SKALA_18_between_locations": ("about-between-locations.webp", 900),
     "SKALA_09_the_field_notebook": ("notes-field-notebook.webp", 1200),
     # merch product shots, uploaded to assets/images as "SKALA <item>.png"; kept in colour
     "SKALA tee": ("merch-tee.webp", 1200),
@@ -24,6 +24,8 @@ MAPPING = {
     "SKALA book": ("merch-field-book.webp", 1200),
 }
 COLOUR = {name for stem, (name, _) in MAPPING.items() if stem.startswith("SKALA ")}
+# landscape sources that fill a portrait slot: (aspect w, aspect h, focus as a fraction of the width)
+CROP = {"SKALA_18_between_locations": (2, 3, 0.455)}
 
 src = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else "assets/images/source")
 out = pathlib.Path("assets/images"); out.mkdir(parents=True, exist_ok=True)
@@ -34,6 +36,11 @@ for stem, (name, width) in MAPPING.items():
         print(f"missing  {stem}.*  (expected in {src})"); continue
     im = Image.open(matches[0]); im = ImageOps.exif_transpose(im)
     im = im.convert("RGB") if name in COLOUR else im.convert("L")
+    if stem in CROP:
+        aw, ah, focus = CROP[stem]
+        cw = min(im.width, round(im.height * aw / ah))
+        left = min(max(round(im.width * focus - cw / 2), 0), im.width - cw)
+        im = im.crop((left, 0, left + cw, im.height))
     if im.width > width:
         im = im.resize((width, round(im.height * width / im.width)), Image.LANCZOS)
     if name not in COLOUR:

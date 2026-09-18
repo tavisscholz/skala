@@ -5,9 +5,9 @@
 | Hero photograph | **Supplied** — `assets/images/hero-store-floor.webp` (1536 × 1024) | `.hero__media` | Two operators walking the store floor, SKALA and crown on the back of the tee. Poster wordmark and crown hide automatically; the brush line "Same stores. Bigger stories." stays as the caption layer. |
 | Secondary photograph | **Supplied** — `assets/images/campaign-team-training.webp` (1200 × 800) | `.campaign__media` | Team training moment beside the acid campaign panel; condensed line sits in the darkened lower band. |
 | Approach figure | **Supplied** — `assets/images/approach-before-doors-open.webp` (1200 × 800) | `#approach` intro | Storefront at first light, shutter half raised. Caption "Before the doors open". |
-| Tool figure | **Supplied** — `assets/images/tool-opening-checklist.webp` (1200 × 800) | tool section intro | Clipboard opening checklist beside the workboard. Caption "Opening checklist". |
+| Tool figure | **Supplied** — `assets/images/ready-working-table.webp` (1200 × 800) | tool section intro | Two people over a floor plan at a work table, beside the workboard. Caption "The working table". |
 | Field notes figure | **Supplied** — `assets/images/notes-field-notebook.webp` (1024 × 1536, cropped 4:3) | `#field-notes` intro | SKALA field notebook on a worktable with plans. Caption "The field notebook". |
-| About figure | **Supplied** — `assets/images/about-operator-in-aisle.webp` (900 × 1350) | `.about__aside` | Operator seen from behind walking the aisle; not a portrait and not presented as Tavis. Notebook card overlaps it. A real portrait of Tavis can replace this. |
+| About figure | **Supplied** — `assets/images/about-between-locations.webp` (683 × 1024, portrait crop of SKALA_18) | `.about__aside` | Operator seen from behind walking between locations; not a portrait and not presented as Tavis. Notebook card overlaps it. A real portrait of Tavis can replace this. |
 | Brush wordmark | Created (trial) | Permanent Marker text; `assets/wordmark.svg` as SVG fallback | Not finished logo artwork. |
 | Brush underline | Created | inline SVG in the hero; `assets/underline.svg` | Two overlapping strokes, tilted upward, animated draw. |
 | Crown | Created | `#mark-crown` symbol; `assets/crown.svg` | Two visible placements: hero poster, About notebook. |
@@ -46,7 +46,7 @@ mapping at the top of that script names which source feeds which slot.
 | `hero-store-floor` (was SKALA_01) | Hero | |
 | `campaign-team-training` (SKALA_02) | Campaign poster | |
 | `approach-before-doors-open` (SKALA_03) | How we work | |
-| `about-operator-in-aisle` (SKALA_04) | About | Not presented as Tavis |
-| `tool-opening-checklist` (SKALA_05) | Operating tool | |
+| `about-between-locations` (SKALA_18, cropped 2:3) | About | Not presented as Tavis |
+| `ready-working-table` (SKALA_19) | Operating tool | |
 | `SKALA_09_the_field_notebook` | Field notes | |
 | SKALA_06 manager coaching · 07 stockroom systems · 08 workshop in progress · 10 site walk · 11 measuring the space · 12 merchandising together · 13 the opening huddle · 14 store review · 15 quiet leadership · 16 hands-on training · 17 opening preparation · 18 between locations · 19 the working table · 20 end of day | Not placed | Alternates for the slots above, or for the field-note article views and future pages. 08, 10, 11 and 19 suit an Expansion story; 15 and 20 are portraits and should not stand in for Tavis. |
