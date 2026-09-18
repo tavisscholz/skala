@@ -433,6 +433,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .workboard .button--ghost { color: var(--color-ink); border-color: var(--color-ink); }
 .workboard .button--ghost:hover { background: var(--color-ink); color: var(--color-white); }
 .workboard__table { width: 100%; margin-top: var(--space-5); border-collapse: collapse; font-size: 1rem; }
+@media (min-width: 768px) { .workboard__table { table-layout: fixed; } .workboard__table thead th:nth-child(1) { width: 3.5rem; } .workboard__table thead th:nth-child(3) { width: 12rem; } }   /* status column stays put whatever the action text */
 .workboard__table th, .workboard__table td { text-align: left; padding: var(--space-4) var(--space-3); vertical-align: middle; border-top: 2px solid var(--color-ink); }
 .workboard__table thead th { font-size: var(--text-label); font-weight: 700; letter-spacing: var(--tracking-label); text-transform: uppercase; border-top: 0; padding-top: 0; color: var(--color-muted-dark); }
 .workboard__table tbody th { font-weight: 800; }
@@ -512,6 +513,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .workboard__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4); margin-top: var(--space-6); padding: var(--space-2) var(--space-3) var(--space-2) 0; }
 .workboard__foot .workboard__live { margin-top: 0; }
 .board-stamp { display: inline-flex; align-items: baseline; gap: var(--space-3); padding: var(--space-3) var(--space-5); margin-block: var(--space-2); background: var(--color-ink); color: var(--color-acid); transform: rotate(-2deg); }
+@media (min-width: 768px) { .board-stamp { min-width: 28rem; box-sizing: border-box; } }   /* sized to the longest stage stamp so it never shifts */
 .board-stamp__word { font-size: 1.5rem; line-height: 1; }
 .board-stamp__line { font-size: 0.875rem; font-weight: 600; color: var(--color-white); }
 @media (max-width: 767px) { .board-stamp { flex-direction: column; align-items: flex-start; gap: var(--space-1); } .board-stamp__word, .board-stamp__line { white-space: nowrap; } }
