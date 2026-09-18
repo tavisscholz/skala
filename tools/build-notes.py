@@ -95,7 +95,7 @@ band = f'''<!-- notes:start -->
         </div>
         <ul class="note-lines reveal">
 {rows}
-          <li class="note-lines__all"><a class="text-link" href="playbook.html">Open the full playbook <span class="arrow" aria-hidden="true">→</span></a><a class="text-link" href="assets/downloads/skala-playbook.pdf" target="_blank" rel="noopener">Download the playbook (PDF) <span class="arrow" aria-hidden="true">↓</span></a></li>
+          <li class="note-lines__all"><a class="text-link" href="playbook.html">Open the full playbook <span class="arrow" aria-hidden="true">→</span></a></li>
         </ul>
       </div>
     </section>
