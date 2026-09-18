@@ -102,7 +102,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 /* A, L and the final A each tuck in under the letter before them (Oracle Brush sets them a touch wide). */
 .wordmark__tuck { display: inline-block; margin-left: var(--tuck, -0.14em); }
 .wordmark__tuck--l { margin-left: -0.08em; }
-.wordmark__crown { width: 0.85em; height: auto; font-size: var(--wordmark-header); margin-left: 0.2em; margin-top: -0.3em; transform: rotate(4deg); flex: none; }
+.wordmark__crown { width: 0.85em; height: 0.64em; font-size: var(--wordmark-header); margin-left: 0.2em; margin-top: -0.34em; transform: rotate(4deg); flex: none; }
 .site-footer .wordmark__crown { display: none; }
 
 /* ---------- Header ---------- */
@@ -352,11 +352,11 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
   display: flex; flex-direction: column; justify-content: center; padding: var(--space-8) max(var(--gutter), calc((100vw - var(--container)) / 2 + var(--gutter))) var(--space-8) var(--space-8);
 }
 /* Campaign line: the wordmark face, stacked one word per line and staggered like a hand-lettered poster. */
-.campaign__line { font-family: var(--font-wordmark); text-transform: uppercase; letter-spacing: -0.06em; font-size: var(--campaign-mark, clamp(2.75rem, 0.6rem + 5.4vw, 5.75rem)); line-height: 0.95; transform: rotate(-2deg); display: flex; flex-direction: column; align-items: flex-start; }
+.campaign__line { font-family: var(--font-wordmark); text-transform: uppercase; letter-spacing: -0.06em; font-size: var(--campaign-mark, clamp(3rem, 0.7rem + 5.9vw, 6.25rem)); line-height: 0.95; transform: rotate(-2deg); display: flex; flex-direction: column; align-items: flex-start; }
 .campaign__word { display: block; white-space: nowrap; }
 .campaign__word:nth-child(2) { margin-left: 0.22em; }
 .campaign__word:nth-child(3) { margin-left: 0.08em; }
-.campaign__word:nth-child(4) { margin-left: 0.34em; }
+.campaign__word:nth-child(4) { margin-left: 0.2em; }
 .campaign__word:nth-child(5) { margin-left: 0.14em; }
 .campaign__word--underlined { position: relative; padding-bottom: 0.14em; }
 .campaign__underline { position: absolute; left: -0.02em; bottom: -0.06em; width: 100%; height: 0.24em; overflow: visible; }

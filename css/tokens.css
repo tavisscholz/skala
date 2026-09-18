@@ -57,7 +57,7 @@
   --text-body: clamp(1rem, 0.94rem + 0.2vw, 1.125rem);          /* 16–18px */
   --text-ui: 0.9375rem;                                         /* 15px */
   --text-label: 0.75rem;                                        /* 12px */
-  --wordmark-header: clamp(2rem, 1.6rem + 0.9vw, 2.5rem);       /* ≈112–136px wide */
+  --wordmark-header: clamp(2.5rem, 2rem + 1.125vw, 3.125rem);   /* 40–50px, ≈140–170px wide */
   --wordmark-hero: clamp(6.5rem, 2rem + 7.2vw, 11.875rem);      /* ≈104–190px, sized to clear the 5-col poster */
 
   --leading-tight: 1.0;
