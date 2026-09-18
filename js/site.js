@@ -153,11 +153,11 @@
      Hover or focus a stage and the board shows the work that moves a business to the next stage.
      Stage 5 (and the resting state) shows the board as it is. */
   var STAGES = [
-    { label: 'Start here: uncover the gaps.', stamp: 'Siloed.', line: 'Find where the know-how lives.', rows: [
+    { label: 'Start here: uncover the gaps.', stamp: 'Siloed.', line: 'You identified the know-how.', rows: [
       ['Identify who people rely on to get critical work done', 'building'],
       ['Observe how that work happens at different locations', 'building'],
       ['Pinpoint where work stalls when those people are unavailable', 'building'] ] },
-    { label: 'From Siloed to Captured', stamp: 'Captured.', line: 'Get it out of people\u2019s heads.', rows: [
+    { label: 'From Siloed to Captured', stamp: 'Captured.', line: 'You got it out of people\u2019s heads.', rows: [
       ['Agree on the standard for each critical task', 'testing'],
       ['Turn it into a simple checklist or practical guide', 'building'],
       ['Assign someone to keep it current and accessible', 'building'] ] },
