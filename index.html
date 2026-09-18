@@ -375,22 +375,20 @@
             <button class="button button--ghost button--small" type="button" id="board-reset">Reset example</button>
           </div>
           <table class="workboard__table">
-            <caption class="visually-hidden">Example workboard. Select a status to cycle it through Building, Testing, and In use. When every row is in use, the board is expansion ready.</caption>
+            <caption class="visually-hidden">Example workboard for the selected stage. Select a status to cycle it through Building, Testing, and In use. When every step is in use, the stage is complete.</caption>
             <thead>
               <tr>
-                <th scope="col">Work</th>
-                <th scope="col">Owner</th>
-                <th scope="col">Next step</th>
+                <th scope="col">Step</th>
+                <th scope="col">Action</th>
                 <th scope="col">Status</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <th scope="row">Opening checklist</th>
-                <td>Development lead</td>
-                <td>Hand the list to a new market team untouched</td>
+                <th scope="row">1</th>
+                <td>Hand the tools to a new location without changes</td>
                 <td>
-                  <button class="status-btn" type="button" data-status="testing" data-initial="testing" data-work="Opening checklist">
+                  <button class="status-btn" type="button" data-status="testing" data-initial="testing" data-work="Step 1">
                     <span class="status-btn__glyph" aria-hidden="true"></span>
                     <span class="status-btn__text">Testing</span>
                     <span class="visually-hidden">. Change status</span>
@@ -398,11 +396,10 @@
                 </td>
               </tr>
               <tr>
-                <th scope="row">Manager onboarding</th>
-                <td>Field leader</td>
+                <th scope="row">2</th>
                 <td>Run onboarding without the person who built it</td>
                 <td>
-                  <button class="status-btn" type="button" data-status="testing" data-initial="testing" data-work="Manager onboarding">
+                  <button class="status-btn" type="button" data-status="testing" data-initial="testing" data-work="Step 2">
                     <span class="status-btn__glyph" aria-hidden="true"></span>
                     <span class="status-btn__text">Testing</span>
                     <span class="visually-hidden">. Change status</span>
@@ -410,11 +407,10 @@
                 </td>
               </tr>
               <tr>
-                <th scope="row">Weekly store review</th>
-                <td>Store manager</td>
-                <td>Start the review in every new location on day one</td>
+                <th scope="row">3</th>
+                <td>Start the review rhythm in every new location on day one</td>
                 <td>
-                  <button class="status-btn" type="button" data-status="in-use" data-initial="in-use" data-work="Weekly store review">
+                  <button class="status-btn" type="button" data-status="in-use" data-initial="in-use" data-work="Step 3">
                     <span class="status-btn__glyph" aria-hidden="true"></span>
                     <span class="status-btn__text">In use</span>
                     <span class="visually-hidden">. Change status</span>

@@ -145,26 +145,26 @@
      Hover or focus a stage and the board shows the work that moves a business to the next stage.
      Stage 5 (and the resting state) shows the board as it is. */
   var STAGES = [
-    { label: 'From ad hoc to Siloed', stamp: 'Siloed.', line: 'Now someone owns it.', rows: [
-      ['Opening checklist', 'Development lead', 'Name the best opener and shadow a full opening', 'building'],
-      ['Manager onboarding', 'Field leader', 'Pair every new manager with one experienced one', 'building'],
-      ['Weekly store review', 'Store manager', 'Walk the store together once a week', 'building'] ] },
-    { label: 'From Siloed to Captured', stamp: 'Captured.', line: 'Now it is written down.', rows: [
-      ['Opening checklist', 'Development lead', 'Write down the steps the best opener already does', 'building'],
-      ['Manager onboarding', 'Field leader', 'Capture the first two weeks as a simple guide', 'building'],
-      ['Weekly store review', 'Store manager', 'Set a fixed day and a short agenda', 'testing'] ] },
-    { label: 'From Captured to Adopted', stamp: 'Adopted.', line: 'Now it is followed.', rows: [
-      ['Opening checklist', 'Development lead', 'Train every opener on the list and check it in use', 'testing'],
-      ['Manager onboarding', 'Field leader', 'Run every new manager through the two-week plan', 'building'],
-      ['Weekly store review', 'Store manager', 'Hold the review every week on the same numbers', 'testing'] ] },
-    { label: 'From Adopted to Linked', stamp: 'Linked.', line: 'Now it is shared.', rows: [
-      ['Opening checklist', 'Development lead', 'Report opening misses across locations to one owner', 'testing'],
-      ['Manager onboarding', 'Field leader', 'Measure 30-day manager readiness across stores', 'building'],
-      ['Weekly store review', 'Store manager', 'Compare stores on the same three priorities', 'in-use'] ] },
-    { label: 'From Linked to Expansion-ready', stamp: 'Expansion ready.', line: 'Now it can repeat.', rows: [
-      ['Opening checklist', 'Development lead', 'Hand the list to a new market team untouched', 'testing'],
-      ['Manager onboarding', 'Field leader', 'Run onboarding without the person who built it', 'testing'],
-      ['Weekly store review', 'Store manager', 'Start the review in every new location on day one', 'in-use'] ] }
+    { label: 'Start here: uncover the gaps.', stamp: 'Siloed.', line: 'Find where the know-how lives.', rows: [
+      ['Identify who people rely on to get critical work done', 'building'],
+      ['Observe how that work happens at different locations', 'building'],
+      ['Pinpoint where work stalls when those people are unavailable', 'building'] ] },
+    { label: 'From Siloed to Captured', stamp: 'Captured.', line: 'Get it out of people\u2019s heads.', rows: [
+      ['Agree on the standard for each critical task', 'testing'],
+      ['Turn it into a simple checklist or practical guide', 'building'],
+      ['Assign someone to keep it current and accessible', 'building'] ] },
+    { label: 'From Captured to Adopted', stamp: 'Adopted.', line: 'Make it part of everyday work.', rows: [
+      ['Train teams using the tools in the actual operation', 'testing'],
+      ['Observe execution and coach where standards slip', 'building'],
+      ['Fix what makes the tools difficult to use', 'testing'] ] },
+    { label: 'From Adopted to Linked', stamp: 'Linked.', line: 'Manage it across locations.', rows: [
+      ['Use the same measures and reporting across locations', 'testing'],
+      ['Review gaps regularly and assign corrective actions', 'building'],
+      ['Share improvements and update standards across the business', 'in-use'] ] },
+    { label: 'From Linked to Expansion-ready', stamp: 'Expansion ready.', line: 'Take it to the next location.', rows: [
+      ['Hand the tools to a new location without changes', 'testing'],
+      ['Run onboarding without the person who built it', 'testing'],
+      ['Start the review rhythm in every new location on day one', 'in-use'] ] }
   ];
   var ladder = document.querySelector('.ladder');
   var steps = ladder ? Array.prototype.slice.call(ladder.querySelectorAll('.ladder__step')) : [];
@@ -180,9 +180,9 @@
     boardRows.forEach(function (tr, r) {
       var row = st.rows[r]; if (!row) return;
       var cells = tr.children;
-      cells[0].textContent = row[0]; cells[1].textContent = row[1]; cells[2].textContent = row[2];
+      cells[0].textContent = String(r + 1); cells[1].textContent = row[0];
       var btn = tr.querySelector('.status-btn');
-      btn.setAttribute('data-initial', row[3]); btn.setAttribute('data-work', row[0]); setStatus(btn, row[3]);
+      btn.setAttribute('data-initial', row[1]); btn.setAttribute('data-work', 'Step ' + (r + 1)); setStatus(btn, row[1]);
     });
     if (stampWord) stampWord.textContent = st.stamp;
     if (stampLine) stampLine.textContent = st.line;

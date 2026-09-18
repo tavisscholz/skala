@@ -436,7 +436,8 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .workboard__table th, .workboard__table td { text-align: left; padding: var(--space-4) var(--space-3); vertical-align: middle; border-top: 2px solid var(--color-ink); }
 .workboard__table thead th { font-size: var(--text-label); font-weight: 700; letter-spacing: var(--tracking-label); text-transform: uppercase; border-top: 0; padding-top: 0; color: var(--color-muted-dark); }
 .workboard__table tbody th { font-weight: 800; }
-.workboard__table td:nth-child(3) { color: var(--color-muted-dark); }
+.workboard__table tbody th { width: 3.5rem; font-size: 1.125rem; }
+.workboard__table td:nth-child(2) { color: var(--color-ink); }
 .status-btn {
   display: inline-flex; align-items: center; gap: var(--space-2); min-height: 44px; min-width: 128px; padding: var(--space-2) var(--space-4);
   background: var(--color-white); border: 2px solid var(--color-ink); cursor: pointer; font-weight: 700; font-size: var(--text-ui); white-space: nowrap;
@@ -455,9 +456,9 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
   .workboard__table, .workboard__table tbody, .workboard__table tr, .workboard__table th, .workboard__table td { display: block; }
   .workboard__table tr { border-top: 2px solid var(--color-ink); padding: var(--space-4) 0; }
   .workboard__table th, .workboard__table td { border: 0; padding: 4px 0; }
-  .workboard__table td:nth-child(2)::before { content: "Owner · "; font-weight: 600; color: var(--color-muted-dark); }
-  .workboard__table td:nth-child(3)::before { content: "Next · "; font-weight: 600; }
-  .workboard__table td:nth-child(4) { padding-top: var(--space-3); }
+  .workboard__table tbody th { width: auto; }
+  .workboard__table tbody th::before { content: "Step "; }
+  .workboard__table td:nth-child(3) { padding-top: var(--space-3); }
 }
 
 /* ---------- Editorial figures (approach, field notes) ---------- */
