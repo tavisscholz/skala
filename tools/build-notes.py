@@ -259,7 +259,6 @@ merch = f'''<!doctype html>
         <ul class="merch__grid">
 {cards}
         </ul>
-        <p class="merch__note reveal"><a class="text-link" href="index.html#contact">Ask about an order <span class="arrow" aria-hidden="true">→</span></a></p>
       </div>
     </section>
   </main>

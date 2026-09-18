@@ -663,14 +663,14 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 /* ---------- Print: the playbook PDF is printed from playbook.html ---------- */
 /* ---------- Merch page ---------- */
 .merch__intro { max-width: 40rem; }
-.merch__grid { list-style: none; margin: var(--space-8) 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-8) var(--space-7); }
+.merch__grid { list-style: none; margin: var(--space-8) 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-8) var(--space-7); max-width: 75%; }
 .merch-card { margin: 0; }
 .merch-card__media { position: relative; aspect-ratio: 3 / 2; background: var(--color-white); border: 3px solid var(--color-ink); overflow: hidden; display: grid; place-items: center; }
 .merch-card__placeholder { font-size: 1.75rem; color: var(--color-muted-dark); transform: rotate(-3deg); }
 .merch-card__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .merch-card__name { margin: var(--space-4) 0 0; font-size: var(--text-subhead); font-weight: 900; letter-spacing: var(--tracking-tight); line-height: 1.1; }
 .merch-card__price { margin: var(--space-1) 0 0; font-size: 1.125rem; font-weight: 700; }
-.merch__note { margin-top: var(--space-8); }
+@media (max-width: 1023px) { .merch__grid { max-width: none; } }
 @media (max-width: 599px) { .merch__grid { grid-template-columns: 1fr; gap: var(--space-7); } }
 
 @media print {
