@@ -12,8 +12,8 @@ import re, html, pathlib
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 ARTICLES = [  # order on the page, lane tag, lane name
     ("your-best-manager-cannot-be-the-whole-system", "OPS", "Field Operations"),
-    ("a-good-site-can-still-be-the-wrong-site", "RE", "Real Estate &amp; Leasing"),
     ("5-things-your-opening-checklist-must-cover", "DEV", "Development"),
+    ("a-good-site-can-still-be-the-wrong-site", "RE", "Real Estate &amp; Leasing"),
     ("how-your-item-19-will-break-your-sales-pipeline", "FRAN", "Franchise Development"),
 ]
 ACCENTS = ["orange", "periwinkle", "orange", "periwinkle"]
