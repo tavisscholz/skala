@@ -137,8 +137,10 @@ territory.
 - Navigation reads What We Do · How We Do It · Playbook · About; the approach
   eyebrow reads "How we do it". These reintroduce "we" in labels by the
   owner's decision; body copy stays third person.
-- Playbook row kind is Play for all four pieces. Nothing is downloadable yet; if that
-  promise is wanted, generate PDFs from the markdown in `tools/build-notes.py`.
+- Playbook row kind is Play for all four pieces. The playbook is downloadable as one PDF
+  (`assets/downloads/skala-playbook.pdf`), printed from `playbook.html` by
+  `tools/build-pdf.mjs` using the print stylesheet; regenerate after any copy
+  change. Linked from the playbook index and the homepage band.
 - About heading is "An operator who builds." with the owner's expanded first
   paragraph (12 years, four departments, 7× system sales growth, 160 store
   projects, U.S. and Canada franchise infrastructure).

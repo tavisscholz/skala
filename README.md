@@ -25,6 +25,7 @@ npx http-server . -p 8080
 | `assets/` | Vector marks, favicon, fonts |
 | `docs/implementation-notes.md` | What was built, what was checked, and where the build departs from the brief |
 | `docs/asset-manifest.md` | Supplied / created / fallback assets and image-slot instructions |
+| `tools/build-pdf.mjs` | Prints `playbook.html` to `assets/downloads/skala-playbook.pdf` |
 | `tools/preview-check.mjs` | Playwright script that renders 1440 / 768 / 390 / 320 and exercises every interaction |
 
 ## Checks
