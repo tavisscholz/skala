@@ -181,7 +181,9 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .media-slot__img ~ .poster { background: linear-gradient(180deg, rgba(5,5,5,0.08) 0%, rgba(5,5,5,0.18) 55%, rgba(5,5,5,0.78) 100%); }
 .media-slot__img ~ .poster::after { opacity: 0.08; }
 .media-slot__img ~ .poster .poster__wordmark, .media-slot__img ~ .poster .poster__crown { display: none; }
-.media-slot__img ~ .campaign__poster-copy { font-size: clamp(1.75rem, 1rem + 2.2vw, 3rem); max-width: 16ch; text-shadow: 0 2px 24px rgba(5,5,5,0.6); }
+.media-slot__img ~ .campaign__poster-copy { font-size: clamp(1.75rem, 0.8rem + 2.2vw, 3rem); max-width: 22ch; text-shadow: 0 2px 24px rgba(5,5,5,0.6); }
+@media (min-width: 768px) and (max-width: 1023px) { .media-slot__img ~ .campaign__poster-copy { font-size: clamp(1.5rem, 0.6rem + 2.2vw, 2.25rem); } }   /* stays clear of the torn edge on tablets */
+@media (max-width: 767px) { .campaign__poster-copy br { display: none; } }   /* let phones wrap naturally instead of orphaning a word */
 .campaign__media .media-slot__img { z-index: 0; }
 .campaign__media::after { z-index: 2; }
 .campaign__media::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(5,5,5,0) 45%, rgba(5,5,5,0.85) 100%); pointer-events: none; z-index: 1; }
