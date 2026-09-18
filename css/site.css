@@ -148,7 +148,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 }
 
 /* ---------- Hero ---------- */
-.hero { display: grid; grid-template-columns: 7fr 5fr; min-height: 690px; background: var(--color-ink); }
+.hero { display: grid; grid-template-columns: 50.3fr 49.7fr; min-height: 690px; background: var(--color-ink); }
 .hero__copy {
   position: relative; background: var(--color-acid); color: var(--color-ink);
   display: flex; align-items: center;
@@ -315,9 +315,9 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .service-row__icon::after { width: 3px; height: 22px; transform: translate(-50%, -50%); }
 .service-row__toggle[aria-expanded="true"] .service-row__icon::after { transform: translate(-50%, -50%) rotate(90deg); }
 /* First landing on the section: the Store Operations row tugs down and yo-yos twice, a hint that rows open. */
-@keyframes row-tug { 0% { transform: translateY(0); } 22% { transform: translateY(7px); } 44% { transform: translateY(0); } 62% { transform: translateY(4px); } 80% { transform: translateY(0); } 100% { transform: translateY(0); } }
+@keyframes row-tug { 0% { transform: translateY(0); } 22% { transform: translateY(18px); } 44% { transform: translateY(0); } 62% { transform: translateY(10px); } 80% { transform: translateY(0); } 100% { transform: translateY(0); } }
 @keyframes tag-flash { 0%, 100% { background: var(--color-ink); color: var(--color-acid); } 20%, 75% { background: var(--color-acid); color: var(--color-ink); } }
-@keyframes icon-tug { 0%, 100% { transform: translate(-50%, -50%) rotate(0deg); } 22% { transform: translate(-50%, -50%) rotate(35deg); } 62% { transform: translate(-50%, -50%) rotate(18deg); } }
+@keyframes icon-tug { 0%, 100% { transform: translate(-50%, -50%) rotate(0deg); } 22% { transform: translate(-50%, -50%) rotate(60deg); } 62% { transform: translate(-50%, -50%) rotate(30deg); } }
 .service-row.is-nudged .service-row__toggle { animation: row-tug 1100ms var(--ease-out) both; }
 .service-row.is-nudged .service-row__tag { animation: tag-flash 1100ms var(--ease-out) both; }
 .service-row.is-nudged .service-row__icon::after { animation: icon-tug 1100ms var(--ease-out) both; }

@@ -80,20 +80,23 @@
     });
   });
 
-  /* First time the section lands in view, the first row tugs and yo-yos twice to show it opens. */
-  var work = document.getElementById('work');
+  /* Every time the hero scrolls out of view, the Store Operations row tugs and yo-yos twice to show it opens. */
+  var hero = document.querySelector('.hero');
   var firstRow = rowToggles.length ? rowToggles[0].closest('.service-row') : null;
-  if (work && firstRow && !reduceMotion.matches && 'IntersectionObserver' in window) {
+  if (hero && firstRow && !reduceMotion.matches && 'IntersectionObserver' in window) {
+    var heroWasVisible = null;
     var nudge = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        nudge.disconnect();
-        window.setTimeout(function () {
-          if (rowToggles[0].getAttribute('aria-expanded') !== 'true') firstRow.classList.add('is-nudged');
-        }, 450);
+        var visible = entry.isIntersecting;
+        if (heroWasVisible === true && !visible && rowToggles[0].getAttribute('aria-expanded') !== 'true') {
+          firstRow.classList.remove('is-nudged');
+          void firstRow.offsetWidth;   /* restart the animation from the top */
+          firstRow.classList.add('is-nudged');
+        }
+        heroWasVisible = visible;
       });
-    }, { threshold: 0.35 });
-    nudge.observe(work);
+    }, { threshold: 0 });
+    nudge.observe(hero);
   }
 
   /* ---------- Illustrative workboard ---------- */
