@@ -351,7 +351,15 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
   position: relative; background: var(--color-acid); color: var(--color-ink);
   display: flex; flex-direction: column; justify-content: center; padding: var(--space-8) max(var(--gutter), calc((100vw - var(--container)) / 2 + var(--gutter))) var(--space-8) var(--space-8);
 }
-.campaign__line { font-size: var(--text-campaign); line-height: 1.05; max-width: 9ch; transform: rotate(-2deg); }
+/* Campaign line: the wordmark face, stacked one word per line and staggered like a hand-lettered poster. */
+.campaign__line { font-family: var(--font-wordmark); text-transform: uppercase; letter-spacing: -0.06em; font-size: var(--campaign-mark, clamp(2.75rem, 0.6rem + 5.4vw, 5.75rem)); line-height: 0.95; transform: rotate(-2deg); display: flex; flex-direction: column; align-items: flex-start; }
+.campaign__word { display: block; white-space: nowrap; }
+.campaign__word:nth-child(2) { margin-left: 0.22em; }
+.campaign__word:nth-child(3) { margin-left: 0.08em; }
+.campaign__word:nth-child(4) { margin-left: 0.34em; }
+.campaign__word:nth-child(5) { margin-left: 0.14em; }
+.campaign__word--underlined { position: relative; padding-bottom: 0.14em; }
+.campaign__underline { position: absolute; left: -0.02em; bottom: -0.06em; width: 100%; height: 0.24em; overflow: visible; }
 .campaign__smile { width: 84px; height: auto; margin-top: var(--space-6); align-self: flex-end; transform: rotate(4deg); }
 @media (max-width: 767px) {
   .campaign { grid-template-columns: 1fr; min-height: 0; }
