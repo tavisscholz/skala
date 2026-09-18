@@ -216,12 +216,12 @@ page = f'''<!doctype html>
 # ---------- merch page ----------
 MERCH = [
     {"slug": "tee", "name": "SKALA tee", "price": 25, "img": "merch-tee.webp", "alt": "SKALA tee, black with the acid wordmark"},
-    {"slug": "hat", "name": "SKALA hat", "price": 25, "img": "merch-hat.webp", "alt": "SKALA hat, black with the crown"},
+    {"slug": "hat", "name": "SKALA snapback", "price": 25, "img": "merch-hat.webp", "alt": "SKALA snapback, black with the crown"},
     {"slug": "jacket", "name": "SKALA jacket", "price": 75, "img": "merch-jacket.webp", "alt": "SKALA jacket"},
     {"slug": "field-book", "name": "SKALA notebook", "price": 15, "img": "merch-field-book.webp", "alt": "The SKALA notebook", "fallback": "notes-field-notebook.webp"},
 ]
 merch_head = head.replace("<title>Playbook — SKALA</title>", "<title>Merch — SKALA</title>")
-merch_head = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="description" content="SKALA merch: the tee, the hat, the jacket, and the notebook.">', merch_head)
+merch_head = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="description" content="SKALA merch: the tee, the snapback, the jacket, and the notebook.">', merch_head)
 merch_header = s[s.index('  <header class="site-header"'):s.index("</header>")+9]
 merch_header = merch_header.replace('href="#top" aria-label="SKALA — back to top"', 'href="index.html" aria-label="SKALA — home"')
 for a in ("work", "approach", "playbook", "about", "contact"):
