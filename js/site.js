@@ -102,9 +102,10 @@
   }
   function checkReady(message) {
     var ready = allInUse();
-    if (stamp) stamp.hidden = !ready;
+    if (stamp) stamp.classList.toggle('is-pending', !ready);
     boardLive.textContent = ready ? message + ' Every row is in use. Expansion ready.' : message;
   }
+  if (stamp) stamp.classList.toggle('is-pending', !allInUse());
   statusButtons.forEach(function (btn) {
     btn.addEventListener('click', function () {
       var next = STATUSES[(statusIndex(btn.getAttribute('data-status')) + 1) % STATUSES.length];

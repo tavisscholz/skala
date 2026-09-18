@@ -449,6 +449,10 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .board-stamp { display: inline-flex; align-items: baseline; gap: var(--space-3); padding: var(--space-2) var(--space-4); background: var(--color-ink); color: var(--color-acid); transform: rotate(-2deg); }
 .board-stamp__word { font-size: 1.5rem; line-height: 1; }
 .board-stamp__line { font-size: 0.875rem; font-weight: 600; color: var(--color-white); }
+/* Pending: until every row is In use the stamp sits faded, ringed by a dashed line. */
+.board-stamp.is-pending { background: color-mix(in srgb, var(--color-ink) 30%, var(--color-paper)); color: color-mix(in srgb, var(--color-acid) 45%, var(--color-paper)); outline: 2px dashed var(--color-ink); outline-offset: 5px; }
+.board-stamp.is-pending .board-stamp__line { color: rgba(255,255,255,0.75); }
+@supports not (color: color-mix(in srgb, red, blue)) { .board-stamp.is-pending { background: #9a9a97; color: #e9f39a; } }
 .ready__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-5); margin-top: var(--space-6); }
 .ready__foot .tool__caption { margin-top: 0; max-width: 52ch; }
 @media (max-width: 1023px) {
