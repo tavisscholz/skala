@@ -81,6 +81,21 @@ await status.click(); await status.click();
 note('status cycles back to Building', (await status.getAttribute('data-status')) === 'building');
 await status.click();
 await page.locator('#board-reset').click();
+// Readiness ladder drives the board
+{
+  await page.locator('.ladder__step').first().scrollIntoViewIfNeeded();
+  await page.locator('.ladder__step').first().hover();
+  await page.waitForTimeout(150);
+  note('hovering stage 1 lights its tile and mutes stage 5', await page.evaluate(() => document.querySelector('.ladder__step').classList.contains('is-active') && document.querySelector('.ladder__step--ready').classList.contains('is-muted')));
+  note('hovering stage 1 swaps the board to the emerging plan', (await page.locator('.workboard__head .eyebrow').textContent()).trim() === 'From person-dependent to emerging' && (await page.locator('.workboard__table tbody tr').first().locator('td').nth(1).textContent()).includes('best opener'));
+  await page.locator('.ladder__step').nth(3).hover();
+  await page.waitForTimeout(150);
+  note('hovering stage 4 shows the expansion plan and stamp', (await page.locator('.workboard__head .eyebrow').textContent()).trim() === 'From managed to expansion ready' && (await page.locator('.board-stamp__word').textContent()).trim() === 'Expansion ready.');
+  await page.mouse.move(10, 10);
+  await page.waitForTimeout(150);
+  note('leaving the ladder restores the resting board', (await page.locator('.workboard__head .eyebrow').textContent()).trim() === 'The same scale, on a real board' && !(await page.evaluate(() => document.querySelector('.ladder__step--ready').classList.contains('is-muted'))));
+}
+
 // Expansion-ready stamp: move every row to In use
 {
   const btns = page.locator('.status-btn');

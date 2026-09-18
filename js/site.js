@@ -122,7 +122,8 @@
   function checkReady(message) {
     var ready = allInUse();
     if (stamp) stamp.classList.toggle('is-pending', !ready);
-    boardLive.textContent = ready ? message + ' Every row is in use. Expansion ready.' : message;
+    var word = stamp && stamp.querySelector('.board-stamp__word');
+    boardLive.textContent = ready ? (message + ' Every row is in use. ' + (word ? word.textContent : 'Expansion ready.')).trim() : message;
   }
   if (stamp) stamp.classList.toggle('is-pending', !allInUse());
   statusButtons.forEach(function (btn) {
@@ -132,6 +133,71 @@
       checkReady(btn.getAttribute('data-work') + ' is now ' + next.label + '.');
     });
   });
+  /* ---------- Readiness ladder drives the board ----------
+     Hover or focus a stage and the board shows the work that moves a business to the next stage.
+     Stage 5 (and the resting state) shows the board as it is. */
+  var STAGES = [
+    { label: 'From person-dependent to emerging', stamp: 'Emerging ready.', line: 'Now there is a process.', rows: [
+      ['Opening checklist', 'Development lead', 'Write down the steps the best opener already does', 'building'],
+      ['Manager onboarding', 'Field leader', 'Capture the first two weeks as a simple guide', 'building'],
+      ['Weekly store review', 'Store manager', 'Set a fixed day and a short agenda', 'testing'] ] },
+    { label: 'From emerging to defined', stamp: 'Defined ready.', line: 'Now it is written down.', rows: [
+      ['Opening checklist', 'Development lead', 'Give every line an owner and a due date', 'testing'],
+      ['Manager onboarding', 'Field leader', 'Turn the guide into a two-week plan with sign-offs', 'building'],
+      ['Weekly store review', 'Store manager', 'Fix the agenda and the numbers it reviews', 'testing'] ] },
+    { label: 'From defined to managed', stamp: 'Managed ready.', line: 'Now it is measured.', rows: [
+      ['Opening checklist', 'Development lead', 'Review every opening against the list and log the misses', 'testing'],
+      ['Manager onboarding', 'Field leader', 'Measure 30-day manager readiness across stores', 'building'],
+      ['Weekly store review', 'Store manager', 'Compare stores on the same three priorities', 'in-use'] ] },
+    { label: 'From managed to expansion ready', stamp: 'Expansion ready.', line: 'Now it can repeat.', rows: [
+      ['Opening checklist', 'Development lead', 'Hand the list to a new market team untouched', 'testing'],
+      ['Manager onboarding', 'Field leader', 'Run onboarding without the person who built it', 'testing'],
+      ['Weekly store review', 'Store manager', 'Start the review in every new location on day one', 'in-use'] ] },
+    { label: 'The same scale, on a real board', stamp: 'Expansion ready.', line: 'Now it can repeat.', rows: [
+      ['Opening checklist', 'Development lead', 'Walk the checklist on a live opening day', 'building'],
+      ['Manager onboarding', 'Field leader', 'Run the first two weeks with a new manager', 'testing'],
+      ['Weekly store review', 'Store manager', 'Review last week and set three priorities', 'in-use'] ] }
+  ];
+  var ladder = document.querySelector('.ladder');
+  var steps = ladder ? Array.prototype.slice.call(ladder.querySelectorAll('.ladder__step')) : [];
+  var boardLabel = document.querySelector('.workboard__head .eyebrow');
+  var boardRows = Array.prototype.slice.call(document.querySelectorAll('.workboard__table tbody tr'));
+  var stampWord = stamp && stamp.querySelector('.board-stamp__word');
+  var stampLine = stamp && stamp.querySelector('.board-stamp__line');
+  var currentStage = STAGES.length - 1;
+  function showStage(i, announce) {
+    var st = STAGES[i]; currentStage = i;
+    if (boardLabel) boardLabel.textContent = st.label;
+    boardRows.forEach(function (tr, r) {
+      var row = st.rows[r]; if (!row) return;
+      var cells = tr.children;
+      cells[0].textContent = row[0]; cells[1].textContent = row[1]; cells[2].textContent = row[2];
+      var btn = tr.querySelector('.status-btn');
+      btn.setAttribute('data-initial', row[3]); btn.setAttribute('data-work', row[0]); setStatus(btn, row[3]);
+    });
+    if (stampWord) stampWord.textContent = st.stamp;
+    if (stampLine) stampLine.textContent = st.line;
+    checkReady(announce ? 'Board now shows: ' + st.label + '.' : '');
+  }
+  function activateStep(step) {
+    var i = steps.indexOf(step);
+    steps.forEach(function (s) { s.classList.toggle('is-active', s === step); s.classList.toggle('is-muted', s !== step); });
+    showStage(i, true);
+  }
+  function restStep() {
+    steps.forEach(function (s) { s.classList.remove('is-active'); s.classList.remove('is-muted'); });
+    showStage(STAGES.length - 1, false);
+  }
+  steps.forEach(function (step) {
+    step.addEventListener('mouseenter', function () { activateStep(step); });
+    step.addEventListener('focus', function () { activateStep(step); });
+    step.addEventListener('click', function () { activateStep(step); });
+  });
+  if (ladder) {
+    ladder.addEventListener('mouseleave', restStep);
+    ladder.addEventListener('focusout', function (e) { if (!ladder.contains(e.relatedTarget)) restStep(); });
+  }
+
   var resetBtn = document.getElementById('board-reset');
   if (resetBtn) {
     resetBtn.addEventListener('click', function () {

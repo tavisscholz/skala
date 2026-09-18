@@ -476,9 +476,10 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .ladder__num { display: inline-block; font-size: var(--text-label); font-weight: 700; letter-spacing: var(--tracking-label); border: 1.5px solid var(--color-muted-light); color: var(--color-muted-light); padding: 4px 8px; }
 .ladder__name { margin-top: var(--space-4); font-size: 1.125rem; font-weight: 800; letter-spacing: var(--tracking-tight); color: var(--color-white); }
 .ladder__text { margin-top: var(--space-2); font-size: 0.9375rem; line-height: 1.45; color: var(--color-muted-light); }
-.ladder__step--ready { background: var(--color-acid); color: var(--color-ink); padding-left: var(--space-4); margin-left: calc(-1 * var(--space-4)); transform: rotate(-1.5deg); }
-.ladder__step--ready .ladder__num { border-color: var(--color-ink); color: var(--color-ink); background: transparent; }
-.ladder__step--ready .ladder__name, .ladder__step--ready .ladder__text { color: var(--color-ink); }
+.ladder__step { cursor: default; transition: background 160ms var(--ease-out), color 160ms var(--ease-out), transform 160ms var(--ease-out); outline-offset: 4px; }
+.ladder__step--ready:not(.is-muted), .ladder__step.is-active { background: var(--color-acid); color: var(--color-ink); padding-left: var(--space-4); margin-left: calc(-1 * var(--space-4)); transform: rotate(-1.5deg); }
+.ladder__step--ready:not(.is-muted) .ladder__num, .ladder__step.is-active .ladder__num { border-color: var(--color-ink); color: var(--color-ink); background: transparent; }
+.ladder__step--ready:not(.is-muted) .ladder__name, .ladder__step--ready:not(.is-muted) .ladder__text, .ladder__step.is-active .ladder__name, .ladder__step.is-active .ladder__text { color: var(--color-ink); }
 .workboard__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4); margin-top: var(--space-6); padding: var(--space-2) var(--space-3) var(--space-2) 0; }
 .workboard__foot .workboard__live { margin-top: 0; }
 .board-stamp { display: inline-flex; align-items: baseline; gap: var(--space-3); padding: var(--space-3) var(--space-5); margin-block: var(--space-2); background: var(--color-ink); color: var(--color-acid); transform: rotate(-2deg); }
@@ -495,7 +496,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
   .ladder__num { grid-row: 1 / span 2; margin-top: 2px; text-align: center; }
   .ladder__name { margin-top: 0; }
   .ladder__text { grid-column: 2; }
-  .ladder__step--ready { margin: var(--space-2) 0 0; padding: var(--space-4); transform: rotate(-1deg); }
+  .ladder__step--ready:not(.is-muted), .ladder__step.is-active { margin: var(--space-2) 0; padding: var(--space-4); transform: rotate(-1deg); }
 }
 
 /* ---------- Field notes ---------- */
