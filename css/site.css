@@ -61,6 +61,7 @@ a { color: inherit; }
 .section-intro { margin-top: var(--space-5); max-width: 58ch; }
 .section--ink .section-intro { color: var(--color-muted-light); }
 .section--paper .section-intro, .section--paper .step__text { color: var(--color-muted-dark); }
+.campaign-heading--contact { font-size: calc(var(--text-closing) * 1.25); }
 .campaign-heading {
   font-size: var(--text-closing); font-weight: 900; line-height: 0.98; letter-spacing: var(--tracking-hero);
   max-width: 12ch; text-wrap: balance;
@@ -94,7 +95,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .text-link:hover, .text-button:hover { box-shadow: inset 0 -3px 0 currentColor; }
 
 /* ---------- Wordmark ---------- */
-.wordmark { display: inline-flex; align-items: center; text-decoration: none; color: var(--color-acid); line-height: 1; }
+.wordmark { display: inline-flex; align-items: center; flex: none; white-space: nowrap; text-decoration: none; color: var(--color-acid); line-height: 1; }
 .wordmark__text { font-family: var(--font-wordmark); font-size: var(--wordmark-header); letter-spacing: -0.11em; transform: rotate(-2deg); display: inline-block; }
 .wordmark__svg { display: none; width: 8.25em; height: 2.6em; font-size: 1rem; }
 .no-brush .wordmark__text { display: none; }
@@ -554,7 +555,9 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 /* ---------- Footer ---------- */
 .site-footer { background: var(--color-ink); color: var(--color-white); padding-block: var(--space-8); }
 .site-footer__grid { display: grid; grid-template-columns: 1fr auto; gap: var(--space-6) var(--space-8); align-items: start; }
-.site-footer__line { margin-top: var(--space-4); font-weight: 700; }
+.site-footer__brand { display: flex; align-items: center; gap: var(--space-5); }
+.site-footer__tag { min-width: 0; padding-left: var(--space-5); border-left: 1px solid rgba(255,255,255,0.35); }
+.site-footer__line { margin: 0; font-weight: 700; }
 .site-footer__desc { margin-top: var(--space-1); color: var(--color-muted-light); font-size: 0.9375rem; }
 .site-footer__nav { display: flex; flex-wrap: wrap; gap: var(--space-5); }
 .site-footer__nav a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; font-size: var(--text-ui); text-decoration: none; box-shadow: inset 0 -2px 0 transparent; }
