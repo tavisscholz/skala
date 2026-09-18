@@ -215,6 +215,15 @@ await fn.close();
   mp.on('pageerror', e => merr.push(e.message));
   await mp.goto(url + 'merch.html', { waitUntil: 'networkidle' });
   note('merch page loads without errors', merr.length === 0, merr.join('; '));
+  for (const [file, title] of [['privacy.html', 'Privacy Policy'], ['terms.html', 'Terms of Use']]) {
+    const lerr = [];
+    const lp = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    lp.on('pageerror', e => lerr.push(e.message));
+    await lp.goto(url + file, { waitUntil: 'networkidle' });
+    note(`${file} loads and is titled ${title}`, lerr.length === 0 && (await lp.title()).startsWith(title) && (await lp.locator('.legal__body h2').count()) >= 5);
+    await lp.close();
+  }
+  note('footer links to the legal pages and nothing else does', await mp.evaluate(() => document.querySelectorAll('.site-footer a[href="privacy.html"], .site-footer a[href="terms.html"]').length === 2 && document.querySelectorAll('main a[href="privacy.html"], main a[href="terms.html"], header a[href="privacy.html"], header a[href="terms.html"]').length === 0));
   note('merch page lists four items with prices', await mp.evaluate(() => [...document.querySelectorAll('.merch-card__price')].map(e => e.textContent.trim()).join(',') === '$25,$25,$75,$15'));
   note('merch photos all load', await mp.evaluate(() => [...document.querySelectorAll('.merch-card__img')].every(i => i.complete && i.naturalWidth > 0 && !i.hidden)));
   note('merch page: no horizontal overflow', (await mp.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)) <= 0);

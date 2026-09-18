@@ -108,7 +108,7 @@ band = f'''<!-- notes:start -->
         </div>
         <ul class="note-lines reveal">
 {rows}
-          <li class="note-lines__all"><a class="text-link" href="playbook.html">Open the full playbook <span class="arrow" aria-hidden="true">→</span></a></li>
+          <li class="note-lines__all"><a class="text-link" href="playbook.html">Open more plays <span class="arrow" aria-hidden="true">→</span></a></li>
         </ul>
       </div>
     </section>
@@ -283,4 +283,75 @@ merch = f'''<!doctype html>
 </html>
 '''
 (ROOT / "merch.html").write_text(merch)
-print("built: index.html band + dialogs, playbook.html, merch.html")
+# ---------- legal pages (linked from the footer only) ----------
+LEGAL = {
+    "privacy": {
+        "title": "Privacy Policy", "dek": "What this site collects, why, and what happens to it.", "updated": "18 September 2026",
+        "sections": [
+            ("What we collect", [
+                "If you use the contact form, we receive what you type into it: your name, work email, company if you add it, and your message. That is the only personal information this site collects on purpose.",
+                "Like most websites, the server that delivers these pages may record standard technical details such as your IP address, browser type, and the pages requested. We use that only to keep the site running and secure."]),
+            ("How we use it", [
+                "We use what you send us to reply to you and to follow up on the conversation you started. We do not add you to a mailing list unless you ask to be added, and we do not sell, rent, or trade your information."]),
+            ("Cookies and analytics", [
+                "This site does not set advertising cookies and does not run third-party advertising trackers. If we add analytics in the future, this page will say so and describe what is collected."]),
+            ("Who else sees it", [
+                "Your message may be handled by the services we use to receive email and host this site. Those providers process it on our behalf and under their own security commitments. We share information with no one else unless the law requires it."]),
+            ("How long we keep it", [
+                "We keep contact messages for as long as the conversation is active and for a reasonable period afterwards so we can pick it up again. You can ask us to delete your information at any time."]),
+            ("Your choices", [
+                "You can ask what information we hold about you, ask us to correct it, or ask us to delete it. Use the contact form on the home page and tell us what you need."]),
+            ("Changes", [
+                "If we change this policy, the date at the top of this page will change with it."]),
+        ],
+    },
+    "terms": {
+        "title": "Terms of Use", "dek": "The ground rules for using this site.", "updated": "18 September 2026",
+        "sections": [
+            ("Using the site", [
+                "By using this site you agree to these terms. If you do not agree, please do not use the site."]),
+            ("What the content is for", [
+                "The plays, tools, and other content here are general information drawn from operating experience. They are not legal, financial, or professional advice for your business, and reading them does not make SKALA your adviser. Decisions about your operation are yours to make."]),
+            ("Ownership", [
+                "The text, photographs, wordmark, and design of this site belong to SKALA or are used with permission. You are welcome to read, share links to, and print pages for your own use. Please do not copy, republish, or sell the content without asking first."]),
+            ("Acceptable use", [
+                "Do not use the site or the contact form to send anything unlawful, misleading, or harmful, and do not try to interfere with how the site works."]),
+            ("Links to other sites", [
+                "Where the site links to other websites, those sites are not ours and we are not responsible for what they contain."]),
+            ("No warranties", [
+                "The site is provided as it is. We work to keep it accurate and available, but we do not promise that it will be error-free or available at all times."]),
+            ("Limitation of liability", [
+                "To the extent the law allows, SKALA is not liable for any loss or damage arising from your use of this site or reliance on its content."]),
+            ("Changes", [
+                "We may update these terms from time to time. The date at the top of this page shows the current version."]),
+            ("Contact", [
+                "Questions about these terms or the privacy policy can be sent through the contact form on the home page."]),
+        ],
+    },
+}
+def legal_page(slug, spec):
+    lhead = head.replace("<title>Playbook — SKALA</title>", f"<title>{spec['title']} — SKALA</title>")
+    lhead = re.sub(r'<meta name="description" content="[^"]*">', f'<meta name="description" content="{esc(spec["title"])} for the SKALA website.">', lhead)
+    body = "\n".join(
+        f'          <h2>{esc(h)}</h2>\n' + "\n".join(f'          <p>{inline(par)}</p>' for par in pars)
+        for h, pars in spec["sections"])
+    parts = [
+        "<!doctype html>", '<html lang="en">', lhead, '<body class="legal-page">',
+        '  <a class="skip-link" href="#main">Skip to content</a>', "", svgdefs, "",
+        merch_header.replace(' aria-current="page"', ''), "",
+        '  <main id="main">',
+        '    <section class="section section--paper legal" aria-labelledby="legal-title">',
+        '      <div class="container">',
+        '        <div class="legal__intro reveal">',
+        f'          <p class="eyebrow">{esc(spec["title"])}</p>',
+        f'          <h1 class="section-title" id="legal-title">{esc(spec["dek"])}</h1>',
+        f'          <p class="legal__meta">Last updated {spec["updated"]}</p>',
+        '        </div>',
+        '        <div class="legal__body reveal">', body, '        </div>',
+        '      </div>', '    </section>', '  </main>', "", footer, "",
+        '  <script src="js/site.js" defer></script>', '</body>', '</html>', "",
+    ]
+    return "\n".join(parts)
+for slug, spec in LEGAL.items():
+    (ROOT / f"{slug}.html").write_text(legal_page(slug, spec))
+print("built: index.html band + dialogs, playbook.html, merch.html, privacy.html, terms.html")
