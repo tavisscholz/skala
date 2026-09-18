@@ -99,6 +99,8 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .wordmark__svg { display: none; width: 8.25em; height: 2.6em; font-size: 1rem; }
 .no-brush .wordmark__text { display: none; }
 .no-brush .wordmark__svg { display: block; }
+.wordmark__crown { width: 1.1em; height: auto; font-size: var(--wordmark-header); margin-left: 0.18em; margin-top: -0.28em; transform: rotate(4deg); flex: none; }
+.site-footer .wordmark__crown { display: none; }
 
 /* ---------- Header ---------- */
 .site-header {

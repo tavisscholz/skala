@@ -20,6 +20,16 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
+  /* Header wordmark: scroll to the very top (the sticky header itself is #top, so let scrolling be explicit). */
+  var brand = document.querySelector('.wordmark--header');
+  if (brand && brand.getAttribute('href') === '#top') {
+    brand.addEventListener('click', function (e) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, left: 0, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+      if (history.replaceState) history.replaceState(null, '', window.location.pathname + window.location.search);
+    });
+  }
+
   /* ---------- Mobile navigation ---------- */
   var toggle = document.querySelector('.nav-toggle');
   var panel = document.getElementById('nav-panel');
