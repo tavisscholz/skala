@@ -1,4 +1,4 @@
-# A Good Site Can Still Be the Wrong Site
+# A Good Site Can Still Be the Wrong Location
 
 2026-09-16
 

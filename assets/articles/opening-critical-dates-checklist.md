@@ -1,4 +1,4 @@
-# Opening Critical Dates Checklist
+# Does Your Opening Checklist Cover This?
 
 2026-09-16
 
