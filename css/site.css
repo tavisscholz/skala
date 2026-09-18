@@ -629,7 +629,8 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 }
 
 /* ---------- Field notes: compact homepage band ---------- */
-.note-lines { border-top: 3px solid var(--color-ink); }
+.note-lines { border-top: 3px solid var(--color-ink); margin-block: var(--space-7) var(--space-6); }
+@media (max-width: 1023px) { .note-lines { margin-block: var(--space-6) var(--space-5); } }
 .note-line { border-bottom: 2px solid var(--color-ink); }
 .note-line__button { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--space-5); width: 100%; min-height: 72px; padding: var(--space-4) var(--space-2) var(--space-4) 0; text-align: left; background: none; border: 0; cursor: pointer; }
 .note-line__button:hover .note__tag, .note-line__button:focus-visible .note__tag, .fn-index__list a:hover .note__tag, .fn-index__list a:focus-visible .note__tag { background: var(--color-acid); color: var(--color-ink); }
