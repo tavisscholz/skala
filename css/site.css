@@ -181,9 +181,9 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .media-slot__img ~ .poster { background: linear-gradient(180deg, rgba(5,5,5,0.08) 0%, rgba(5,5,5,0.18) 55%, rgba(5,5,5,0.78) 100%); }
 .media-slot__img ~ .poster::after { opacity: 0.08; }
 .media-slot__img ~ .poster .poster__wordmark, .media-slot__img ~ .poster .poster__crown { display: none; }
-.media-slot__img ~ .campaign__poster-copy { font-size: clamp(1.75rem, 0.8rem + 2.2vw, 3rem); max-width: 22ch; text-shadow: 0 2px 24px rgba(5,5,5,0.6); }
-@media (min-width: 768px) and (max-width: 1023px) { .media-slot__img ~ .campaign__poster-copy { font-size: clamp(1.5rem, 0.6rem + 2.2vw, 2.25rem); } }   /* stays clear of the torn edge on tablets */
-@media (max-width: 767px) { .campaign__poster-copy br { display: none; } }   /* let phones wrap naturally instead of orphaning a word */
+.media-slot__img ~ .campaign__poster-copy { font-size: min(clamp(1.75rem, 0.8rem + 2.2vw, 3rem), calc(3.6vw - 6px)); max-width: 22ch; text-shadow: 0 2px 24px rgba(5,5,5,0.6); }
+@media (min-width: 768px) and (max-width: 1023px) { .media-slot__img ~ .campaign__poster-copy { font-size: min(clamp(1.5rem, 0.6rem + 2.2vw, 2.25rem), calc(3.6vw - 6px)); } }   /* stays clear of the torn edge on tablets */
+@media (min-width: 768px) { .media-slot__img ~ .campaign__poster-copy { max-width: none; white-space: nowrap; } }   /* one line from tablet up */
 .campaign__media .media-slot__img { z-index: 0; }
 .campaign__media::after { z-index: 2; }
 .campaign__media::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(5,5,5,0) 45%, rgba(5,5,5,0.85) 100%); pointer-events: none; z-index: 1; }
@@ -293,7 +293,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 /* Campaign: the photograph runs under the whole block and the acid panel is cut over it, its torn edge
    tracking the stagger of the stacked words. */
 .tears .campaign { position: relative; min-height: clamp(420px, 44vw, 650px); }   /* keeps the block's height now the line is scaled to the panel */
-.tears .campaign__media { position: absolute; inset: 0; padding-left: max(var(--gutter), calc((100vw - var(--container)) / 2)); }   /* photo copy sits a step left of the container edge */
+.tears .campaign__media { position: absolute; inset: 0; padding-left: var(--gutter); }   /* photo copy sits at the page gutter, not the container edge */
 .tears .campaign__panel { background: transparent; grid-column: 2; position: relative; z-index: 4; container-type: inline-size; padding-left: var(--space-5); padding-right: var(--gutter); }   /* the torn edge is the panel's visual left edge, so little padding is needed there */
 .tears .campaign__media .media-slot__img { left: -18%; }   /* slide the photo left so the team, not just the leader, sits in the visible half */
 .tears .tear--campaign { right: 0; left: auto; top: 0; bottom: 0; height: auto; width: 50%; z-index: 3; --tear-color: var(--color-acid); filter: url(#tear-rough); }
