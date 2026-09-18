@@ -273,7 +273,6 @@
       hooplaEl.setAttribute('aria-modal', 'true');
       hooplaEl.setAttribute('aria-labelledby', 'hoopla-title');
       hooplaEl.innerHTML =
-        '<div class="hoopla__bits" aria-hidden="true"></div>' +
         '<div class="hoopla__card">' +
         '  <p class="eyebrow">Every stage done</p>' +
         '  <p class="hoopla__title brush" id="hoopla-title">Ready<br>to scale.</p>' +
@@ -285,22 +284,6 @@
       hooplaEl.querySelector('.hoopla__close').addEventListener('click', closeHoopla);
       hooplaEl.addEventListener('click', function (e) { if (e.target === hooplaEl) closeHoopla(); });
       document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && hooplaEl.classList.contains('is-open')) closeHoopla(); });
-    }
-    var bits = hooplaEl.querySelector('.hoopla__bits');
-    bits.innerHTML = '';
-    if (!reduceMotion.matches) {
-      var colours = ['acid', 'acid', 'white', 'ink', 'acid'];
-      for (var i = 0; i < 140; i++) {
-        var bit = document.createElement('i');
-        bit.className = 'hoopla__bit hoopla__bit--' + colours[i % colours.length];
-        bit.style.left = (Math.random() * 100) + '%';
-        bit.style.animationDelay = (Math.random() * 1.6) + 's';
-        bit.style.animationDuration = (2.6 + Math.random() * 2.2) + 's';
-        bit.style.transform = 'rotate(' + Math.round(Math.random() * 360) + 'deg)';
-        bit.style.width = (8 + Math.random() * 8) + 'px';
-        bit.style.height = (12 + Math.random() * 12) + 'px';
-        bits.appendChild(bit);
-      }
     }
     hooplaEl.classList.add('is-open');
     document.body.classList.add('has-hoopla');

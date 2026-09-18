@@ -540,12 +540,6 @@ body.has-hoopla { overflow: hidden; }
 .hoopla__line { margin-top: var(--space-5); max-width: 32rem; font-size: 1.125rem; font-weight: 500; line-height: 1.5; }
 .hoopla__crown { position: absolute; top: var(--space-5); right: var(--space-5); width: 72px; height: 54px; color: var(--color-ink); transform: rotate(8deg); }
 .hoopla__close { margin-top: var(--space-6); }
-.hoopla__bits { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
-.hoopla__bit { position: absolute; top: -6%; display: block; animation-name: hoopla-fall; animation-timing-function: linear; animation-iteration-count: infinite; }
-.hoopla__bit--acid { background: var(--color-acid); }
-.hoopla__bit--white { background: var(--color-white); }
-.hoopla__bit--ink { background: var(--color-ink); outline: 2px solid var(--color-acid); }
-@keyframes hoopla-fall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(112vh) rotate(720deg); opacity: 0.9; } }
 @keyframes hoopla-in { from { transform: rotate(-2deg) scale(0.6); opacity: 0; } to { transform: rotate(-2deg) scale(1); opacity: 1; } }
 @media (max-width: 767px) { .hoopla__card { padding: var(--space-6) var(--space-5); box-shadow: 8px 8px 0 var(--color-white); } .hoopla__crown { width: 48px; height: 36px; } .scale-banner { font-size: 1.25rem; } }
 .workboard__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4); margin-top: var(--space-6); padding: var(--space-2) var(--space-3) var(--space-2) 0; }
