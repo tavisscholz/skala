@@ -445,9 +445,9 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .ladder__step--ready { background: var(--color-acid); color: var(--color-ink); padding-left: var(--space-4); margin-left: calc(-1 * var(--space-4)); transform: rotate(-1.5deg); }
 .ladder__step--ready .ladder__num { border-color: var(--color-ink); color: var(--color-ink); background: transparent; }
 .ladder__step--ready .ladder__name, .ladder__step--ready .ladder__text { color: var(--color-ink); }
-.workboard__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4); margin-top: var(--space-4); }
+.workboard__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4); margin-top: var(--space-6); padding: var(--space-2) var(--space-3) var(--space-2) 0; }
 .workboard__foot .workboard__live { margin-top: 0; }
-.board-stamp { display: inline-flex; align-items: baseline; gap: var(--space-3); padding: var(--space-2) var(--space-4); background: var(--color-ink); color: var(--color-acid); transform: rotate(-2deg); }
+.board-stamp { display: inline-flex; align-items: baseline; gap: var(--space-3); padding: var(--space-3) var(--space-5); margin-block: var(--space-2); background: var(--color-ink); color: var(--color-acid); transform: rotate(-2deg); }
 .board-stamp__word { font-size: 1.5rem; line-height: 1; }
 .board-stamp__line { font-size: 0.875rem; font-weight: 600; color: var(--color-white); }
 /* Pending: until every row is In use the stamp sits faded, ringed by a dashed line. */
