@@ -18,7 +18,7 @@ npx http-server . -p 8080
 |---|---|
 | `index.html` | Long-form homepage with `#work`, `#approach`, `#field-notes`, `#about`, `#contact` |
 | `playbook.html` | The playbook: all four notes and tools in full, built from `assets/articles` by `tools/build-notes.py` |
-| `merch.html` | Merch: the tee, hat, jacket and field book with prices, also built by `tools/build-notes.py` |
+| `merch.html` | Merch: the tee, hat, jacket and notebook with prices, also built by `tools/build-notes.py` |
 | `css/tokens.css` | Locked trial tokens plus the type, spacing, and motion scale |
 | `css/site.css` | Component styles (Header, Hero, CampaignStrip, ServiceRow, ApproachStep, OperatingTool, FieldNote, AboutBlock, ContactForm, Footer) |
 | `css/fonts.css` | Self-hosted Inter and Permanent Marker |
