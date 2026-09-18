@@ -24,6 +24,12 @@ RINGS = [
     "M57 8 C 90 2, 116 24, 114 56 C 112 90, 88 114, 56 112 C 24 110, 4 86, 8 56 C 12 26, 30 12, 57 8 Z",
 ]
 PULL = "The strongest performer becomes the biggest single point of failure."
+QUOTES = {  # one line from each piece, shown while its row is hovered
+    "your-best-manager-cannot-be-the-whole-system": "The strongest performer becomes the biggest single point of failure.",
+    "a-good-site-can-still-be-the-wrong-site": "The address was fine. The market wasn\u2019t.",
+    "financially-qualified-is-not-the-same-as-franchise-ready": "Proxies get treated as the whole answer.",
+    "opening-critical-dates-checklist": "A schedule with no room for either isn\u2019t a schedule, it\u2019s a hope.",
+}
 MONTHS = "January February March April May June July August September October November December".split()
 
 def esc(t): return html.escape(t, quote=False).replace("--", "—")
@@ -64,7 +70,7 @@ for i, (slug, tag, lane) in enumerate(ARTICLES, start=1):
     n = parse(slug); n.update(i=i, tag=tag, lane=lane, accent=ACCENTS[i-1], ring=RINGS[i-1]); notes.append(n)
 
 # ---------- homepage band ----------
-rows = "\n".join(f'''          <li class="note-line">
+rows = "\n".join(f'''          <li class="note-line" data-quote="{esc(QUOTES[n['slug']])}">
             <button class="note-line__button" type="button" data-open-note="note-{n['i']}">
               <span class="note__tag" aria-hidden="true">{n['tag']}</span>
               <span class="note-line__text">
@@ -130,7 +136,7 @@ header = header.replace('<a class="nav-link" href="#playbook">Playbook</a>', '<a
 footer = s[s.index('  <footer class="site-footer">'):s.index("</footer>")+9]
 footer = footer.replace('href="#top"', 'href="index.html"').replace('href="#work"', 'href="index.html#work"').replace('href="#about"', 'href="index.html#about"').replace('href="#contact"', 'href="index.html#contact"')
 
-index_links = "\n".join(f'            <li><a href="#{n["slug"]}"><span class="note__tag" aria-hidden="true">{n["tag"]}</span><span>{esc(n["title"])}</span></a></li>' for n in notes)
+index_links = "\n".join(f'            <li data-quote="{esc(QUOTES[n["slug"]])}"><a href="#{n["slug"]}"><span class="note__tag" aria-hidden="true">{n["tag"]}</span><span>{esc(n["title"])}</span></a></li>' for n in notes)
 articles = "\n\n".join(f'''        <article class="fn-article reveal" id="{n['slug']}" aria-labelledby="{n['slug']}-title">
           <div class="note-article__top">
             <p class="eyebrow"><span class="note__tag" aria-hidden="true">{n['tag']}</span> {n['kind']} {n['i']} · <span class="note-article__lane">{n['lane']}</span></p>

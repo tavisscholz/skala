@@ -60,10 +60,18 @@ note('first row open by default', (await page.locator('.service-row__toggle').fi
 const row2 = page.locator('.service-row__toggle').nth(1);
 await row2.click();
 note('second row expands', await row2.getAttribute('aria-expanded') === 'true' && await page.locator('#service-store-development').isVisible());
-note('desktop keeps first row open alongside', await page.locator('#service-store-operations').isVisible());
+note('opening a row closes the others', !(await page.locator('#service-store-operations').isVisible()));
 await page.locator('#work').screenshot({ path: join(outDir, 'work-open-1440.png') });
 await row2.click();
 note('second row collapses', await row2.getAttribute('aria-expanded') === 'false' && !(await page.locator('#service-store-development').isVisible()));
+
+// Playbook hover swaps the pull quote
+await page.locator('.note-line').nth(1).hover();
+await page.waitForTimeout(300);
+note('hovering a play swaps the pull quote', (await page.locator('.notes__pull').textContent()).includes('The address was fine'));
+await page.mouse.move(0, 0);
+await page.waitForTimeout(300);
+note('leaving restores the default quote', (await page.locator('.notes__pull').textContent()).includes('strongest performer'));
 
 // Workboard
 const status = page.locator('.status-btn').first();

@@ -50,10 +50,11 @@
   }
 
   /* ---------- Service rows ----------
-     First row opens by default (set in the markup). Desktop may hold several
-     rows open; below 768px only one row is open at a time. */
+     First row opens by default (set in the markup). Opening a row closes
+     the others. */
   var rowToggles = Array.prototype.slice.call(document.querySelectorAll('.service-row__toggle'));
-  var singleOpen = window.matchMedia('(max-width: 767px)');
+  /* One row open at a time at every width (owner-directed 18 Sept). */
+  var singleOpen = { matches: true };
   function setRow(btn, open) {
     var region = document.getElementById(btn.getAttribute('aria-controls'));
     btn.setAttribute('aria-expanded', String(open));
@@ -107,6 +108,26 @@
     resetBtn.addEventListener('click', function () {
       statusButtons.forEach(function (btn) { setStatus(btn, btn.getAttribute('data-initial')); });
       checkReady('Example reset to its starting statuses.');
+    });
+  }
+
+  /* ---------- Playbook: hover a play, the pull quote changes ---------- */
+  var pull = document.querySelector('.notes__pull');
+  if (pull) {
+    var defaultQuote = pull.textContent;
+    var quoted = document.querySelectorAll('[data-quote]');
+    function setQuote(text) {
+      if (pull.textContent === text) return;
+      pull.classList.add('is-swapping');
+      window.setTimeout(function () { pull.textContent = text; pull.classList.remove('is-swapping'); }, reduceMotion.matches ? 0 : 120);
+    }
+    Array.prototype.forEach.call(quoted, function (el) {
+      var show = function () { setQuote(el.getAttribute('data-quote')); };
+      var reset = function () { setQuote(defaultQuote); };
+      el.addEventListener('mouseenter', show);
+      el.addEventListener('focusin', show);
+      el.addEventListener('mouseleave', reset);
+      el.addEventListener('focusout', reset);
     });
   }
 
