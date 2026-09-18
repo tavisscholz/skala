@@ -69,8 +69,12 @@ notes = []
 for i, (slug, tag, lane) in enumerate(ARTICLES, start=1):
     n = parse(slug); n.update(i=i, tag=tag, lane=lane, accent=ACCENTS[i-1], ring=RINGS[i-1]); notes.append(n)
 
+# ---------- stacked pull quote (default + one per play; sized by the tallest) ----------
+quote_stack = f'<span class="notes__pull-item is-active" data-quote-for="default">{esc(PULL)}</span>' + "".join(
+    f'<span class="notes__pull-item" data-quote-for="{slug}" aria-hidden="true">{esc(q)}</span>' for slug, q in QUOTES.items() if q != PULL)
+
 # ---------- homepage band ----------
-rows = "\n".join(f'''          <li class="note-line" data-quote="{esc(QUOTES[n['slug']])}">
+rows = "\n".join(f'''          <li class="note-line" data-quote-for="{n['slug'] if QUOTES[n['slug']] != PULL else 'default'}">
             <button class="note-line__button" type="button" data-open-note="note-{n['i']}">
               <span class="note__tag" aria-hidden="true">{n['tag']}</span>
               <span class="note-line__text">
@@ -87,7 +91,7 @@ band = f'''<!-- notes:start -->
           <p class="eyebrow">Playbook</p>
           <h2 class="section-title" id="notes-title">Plays from the work.</h2>
           <p class="section-intro">Practical notes and working tools on building a business that can keep moving. Open one here, or take the whole playbook with you.</p>
-          <p class="notes__pull brush">{esc(PULL)}</p>
+          <p class="notes__pull brush" aria-live="polite">{quote_stack}</p>
         </div>
         <ul class="note-lines reveal">
 {rows}
@@ -136,7 +140,7 @@ header = header.replace('<a class="nav-link" href="#playbook">Playbook</a>', '<a
 footer = s[s.index('  <footer class="site-footer">'):s.index("</footer>")+9]
 footer = footer.replace('href="#top"', 'href="index.html"').replace('href="#work"', 'href="index.html#work"').replace('href="#about"', 'href="index.html#about"').replace('href="#contact"', 'href="index.html#contact"')
 
-index_links = "\n".join(f'            <li data-quote="{esc(QUOTES[n["slug"]])}"><a href="#{n["slug"]}"><span class="note__tag" aria-hidden="true">{n["tag"]}</span><span>{esc(n["title"])}</span></a></li>' for n in notes)
+index_links = "\n".join(f'            <li data-quote-for="{n["slug"] if QUOTES[n["slug"]] != PULL else "default"}"><a href="#{n["slug"]}"><span class="note__tag" aria-hidden="true">{n["tag"]}</span><span>{esc(n["title"])}</span></a></li>' for n in notes)
 articles = "\n\n".join(f'''        <article class="fn-article reveal" id="{n['slug']}" aria-labelledby="{n['slug']}-title">
           <div class="note-article__top">
             <p class="eyebrow"><span class="note__tag" aria-hidden="true">{n['tag']}</span> {n['kind']} {n['i']} · <span class="note-article__lane">{n['lane']}</span></p>
@@ -166,7 +170,7 @@ page = f'''<!doctype html>
           <p class="eyebrow">Playbook</p>
           <h1 class="section-title" id="fn-title">Plays from the work.</h1>
           <p class="section-intro">Practical notes and working tools on building a business that can keep moving. Written from the store floor, the development schedule, the site walk, and the franchise pipeline.</p>
-          <p class="notes__pull brush">{esc(PULL)}</p>
+          <p class="notes__pull brush" aria-live="polite">{quote_stack}</p>
         </div>
         <figure class="figure figure--tall reveal">
           <img src="assets/images/notes-field-notebook.webp" width="1024" height="1536" alt="A SKALA field notebook and printed plans on a wooden worktable" fetchpriority="high">

@@ -120,9 +120,9 @@
         </div>
         <div class="service-list reveal">
 
-          <article class="service-row is-open">
+          <article class="service-row">
             <h3 class="service-row__heading">
-              <button class="service-row__toggle" type="button" aria-expanded="true" aria-controls="service-store-operations">
+              <button class="service-row__toggle" type="button" aria-expanded="false" aria-controls="service-store-operations">
                 <span class="service-row__tag" aria-hidden="true">OPS</span>
                 <span class="service-row__body">
                   <span class="service-row__name">Store Operations</span>
@@ -131,7 +131,7 @@
                 <span class="service-row__icon" aria-hidden="true"></span>
               </button>
             </h3>
-            <div class="service-row__panel" id="service-store-operations">
+            <div class="service-row__panel" id="service-store-operations" hidden>
               <div class="service-row__col">
                 <p class="service-row__label">What breaks</p>
                 <p>The business relies too much on experienced managers knowing what good looks like. The right behaviors are hard to standardize and harder to make stick. Training, reporting, and system use vary by location. Managers spend too much time putting out fires and not enough time leading. Turnover resets progress, and the team keeps reteaching the same work.</p>
@@ -459,10 +459,10 @@
           <p class="eyebrow">Playbook</p>
           <h2 class="section-title" id="notes-title">Plays from the work.</h2>
           <p class="section-intro">Practical notes and working tools on building a business that can keep moving. Open one here, or take the whole playbook with you.</p>
-          <p class="notes__pull brush">The strongest performer becomes the biggest single point of failure.</p>
+          <p class="notes__pull brush" aria-live="polite"><span class="notes__pull-item is-active" data-quote-for="default">The strongest performer becomes the biggest single point of failure.</span><span class="notes__pull-item" data-quote-for="a-good-site-can-still-be-the-wrong-site" aria-hidden="true">The address was fine. The market wasn’t.</span><span class="notes__pull-item" data-quote-for="financially-qualified-is-not-the-same-as-franchise-ready" aria-hidden="true">Proxies get treated as the whole answer.</span><span class="notes__pull-item" data-quote-for="opening-critical-dates-checklist" aria-hidden="true">A schedule with no room for either isn’t a schedule, it’s a hope.</span></p>
         </div>
         <ul class="note-lines reveal">
-          <li class="note-line" data-quote="The strongest performer becomes the biggest single point of failure.">
+          <li class="note-line" data-quote-for="default">
             <button class="note-line__button" type="button" data-open-note="note-1">
               <span class="note__tag" aria-hidden="true">OPS</span>
               <span class="note-line__text">
@@ -472,7 +472,7 @@
               <span class="arrow" aria-hidden="true">→</span>
             </button>
           </li>
-          <li class="note-line" data-quote="The address was fine. The market wasn’t.">
+          <li class="note-line" data-quote-for="a-good-site-can-still-be-the-wrong-site">
             <button class="note-line__button" type="button" data-open-note="note-2">
               <span class="note__tag" aria-hidden="true">RE</span>
               <span class="note-line__text">
@@ -482,7 +482,7 @@
               <span class="arrow" aria-hidden="true">→</span>
             </button>
           </li>
-          <li class="note-line" data-quote="Proxies get treated as the whole answer.">
+          <li class="note-line" data-quote-for="financially-qualified-is-not-the-same-as-franchise-ready">
             <button class="note-line__button" type="button" data-open-note="note-3">
               <span class="note__tag" aria-hidden="true">FRAN</span>
               <span class="note-line__text">
@@ -492,7 +492,7 @@
               <span class="arrow" aria-hidden="true">→</span>
             </button>
           </li>
-          <li class="note-line" data-quote="A schedule with no room for either isn’t a schedule, it’s a hope.">
+          <li class="note-line" data-quote-for="opening-critical-dates-checklist">
             <button class="note-line__button" type="button" data-open-note="note-4">
               <span class="note__tag" aria-hidden="true">DEV</span>
               <span class="note-line__text">

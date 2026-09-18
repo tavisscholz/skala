@@ -50,8 +50,7 @@
   }
 
   /* ---------- Service rows ----------
-     First row opens by default (set in the markup). Opening a row closes
-     the others. */
+     All rows start closed. Opening a row closes the others. */
   var rowToggles = Array.prototype.slice.call(document.querySelectorAll('.service-row__toggle'));
   /* One row open at a time at every width (owner-directed 18 Sept). */
   var singleOpen = { matches: true };
@@ -111,19 +110,22 @@
     });
   }
 
-  /* ---------- Playbook: hover a play, the pull quote changes ---------- */
+  /* ---------- Playbook: hover a play, the pull quote changes ----------
+     Every quote is in the DOM stacked on one grid cell, so the block keeps
+     the height of the tallest one and the page never jumps. */
   var pull = document.querySelector('.notes__pull');
   if (pull) {
-    var defaultQuote = pull.textContent;
-    var quoted = document.querySelectorAll('[data-quote]');
-    function setQuote(text) {
-      if (pull.textContent === text) return;
-      pull.classList.add('is-swapping');
-      window.setTimeout(function () { pull.textContent = text; pull.classList.remove('is-swapping'); }, reduceMotion.matches ? 0 : 120);
+    var items = Array.prototype.slice.call(pull.querySelectorAll('.notes__pull-item'));
+    function showQuote(key) {
+      items.forEach(function (it) {
+        var on = it.getAttribute('data-quote-for') === key;
+        it.classList.toggle('is-active', on);
+        if (on) it.removeAttribute('aria-hidden'); else it.setAttribute('aria-hidden', 'true');
+      });
     }
-    Array.prototype.forEach.call(quoted, function (el) {
-      var show = function () { setQuote(el.getAttribute('data-quote')); };
-      var reset = function () { setQuote(defaultQuote); };
+    Array.prototype.forEach.call(document.querySelectorAll('[data-quote-for]:not(.notes__pull-item)'), function (el) {
+      var show = function () { showQuote(el.getAttribute('data-quote-for')); };
+      var reset = function () { showQuote('default'); };
       el.addEventListener('mouseenter', show);
       el.addEventListener('focusin', show);
       el.addEventListener('mouseleave', reset);

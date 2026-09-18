@@ -44,8 +44,8 @@ Real Estate & Leasing, Franchise Development. It replaces both the original
 Strategy / Operations / People / Expansion rows and the intermediate taxonomy;
 the two were not merged. Heading and intro are the handoff's closed-state copy.
 Each row expands to What breaks · What we build · What becomes possible in the
-sans system. The first row is open by default; below 768px only one row is
-open at a time; desktop may hold several open. Lanes 03 and 04 carry the handoff's
+sans system. All rows start closed and opening one closes the others, at every width
+(owner decision, 18 September, overriding the handoff's open-first-row rule). Lanes 03 and 04 carry the handoff's
 scope notes between What we build and What becomes possible. Nothing else on the page changed.
 
 ## Voice and index revision (17 September)
