@@ -3,6 +3,18 @@
 # No directory listings
 Options -Indexes
 
+# Clean URLs: /index.html -> /, /page.html -> /page, and /page serves page.html
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{THE_REQUEST} \s/+(?:.*/)?index\.html[\s?]
+  RewriteRule ^(.*/)?index\.html$ /$1 [R=301,L]
+  RewriteCond %{THE_REQUEST} \s/+([^\s?]+)\.html[\s?]
+  RewriteRule ^([^.]+)\.html$ /$1 [R=301,L]
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^([^.]+)$ $1.html [L]
+</IfModule>
+
 # Keep build tooling, notes and source photography out of reach on the live site
 RedirectMatch 404 ^/(tools|docs|node_modules|preview-out)(/|$)
 RedirectMatch 404 ^/assets/images/source(/|$)

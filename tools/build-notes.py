@@ -30,6 +30,13 @@ QUOTES = {  # one line from each piece, shown while its row is hovered
     "how-your-item-19-will-break-your-sales-pipeline": "Any daylight between the two is exactly where your pipeline is leaking.",
     "5-things-your-opening-checklist-must-cover": "A schedule with no room for either isn\u2019t a schedule, it\u2019s a hope.",
 }
+def clean_links(html):
+    """Live site uses clean URLs: / for the home page and /playbook, /merch, /privacy, /terms for the rest (see .htaccess)."""
+    for a, z in (('href="index.html#', 'href="/#'), ('href="index.html"', 'href="/"'), ('href="playbook.html', 'href="/playbook'),
+                 ('href="merch.html"', 'href="/merch"'), ('href="privacy.html"', 'href="/privacy"'), ('href="terms.html"', 'href="/terms"')):
+        html = html.replace(a, z)
+    return html
+
 MONTHS = "January February March April May June July August September October November December".split()
 
 def esc(t): return html.escape(t, quote=False).replace("--", "—")
@@ -138,6 +145,7 @@ dialogs = "<!-- dialogs:start -->\n" + dialogs + "\n  <!-- dialogs:end -->"
 idx = ROOT / "index.html"; s = idx.read_text()
 s = re.sub(r"<!-- notes:start -->.*?<!-- notes:end -->", lambda m: band, s, flags=re.S)
 s = re.sub(r"<!-- dialogs:start -->.*?<!-- dialogs:end -->", lambda m: dialogs, s, flags=re.S)
+s = clean_links(s)
 idx.write_text(s)
 
 # ---------- full page ----------
@@ -224,7 +232,7 @@ page = f'''<!doctype html>
 </body>
 </html>
 '''
-(ROOT / "playbook.html").write_text(page)
+(ROOT / "playbook.html").write_text(clean_links(page))
 
 # ---------- merch page ----------
 MERCH = [
@@ -282,7 +290,7 @@ merch = f'''<!doctype html>
 </body>
 </html>
 '''
-(ROOT / "merch.html").write_text(merch)
+(ROOT / "merch.html").write_text(clean_links(merch))
 # ---------- legal pages (linked from the footer only) ----------
 LEGAL = {
     "privacy": {
@@ -353,5 +361,5 @@ def legal_page(slug, spec):
     ]
     return "\n".join(parts)
 for slug, spec in LEGAL.items():
-    (ROOT / f"{slug}.html").write_text(legal_page(slug, spec))
+    (ROOT / f"{slug}.html").write_text(clean_links(legal_page(slug, spec)))
 print("built: index.html band + dialogs, playbook.html, merch.html, privacy.html, terms.html")

@@ -3,7 +3,9 @@
 The site is static: the repository root is the web root, with `index.html`,
 `playbook.html`, `merch.html`, `privacy.html` and `terms.html` alongside `css/`,
 `js/` and `assets/`. Hostinger's Git deployment clones the branch straight into
-`public_html`, and the `.htaccess` at the root keeps the tooling folders private.
+`public_html`, and the `.htaccess` at the root keeps the tooling folders private
+and serves clean URLs: `/`, `/playbook`, `/merch`, `/privacy`, `/terms`. Requests for
+`index.html` or any `.html` address redirect to the clean form.
 
 ## One-time setup in hPanel
 

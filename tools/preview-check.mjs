@@ -13,7 +13,8 @@ mkdirSync(outDir, { recursive: true });
 
 const types = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.md': 'text/markdown', '.webp': 'image/webp', '.png': 'image/png' };
 const server = createServer(async (req, res) => {
-  const path = req.url === '/' ? '/index.html' : req.url.split('?')[0];
+  let path = req.url === '/' ? '/index.html' : req.url.split('?')[0];
+  if (!extname(path)) path += '.html';   // clean URLs, as the live .htaccess serves them
   try {
     const body = await readFile(join(rootDir, path));
     res.writeHead(200, { 'content-type': types[extname(path)] || 'application/octet-stream' });
@@ -223,7 +224,8 @@ await fn.close();
     note(`${file} loads and is titled ${title}`, lerr.length === 0 && (await lp.title()).startsWith(title) && (await lp.locator('.legal__body h2').count()) >= 5);
     await lp.close();
   }
-  note('footer links to the legal pages and nothing else does', await mp.evaluate(() => document.querySelectorAll('.site-footer a[href="privacy.html"], .site-footer a[href="terms.html"]').length === 2 && document.querySelectorAll('main a[href="privacy.html"], main a[href="terms.html"], header a[href="privacy.html"], header a[href="terms.html"]').length === 0));
+  note('footer links to the legal pages and nothing else does', await mp.evaluate(() => document.querySelectorAll('.site-footer a[href="/privacy"], .site-footer a[href="/terms"]').length === 2 && document.querySelectorAll('main a[href$="privacy"], main a[href$="terms"], header a[href$="privacy"], header a[href$="terms"]').length === 0));
+  note('no link on the site still points at index.html or a .html page', await mp.evaluate(() => [...document.querySelectorAll('a[href]')].every(a => !/(^|\/)index\.html|\.html($|#)/.test(a.getAttribute('href')))));
   note('merch page lists four items with prices', await mp.evaluate(() => [...document.querySelectorAll('.merch-card__price')].map(e => e.textContent.trim()).join(',') === '$25,$25,$75,$15'));
   note('merch photos all load', await mp.evaluate(() => [...document.querySelectorAll('.merch-card__img')].every(i => i.complete && i.naturalWidth > 0 && !i.hidden)));
   note('merch page: no horizontal overflow', (await mp.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)) <= 0);
