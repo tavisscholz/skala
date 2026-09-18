@@ -476,7 +476,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .ladder__num { display: inline-block; font-size: var(--text-label); font-weight: 700; letter-spacing: var(--tracking-label); border: 1.5px solid var(--color-muted-light); color: var(--color-muted-light); padding: 4px 8px; }
 .ladder__name { margin-top: var(--space-4); font-size: 1.125rem; font-weight: 800; letter-spacing: var(--tracking-tight); color: var(--color-white); }
 .ladder__text { margin-top: var(--space-2); font-size: 0.9375rem; line-height: 1.45; color: var(--color-muted-light); }
-.ladder__step { cursor: default; transition: background 160ms var(--ease-out), color 160ms var(--ease-out), transform 160ms var(--ease-out); outline-offset: 4px; }
+.ladder__step { cursor: pointer; transition: background 160ms var(--ease-out), color 160ms var(--ease-out), transform 160ms var(--ease-out); outline-offset: 4px; }
 .ladder__step--ready:not(.is-muted), .ladder__step.is-active { background: var(--color-acid); color: var(--color-ink); padding-left: var(--space-4); margin-left: calc(-1 * var(--space-4)); transform: rotate(-1.5deg); }
 .ladder__step--ready:not(.is-muted) .ladder__num, .ladder__step.is-active .ladder__num { border-color: var(--color-ink); color: var(--color-ink); background: transparent; }
 .ladder__step--ready:not(.is-muted) .ladder__name, .ladder__step--ready:not(.is-muted) .ladder__text, .ladder__step.is-active .ladder__name, .ladder__step.is-active .ladder__text { color: var(--color-ink); }

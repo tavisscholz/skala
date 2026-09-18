@@ -76,9 +76,9 @@ note('leaving restores the default quote', (await page.locator('.notes__pull-ite
 // Workboard
 const status = page.locator('.status-btn').first();
 await status.click();
-note('status cycles Building → Testing', (await status.getAttribute('data-status')) === 'testing' && (await page.locator('#board-live').textContent()).includes('Testing'));
+note('status cycles Testing → In use', (await status.getAttribute('data-status')) === 'in-use' && (await page.locator('#board-live').textContent()).includes('In use'));
 await status.click(); await status.click();
-note('status cycles back to Building', (await status.getAttribute('data-status')) === 'building');
+note('status cycles back to Testing', (await status.getAttribute('data-status')) === 'testing');
 await status.click();
 await page.locator('#board-reset').click();
 // Readiness ladder drives the board
@@ -93,7 +93,14 @@ await page.locator('#board-reset').click();
   note('hovering stage 5 shows the expansion plan and stamp', (await page.locator('.workboard__head .eyebrow').textContent()).trim() === 'From managed to expansion ready' && (await page.locator('.board-stamp__word').textContent()).trim() === 'Expansion ready.');
   await page.mouse.move(10, 10);
   await page.waitForTimeout(150);
-  note('leaving the ladder restores the resting board', (await page.locator('.workboard__head .eyebrow').textContent()).trim() === 'The same scale, on a real board' && !(await page.evaluate(() => document.querySelector('.ladder__step--ready').classList.contains('is-muted'))));
+  note('leaving the ladder falls back to the pinned expansion stage', (await page.locator('.workboard__head .eyebrow').textContent()).trim() === 'From managed to expansion ready' && !(await page.evaluate(() => document.querySelector('.ladder__step--ready').classList.contains('is-muted'))));
+  await page.locator('.ladder__step').nth(2).click();
+  await page.mouse.move(5, 5);
+  await page.waitForTimeout(250);
+  note('clicking stage 3 pins it after the mouse leaves', (await page.locator('.workboard__head .eyebrow').textContent()).trim() === 'From emerging to defined' && await page.evaluate(() => document.querySelectorAll('.ladder__step')[2].classList.contains('is-active') && document.querySelector('.ladder__step--ready').classList.contains('is-muted')));
+  await page.locator('.ladder__step').nth(4).click();
+  await page.mouse.move(5, 5);
+  await page.waitForTimeout(250);
 }
 
 // Expansion-ready stamp: move every row to In use
@@ -105,7 +112,7 @@ await page.locator('#board-reset').click();
   await page.locator('#board-reset').click();
   note('reset fades the stamp back behind its dashed ring', await page.locator('#board-stamp').evaluate(el => el.classList.contains('is-pending') && getComputedStyle(el).outlineStyle === 'dashed'));
 }
-note('reset restores initial statuses', (await status.getAttribute('data-status')) === 'building' && (await page.locator('#board-live').textContent()).includes('reset'));
+note('reset restores initial statuses', (await status.getAttribute('data-status')) === 'testing' && (await page.locator('#board-live').textContent()).includes('reset'));
 
 // Field note dialog
 const opener = page.locator('[data-open-note="note-1"]');

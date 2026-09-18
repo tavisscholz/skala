@@ -158,19 +158,16 @@
       ['Manager onboarding', 'Field leader', 'Run onboarding without the person who built it', 'testing'],
       ['Weekly store review', 'Store manager', 'Start the review in every new location on day one', 'in-use'] ] }
   ];
-  var REST_STAGE = { label: 'The same scale, on a real board', stamp: 'Expansion ready.', line: 'Now it can repeat.', rows: [
-      ['Opening checklist', 'Development lead', 'Walk the checklist on a live opening day', 'building'],
-      ['Manager onboarding', 'Field leader', 'Run the first two weeks with a new manager', 'testing'],
-      ['Weekly store review', 'Store manager', 'Review last week and set three priorities', 'in-use'] ] };
   var ladder = document.querySelector('.ladder');
   var steps = ladder ? Array.prototype.slice.call(ladder.querySelectorAll('.ladder__step')) : [];
   var boardLabel = document.querySelector('.workboard__head .eyebrow');
   var boardRows = Array.prototype.slice.call(document.querySelectorAll('.workboard__table tbody tr'));
   var stampWord = stamp && stamp.querySelector('.board-stamp__word');
   var stampLine = stamp && stamp.querySelector('.board-stamp__line');
-  var currentStage = -1;
+  var pinnedStage = STAGES.length - 1;
+  var currentStage = pinnedStage;
   function showStage(i, announce) {
-    var st = i < 0 ? REST_STAGE : STAGES[i]; currentStage = i;
+    var st = STAGES[i]; currentStage = i;
     if (boardLabel) boardLabel.textContent = st.label;
     boardRows.forEach(function (tr, r) {
       var row = st.rows[r]; if (!row) return;
@@ -183,25 +180,37 @@
     if (stampLine) stampLine.textContent = st.line;
     checkReady(announce ? 'Board now shows: ' + st.label + '.' : '');
   }
-  function activateStep(step) {
+  function paintStep(i) {
+    steps.forEach(function (s, k) {
+      s.classList.toggle('is-active', k === i);
+      s.classList.toggle('is-muted', k !== i);
+      s.setAttribute('aria-current', k === pinnedStage ? 'true' : 'false');
+    });
+  }
+  function previewStep(step) {
     var i = steps.indexOf(step);
-    steps.forEach(function (s) { s.classList.toggle('is-active', s === step); s.classList.toggle('is-muted', s !== step); });
-    showStage(i, true);
+    if (i === currentStage) return;
+    paintStep(i); showStage(i, false);
+  }
+  function pinStep(step) {
+    pinnedStage = steps.indexOf(step);
+    paintStep(pinnedStage); showStage(pinnedStage, true);
   }
   function restStep() {
-    steps.forEach(function (s) { s.classList.remove('is-active'); s.classList.remove('is-muted'); });
-    showStage(-1, false);
+    paintStep(pinnedStage);
+    if (currentStage !== pinnedStage) showStage(pinnedStage, false);
   }
   steps.forEach(function (step) {
-    step.addEventListener('mouseenter', function () { activateStep(step); });
-    step.addEventListener('focus', function () { activateStep(step); });
-    step.addEventListener('click', function () { activateStep(step); });
+    step.addEventListener('mouseenter', function () { previewStep(step); });
+    step.addEventListener('focus', function () { previewStep(step); });
+    step.addEventListener('click', function () { pinStep(step); });
+    step.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pinStep(step); } });
   });
   if (ladder) {
     ladder.addEventListener('mouseleave', restStep);
     ladder.addEventListener('focusout', function (e) { if (!ladder.contains(e.relatedTarget)) restStep(); });
+    paintStep(pinnedStage);
   }
-
   var resetBtn = document.getElementById('board-reset');
   if (resetBtn) {
     resetBtn.addEventListener('click', function () {
