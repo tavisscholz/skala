@@ -137,6 +137,10 @@
      Hover or focus a stage and the board shows the work that moves a business to the next stage.
      Stage 5 (and the resting state) shows the board as it is. */
   var STAGES = [
+    { label: 'From ad hoc to person-dependent', stamp: 'Person ready.', line: 'Now someone owns it.', rows: [
+      ['Opening checklist', 'Development lead', 'Name the best opener and shadow a full opening', 'building'],
+      ['Manager onboarding', 'Field leader', 'Pair every new manager with one experienced one', 'building'],
+      ['Weekly store review', 'Store manager', 'Walk the store together once a week', 'building'] ] },
     { label: 'From person-dependent to emerging', stamp: 'Emerging ready.', line: 'Now there is a process.', rows: [
       ['Opening checklist', 'Development lead', 'Write down the steps the best opener already does', 'building'],
       ['Manager onboarding', 'Field leader', 'Capture the first two weeks as a simple guide', 'building'],
@@ -152,21 +156,21 @@
     { label: 'From managed to expansion ready', stamp: 'Expansion ready.', line: 'Now it can repeat.', rows: [
       ['Opening checklist', 'Development lead', 'Hand the list to a new market team untouched', 'testing'],
       ['Manager onboarding', 'Field leader', 'Run onboarding without the person who built it', 'testing'],
-      ['Weekly store review', 'Store manager', 'Start the review in every new location on day one', 'in-use'] ] },
-    { label: 'The same scale, on a real board', stamp: 'Expansion ready.', line: 'Now it can repeat.', rows: [
+      ['Weekly store review', 'Store manager', 'Start the review in every new location on day one', 'in-use'] ] }
+  ];
+  var REST_STAGE = { label: 'The same scale, on a real board', stamp: 'Expansion ready.', line: 'Now it can repeat.', rows: [
       ['Opening checklist', 'Development lead', 'Walk the checklist on a live opening day', 'building'],
       ['Manager onboarding', 'Field leader', 'Run the first two weeks with a new manager', 'testing'],
-      ['Weekly store review', 'Store manager', 'Review last week and set three priorities', 'in-use'] ] }
-  ];
+      ['Weekly store review', 'Store manager', 'Review last week and set three priorities', 'in-use'] ] };
   var ladder = document.querySelector('.ladder');
   var steps = ladder ? Array.prototype.slice.call(ladder.querySelectorAll('.ladder__step')) : [];
   var boardLabel = document.querySelector('.workboard__head .eyebrow');
   var boardRows = Array.prototype.slice.call(document.querySelectorAll('.workboard__table tbody tr'));
   var stampWord = stamp && stamp.querySelector('.board-stamp__word');
   var stampLine = stamp && stamp.querySelector('.board-stamp__line');
-  var currentStage = STAGES.length - 1;
+  var currentStage = -1;
   function showStage(i, announce) {
-    var st = STAGES[i]; currentStage = i;
+    var st = i < 0 ? REST_STAGE : STAGES[i]; currentStage = i;
     if (boardLabel) boardLabel.textContent = st.label;
     boardRows.forEach(function (tr, r) {
       var row = st.rows[r]; if (!row) return;
@@ -186,7 +190,7 @@
   }
   function restStep() {
     steps.forEach(function (s) { s.classList.remove('is-active'); s.classList.remove('is-muted'); });
-    showStage(STAGES.length - 1, false);
+    showStage(-1, false);
   }
   steps.forEach(function (step) {
     step.addEventListener('mouseenter', function () { activateStep(step); });
