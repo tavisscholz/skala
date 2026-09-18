@@ -81,10 +81,14 @@
   rowToggles.forEach(function (btn) {
     btn.addEventListener('click', function () {
       var open = btn.getAttribute('aria-expanded') === 'true';
+      var before = btn.getBoundingClientRect().top;
       if (!open && singleOpen.matches) {
         rowToggles.forEach(function (other) { if (other !== btn) setRow(other, false); });
       }
       setRow(btn, !open);
+      /* Closing a row above this one pulls the page up; scroll by the difference so the tapped tag stays where it was. */
+      var shift = btn.getBoundingClientRect().top - before;
+      if (Math.abs(shift) > 1) window.scrollBy({ top: shift, left: 0, behavior: 'instant' });
     });
   });
 
