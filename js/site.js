@@ -104,6 +104,10 @@
           firstRow.classList.remove('is-nudged');
           void firstRow.offsetWidth;   /* restart the animation from the top */
           firstRow.classList.add('is-nudged');
+          var list = firstRow.parentElement;
+          list.classList.add('is-nudging');
+          clearTimeout(list._nudgeTimer);
+          list._nudgeTimer = setTimeout(function () { list.classList.remove('is-nudging'); }, 1200);
         }
         heroWasVisible = visible;
       });

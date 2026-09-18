@@ -331,7 +331,10 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
   width: 100%; min-height: 96px; padding: var(--space-5) var(--space-2); text-align: left;
   background: none; border: 0; cursor: pointer;
 }
-.service-row__toggle:hover .service-row__tag, .service-row__toggle:focus-visible .service-row__tag { background: var(--color-acid); color: var(--color-ink); }
+@media (hover: hover) { .service-row__toggle:hover .service-row__tag { background: var(--color-acid); color: var(--color-ink); } }
+.service-row__toggle:focus-visible .service-row__tag { background: var(--color-acid); color: var(--color-ink); }
+/* While the first row tugs, every other tag stays dark so the flash is the only thing lit */
+.service-list.is-nudging .service-row:not(.is-nudged) .service-row__tag { background: var(--color-ink) !important; color: var(--color-acid) !important; }
 .service-row__tag { transition: background-color 150ms, color 150ms; }
 .service-row__tag { display: inline-flex; align-items: center; justify-content: center; width: 4.5rem; padding: 8px 6px; font-size: 1.0625rem; font-weight: 800; letter-spacing: 0.08em; line-height: 1; text-transform: uppercase; background: var(--color-ink); color: var(--color-acid); transform: rotate(-2deg); }
 .service-row.is-open .service-row__tag { background: var(--color-acid); color: var(--color-ink); }
