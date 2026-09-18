@@ -216,7 +216,7 @@ await fn.close();
   mp.on('pageerror', e => merr.push(e.message));
   await mp.goto(url + 'merch.html', { waitUntil: 'networkidle' });
   note('merch page loads without errors', merr.length === 0, merr.join('; '));
-  for (const [file, title] of [['privacy.html', 'Privacy Policy'], ['terms.html', 'Terms of Use'], ['work-with-us', 'Work With Us']]) {
+  for (const [file, title] of [['privacy.html', 'Privacy Policy'], ['terms.html', 'Terms of Use'], ['work-with-us', 'Work With SKALA']]) {
     const lerr = [];
     const lp = await browser.newPage({ viewport: { width: 1440, height: 900 } });
     lp.on('pageerror', e => lerr.push(e.message));
