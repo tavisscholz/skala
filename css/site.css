@@ -647,6 +647,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .fn-index__cta { margin-top: var(--space-6); display: inline-flex; flex-wrap: wrap; justify-content: flex-start; text-align: left; gap: 6px 8px; padding-inline: var(--space-4); }
 .fn-index__format { font-size: 0.75rem; font-weight: 800; letter-spacing: 0.08em; padding: 2px 5px; margin-left: 6px; background: var(--color-acid); color: var(--color-ink); }
 .note-lines__all { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-6); }
+.note-lines__all .text-link { color: var(--color-muted-dark); }
 .fn-articles { border-top: 3px solid var(--color-ink); }
 .fn-article { padding: var(--space-7) 0 var(--space-8); border-bottom: 2px solid var(--color-ink); scroll-margin-top: calc(var(--header-h) + var(--space-5)); }
 .fn-article .note-article__top .eyebrow { display: inline-flex; align-items: center; gap: var(--space-3); }
