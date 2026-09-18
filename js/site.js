@@ -145,23 +145,23 @@
      Hover or focus a stage and the board shows the work that moves a business to the next stage.
      Stage 5 (and the resting state) shows the board as it is. */
   var STAGES = [
-    { label: 'From ad hoc to person-dependent', stamp: 'Person ready.', line: 'Now someone owns it.', rows: [
+    { label: 'From ad hoc to Scrappy', stamp: 'Scrappy.', line: 'Now someone owns it.', rows: [
       ['Opening checklist', 'Development lead', 'Name the best opener and shadow a full opening', 'building'],
       ['Manager onboarding', 'Field leader', 'Pair every new manager with one experienced one', 'building'],
       ['Weekly store review', 'Store manager', 'Walk the store together once a week', 'building'] ] },
-    { label: 'From person-dependent to emerging', stamp: 'Emerging ready.', line: 'Now there is a process.', rows: [
+    { label: 'From Scrappy to Captured', stamp: 'Captured.', line: 'Now it is written down.', rows: [
       ['Opening checklist', 'Development lead', 'Write down the steps the best opener already does', 'building'],
       ['Manager onboarding', 'Field leader', 'Capture the first two weeks as a simple guide', 'building'],
       ['Weekly store review', 'Store manager', 'Set a fixed day and a short agenda', 'testing'] ] },
-    { label: 'From emerging to defined', stamp: 'Defined ready.', line: 'Now it is written down.', rows: [
-      ['Opening checklist', 'Development lead', 'Give every line an owner and a due date', 'testing'],
-      ['Manager onboarding', 'Field leader', 'Turn the guide into a two-week plan with sign-offs', 'building'],
-      ['Weekly store review', 'Store manager', 'Fix the agenda and the numbers it reviews', 'testing'] ] },
-    { label: 'From defined to managed', stamp: 'Managed ready.', line: 'Now it is measured.', rows: [
-      ['Opening checklist', 'Development lead', 'Review every opening against the list and log the misses', 'testing'],
+    { label: 'From Captured to Adopted', stamp: 'Adopted.', line: 'Now it is followed.', rows: [
+      ['Opening checklist', 'Development lead', 'Train every opener on the list and check it in use', 'testing'],
+      ['Manager onboarding', 'Field leader', 'Run every new manager through the two-week plan', 'building'],
+      ['Weekly store review', 'Store manager', 'Hold the review every week on the same numbers', 'testing'] ] },
+    { label: 'From Adopted to Linked', stamp: 'Linked.', line: 'Now it is shared.', rows: [
+      ['Opening checklist', 'Development lead', 'Report opening misses across locations to one owner', 'testing'],
       ['Manager onboarding', 'Field leader', 'Measure 30-day manager readiness across stores', 'building'],
       ['Weekly store review', 'Store manager', 'Compare stores on the same three priorities', 'in-use'] ] },
-    { label: 'From managed to expansion ready', stamp: 'Expansion ready.', line: 'Now it can repeat.', rows: [
+    { label: 'From Linked to Expansion-ready', stamp: 'Expansion ready.', line: 'Now it can repeat.', rows: [
       ['Opening checklist', 'Development lead', 'Hand the list to a new market team untouched', 'testing'],
       ['Manager onboarding', 'Field leader', 'Run onboarding without the person who built it', 'testing'],
       ['Weekly store review', 'Store manager', 'Start the review in every new location on day one', 'in-use'] ] }

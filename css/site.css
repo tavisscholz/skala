@@ -478,7 +478,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .ladder { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin-top: var(--space-8); border-top: 2px solid rgba(255,255,255,0.35); }
 .ladder__step { padding: var(--space-5) var(--space-4) var(--space-6) 0; margin-right: var(--space-4); border-right: 1px solid rgba(255,255,255,0.25); }
 .ladder__step:last-child { border-right: 0; margin-right: 0; }
-.ladder__num { display: inline-block; font-size: var(--text-label); font-weight: 700; letter-spacing: var(--tracking-label); border: 1.5px solid var(--color-muted-light); color: var(--color-muted-light); padding: 4px 8px; }
+.ladder__num { display: inline-block; font-size: 1rem; font-weight: 800; line-height: 1; min-width: 1.5em; text-align: center; letter-spacing: var(--tracking-label); border: 1.5px solid var(--color-muted-light); color: var(--color-muted-light); padding: 4px 8px; }
 .ladder__name { margin-top: var(--space-4); font-size: 1.125rem; font-weight: 800; letter-spacing: var(--tracking-tight); color: var(--color-white); }
 .ladder__text { margin-top: var(--space-2); font-size: 0.9375rem; line-height: 1.45; color: var(--color-muted-light); }
 .ladder__step { cursor: pointer; transition: background 160ms var(--ease-out), color 160ms var(--ease-out), transform 160ms var(--ease-out); outline-offset: 4px; }

@@ -148,7 +148,7 @@ territory.
 ## Expansion Ready (18 September)
 
 The operating-tool section became "Expansion Ready" (`#ready`): a five-level
-readiness ladder (Person-dependent · Emerging · Defined · Managed · Expansion
+readiness ladder, the SCALE scale (Scrappy · Captured · Adopted · Linked · Expansion
 ready) in SKALA language, then the workboard as "the same scale, on a real
 board". When every row reaches In use, a brush stamp reads "Expansion ready.
 Now it can repeat." and the live region announces it. Until then the stamp sits faded in

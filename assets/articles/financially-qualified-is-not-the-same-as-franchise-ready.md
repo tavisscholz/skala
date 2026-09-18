@@ -1,4 +1,4 @@
-# Why Item 19 Can Make or Break Your Sales Pipeline
+# How Your Item 19 Will Break Your Sales Pipeline
 
 2026-09-16
 
