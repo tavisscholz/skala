@@ -690,6 +690,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .note-line .arrow { font-size: 1.5rem; margin: 0; }
 .note-lines__all { padding-top: var(--space-7); padding-left: var(--space-4); }
 .notes__grid .notes__intro .notes__pull { margin-top: var(--space-5); }
+.notes__pull--static { max-width: 17ch; }
 @media (max-width: 767px) {
   .note-line__button { gap: var(--space-3); }
   .note-line__title { font-size: 1.125rem; }

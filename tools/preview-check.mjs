@@ -65,13 +65,8 @@ await page.locator('#work').screenshot({ path: join(outDir, 'work-open-1440.png'
 await row2.click();
 note('second row collapses', await row2.getAttribute('aria-expanded') === 'false' && !(await page.locator('#service-store-development').isVisible()));
 
-// Playbook hover swaps the pull quote
-await page.locator('.note-line').nth(1).hover();
-await page.waitForTimeout(300);
-note('hovering a play swaps the pull quote', (await page.locator('.notes__pull-item.is-active').textContent()).includes('The address was fine'));
-await page.mouse.move(0, 0);
-await page.waitForTimeout(300);
-note('leaving restores the default quote', (await page.locator('.notes__pull-item.is-active').textContent()).includes('strongest performer'));
+// Playbook band: the tilted card carries the section line
+note('playbook card carries the section line', (await page.locator('#playbook .notes__pull').textContent()).includes('Practical notes and working tools') && (await page.locator('#playbook .section-intro').count()) === 0);
 
 // Workboard
 const status = page.locator('.status-btn').first();

@@ -104,8 +104,7 @@ band = f'''<!-- notes:start -->
         <div class="notes__intro reveal">
           <p class="eyebrow">Playbook</p>
           <h2 class="section-title" id="notes-title">Plays from the work.</h2>
-          <p class="section-intro">Practical notes and working tools on building a business that can keep moving. Open one here, or take the whole playbook with you.</p>
-          <p class="notes__pull brush" aria-live="polite">{quote_stack}</p>
+          <p class="notes__pull notes__pull--static brush">Practical notes and working tools on building a business that can keep moving.</p>
         </div>
         <ul class="note-lines reveal">
 {rows}
