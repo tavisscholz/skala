@@ -471,31 +471,26 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .approach__grid { display: grid; grid-template-columns: 7fr 5fr; gap: var(--space-8) var(--space-9); align-items: end; }
 .tool__grid { display: grid; grid-template-columns: 7fr 5fr; gap: var(--space-8) var(--space-9); align-items: end; }
 .tool__grid .figure { border: 3px solid var(--color-acid); }
-/* Expansion Ready on desktop: two columns so the whole section fits a laptop window.
-   Copy and photo on the left; the SCALE list (vertical, compact) and the board on the right. */
+/* Expansion Ready on desktop: copy beside the five SCALE tiles, board full width below, so the section fits a laptop window. */
 @media (min-width: 1024px) {
-  .ready .container { display: grid; grid-template-columns: 5fr 7fr; grid-template-areas: "copy ladder" "copy board"; column-gap: var(--space-8); row-gap: var(--space-6); align-items: start; }
-  @media (max-width: 1439px) { .ready .container { grid-template-columns: 4fr 8fr; column-gap: var(--space-7); } .ready .ladder__text { font-size: 0.875rem; } }
+  .ready .container { display: grid; grid-template-columns: 4fr 8fr; grid-template-areas: "copy ladder" "board board"; column-gap: var(--space-8); row-gap: var(--space-6); align-items: start; }
   .ready .tool__grid { display: contents; }
   .ready .tool__intro { grid-area: copy; max-width: none; }
-  .ready .ladder { grid-area: ladder; margin-top: 0; grid-template-columns: 1fr; border-top: 0; align-self: start; }
-  .ready .ladder__step { display: grid; grid-template-columns: 2.25rem 8.5rem 1fr; column-gap: var(--space-3); align-items: baseline; padding: var(--space-3) 0; margin: 0; border-right: 0; border-top: 1px solid rgba(255,255,255,0.25); }
-  .ready .ladder__step:first-child { border-top: 0; padding-top: 0; }
-  .ready .ladder__num { font-size: 0.875rem; padding: 3px 6px; min-width: 1.6em; }
-  .ready .ladder__name { margin: 0; font-size: 1rem; }
-  .ready .ladder__text { margin: 0; font-size: 0.9375rem; line-height: 1.4; }
-  .ready .ladder__step--ready:not(.is-muted), .ready .ladder__step.is-active { padding: var(--space-3) var(--space-4); margin: 0 0 0 calc(-1 * var(--space-4)); transform: rotate(-1deg); border-top-color: transparent; }
-  .ready .ladder__step--ready:not(.is-muted) + .ladder__step, .ready .ladder__step.is-active + .ladder__step { border-top-color: transparent; }
+  .ready .ladder { grid-area: ladder; margin-top: 0; align-self: start; }
+  .ready .ladder__step { padding: var(--space-4) var(--space-3) var(--space-5) 0; margin-right: var(--space-3); }
+  .ready .ladder__name { margin-top: var(--space-3); font-size: 1rem; }
+  .ready .ladder__text { font-size: 0.875rem; line-height: 1.4; }
+  .ready .ladder__step--ready:not(.is-muted), .ready .ladder__step.is-active { padding-left: var(--space-3); margin-left: calc(-1 * var(--space-3)); }
   .ready .workboard { grid-area: board; margin-top: 0; padding: var(--space-4) var(--space-5) var(--space-5); }
   .ready .workboard__table { margin-top: var(--space-4); }
   .ready .workboard__table th, .ready .workboard__table td { padding: var(--space-3) var(--space-3); }
   .ready .workboard__table thead th { padding-top: 0; }
   .ready .status-btn { min-height: 40px; }
   .ready.section { padding-top: var(--space-7); padding-bottom: var(--space-7); }
-  .ready .container { row-gap: var(--space-5); }
   .ready .section-title { font-size: calc(var(--text-section) * 0.9); }
   .ready .workboard__foot { margin-top: var(--space-4); }
   .ready .board-stamp { margin-block: 0; }
+}
 }
 .notes__grid { display: grid; grid-template-columns: 5fr 7fr; gap: var(--space-8) var(--space-9); align-items: start; }
 .notes__grid .figure img { object-position: 50% 42%; }
