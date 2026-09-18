@@ -293,7 +293,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 /* Campaign: the photograph runs under the whole block and the acid panel is cut over it, its torn edge
    tracking the stagger of the stacked words. */
 .tears .campaign { position: relative; min-height: clamp(420px, 44vw, 650px); }   /* keeps the block's height now the line is scaled to the panel */
-.tears .campaign__media { position: absolute; inset: 0; }
+.tears .campaign__media { position: absolute; inset: 0; padding-left: max(var(--gutter), calc((100vw - var(--container)) / 2)); }   /* photo copy sits a step left of the container edge */
 .tears .campaign__panel { background: transparent; grid-column: 2; position: relative; z-index: 4; container-type: inline-size; padding-left: var(--space-5); padding-right: var(--gutter); }   /* the torn edge is the panel's visual left edge, so little padding is needed there */
 .tears .campaign__media .media-slot__img { left: -18%; }   /* slide the photo left so the team, not just the leader, sits in the visible half */
 .tears .tear--campaign { right: 0; left: auto; top: 0; bottom: 0; height: auto; width: 50%; z-index: 3; --tear-color: var(--color-acid); filter: url(#tear-rough); }
@@ -509,7 +509,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .note { position: relative; display: grid; grid-template-columns: minmax(96px, 160px) 1fr; gap: var(--space-6); padding: var(--space-7) 0; border-bottom: 2px solid var(--color-ink); align-items: start; }
 .note__num { position: relative; display: inline-grid; place-items: center; width: clamp(88px, 6vw + 48px, 128px); aspect-ratio: 1; font-size: clamp(3rem, 2rem + 3vw, 4.5rem); line-height: 1; color: var(--color-ink); transform: rotate(-3deg); }
 .note__ring { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--color-ink); }
-.notes__pull { margin-top: var(--space-6); font-size: var(--text-campaign); line-height: 1.05; max-width: 14ch; transform: rotate(-1.5deg); }
+.notes__pull { margin-top: var(--space-6); font-size: var(--text-campaign); line-height: 1.05; max-width: 14ch; transform: rotate(-1.5deg); color: var(--color-acid); paint-order: stroke fill; -webkit-text-stroke: 0.045em var(--color-ink); }   /* acid marker on paper needs an ink edge to read */
 .note__accent { position: absolute; width: 18px; height: 18px; left: 0; top: var(--space-4); }
 .note__accent--orange { background: var(--color-orange); transform: rotate(-3deg); }
 .note__accent--periwinkle { background: var(--color-periwinkle); transform: rotate(2deg); }
