@@ -290,9 +290,9 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 
 /* Campaign: the photograph runs under the whole block and the acid panel is cut over it, its torn edge
    tracking the stagger of the stacked words. */
-.tears .campaign { position: relative; }
+.tears .campaign { position: relative; min-height: clamp(420px, 44vw, 650px); }   /* keeps the block's height now the line is scaled to the panel */
 .tears .campaign__media { position: absolute; inset: 0; }
-.tears .campaign__panel { background: transparent; grid-column: 2; position: relative; z-index: 4; }
+.tears .campaign__panel { background: transparent; grid-column: 2; position: relative; z-index: 4; container-type: inline-size; padding-left: var(--space-5); padding-right: var(--gutter); }   /* the torn edge is the panel's visual left edge, so little padding is needed there */
 .tears .campaign__media .media-slot__img { left: -18%; }   /* slide the photo left so the team, not just the leader, sits in the visible half */
 .tears .tear--campaign { right: 0; left: auto; top: 0; bottom: 0; height: auto; width: 50%; z-index: 3; --tear-color: var(--color-acid); filter: url(#tear-rough); }
 .tears .tear--campaign::before, .tears .tear--campaign::after { right: -16px; left: 0; top: -12px; bottom: -12px; clip-path: polygon(100.0% 0.0%, 14.1% 0.0%, 13.0% 1.1%, 13.7% 2.2%, 15.6% 3.3%, 14.8% 4.4%, 14.3% 5.6%, 14.5% 6.7%, 15.8% 7.8%, 14.4% 8.9%, 16.1% 10.0%, 15.9% 11.1%, 16.3% 12.2%, 15.3% 13.3%, 14.7% 14.4%, 14.9% 15.6%, 16.0% 16.7%, 16.0% 17.8%, 17.6% 18.9%, 17.2% 20.0%, 16.0% 21.1%, 14.9% 22.2%, 17.1% 23.3%, 15.8% 24.4%, 16.8% 25.6%, 16.8% 26.7%, 17.1% 27.8%, 17.2% 28.9%, 17.3% 30.0%, 17.7% 31.1%, 19.1% 32.2%, 18.9% 33.3%, 19.0% 34.4%, 19.4% 35.6%, 19.0% 36.7%, 18.6% 37.8%, 19.3% 38.9%, 18.2% 40.0%, 18.6% 41.1%, 18.8% 42.2%, 19.9% 43.3%, 18.9% 44.4%, 19.5% 45.6%, 19.3% 46.7%, 21.1% 47.8%, 20.3% 48.9%, 20.4% 50.0%, 19.5% 51.1%, 20.8% 52.2%, 21.8% 53.3%, 20.5% 54.4%, 21.0% 55.6%, 22.0% 56.7%, 22.4% 57.8%, 22.5% 58.9%, 21.5% 60.0%, 22.0% 61.1%, 21.4% 62.2%, 21.5% 63.3%, 22.2% 64.4%, 20.8% 65.6%, 21.8% 66.7%, 21.9% 67.8%, 21.4% 68.9%, 22.1% 70.0%, 22.4% 71.1%, 22.1% 72.2%, 21.3% 73.3%, 22.6% 74.4%, 23.0% 75.6%, 23.8% 76.7%, 22.4% 77.8%, 23.3% 78.9%, 23.3% 80.0%, 22.9% 81.1%, 22.2% 82.2%, 23.7% 83.3%, 22.6% 84.4%, 23.6% 85.6%, 25.3% 86.7%, 24.5% 87.8%, 24.7% 88.9%, 24.5% 90.0%, 24.3% 91.1%, 24.6% 92.2%, 25.4% 93.3%, 25.0% 94.4%, 24.2% 95.6%, 25.1% 96.7%, 25.1% 97.8%, 25.5% 98.9%, 26.9% 100.0%, 100.0% 100.0%); }
@@ -389,6 +389,9 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 }
 /* Campaign line: the wordmark face, stacked one word per line and staggered like a hand-lettered poster. */
 .campaign__line { font-family: var(--font-wordmark); text-transform: uppercase; letter-spacing: -0.06em; font-size: var(--campaign-mark, clamp(2.75rem, 0.6rem + 5.3vw, 5.6rem)); line-height: 0.95; transform: rotate(-2deg); display: flex; flex-direction: column; align-items: flex-start; }
+/* The block sits a quarter of the panel in from its left edge; the type scales with the panel so the shifted block always fits. */
+@media (min-width: 1024px) { .campaign__line { margin-left: 25%; font-size: min(var(--campaign-mark, clamp(2.75rem, 0.6rem + 5.3vw, 5.6rem)), 12.3cqi); } }
+@media (min-width: 768px) and (max-width: 1023px) { .campaign__line { margin-left: 12%; font-size: min(var(--campaign-mark, clamp(2.75rem, 0.6rem + 5.3vw, 5.6rem)), 14.5cqi); } }   /* tablet panel is narrow: half the shift */
 .campaign__word { display: block; white-space: nowrap; }
 .campaign__word:nth-child(2) { margin-left: 0.22em; }
 .campaign__word:nth-child(3) { margin-left: 0.44em; }
