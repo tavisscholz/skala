@@ -627,6 +627,18 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .site-footer__legal a { color: var(--color-muted-light); text-decoration: none; }
 .site-footer__legal a:hover { color: var(--color-white); }
 .site-footer__legal a::before, .site-footer__copy > span:nth-child(1) + .site-footer__legal a:first-child::before { content: "\00b7"; margin: 0 0.75em; color: var(--color-muted-light); }
+/* Work with us */
+.join__intro { max-width: 44rem; }
+.join__intro .section-intro + .section-intro { margin-top: var(--space-4); }
+.join__punch { font-weight: 700; color: var(--color-ink); }
+.join__body { max-width: 62ch; margin-top: var(--space-7); font-size: var(--text-body); line-height: var(--leading-body); }
+.join__sub { margin-top: var(--space-7); font-size: var(--text-subhead); font-weight: 800; letter-spacing: var(--tracking-tight); line-height: 1.15; }
+.join__sub:first-child { margin-top: 0; }
+.join__sub + p { margin-top: var(--space-3); }
+.join__body p + p { margin-top: var(--space-4); }
+.join__disciplines { font-weight: 700; color: var(--color-ink); }
+.join__cta { margin-top: var(--space-7); padding-top: var(--space-6); border-top: 2px solid var(--color-ink); }
+.join__note { margin-top: var(--space-4); font-style: italic; color: var(--color-muted-dark); }
 /* Legal pages */
 .legal__intro { max-width: 40rem; }
 .legal__meta { margin-top: var(--space-4); color: var(--color-muted-dark); font-size: var(--text-ui); }

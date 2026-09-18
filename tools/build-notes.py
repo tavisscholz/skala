@@ -33,7 +33,8 @@ QUOTES = {  # one line from each piece, shown while its row is hovered
 def clean_links(html):
     """Live site uses clean URLs: / for the home page and /playbook, /merch, /privacy, /terms for the rest (see .htaccess)."""
     for a, z in (('href="index.html#', 'href="/#'), ('href="index.html"', 'href="/"'), ('href="playbook.html', 'href="/playbook'),
-                 ('href="merch.html"', 'href="/merch"'), ('href="privacy.html"', 'href="/privacy"'), ('href="terms.html"', 'href="/terms"')):
+                 ('href="merch.html"', 'href="/merch"'), ('href="privacy.html"', 'href="/privacy"'), ('href="terms.html"', 'href="/terms"'),
+                 ('href="work-with-us.html"', 'href="/work-with-us"')):
         html = html.replace(a, z)
     return html
 
@@ -362,4 +363,40 @@ def legal_page(slug, spec):
     return "\n".join(parts)
 for slug, spec in LEGAL.items():
     (ROOT / f"{slug}.html").write_text(clean_links(legal_page(slug, spec)))
-print("built: index.html band + dialogs, playbook.html, merch.html, privacy.html, terms.html")
+# ---------- work with us ----------
+def work_page():
+    whead = head.replace("<title>Playbook — SKALA</title>", "<title>Work With Us — SKALA</title>")
+    whead = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="description" content="SKALA is connecting with experienced multiunit operators who want to help brands get ready for their next stage of growth.">', whead)
+    parts = [
+        "<!doctype html>", '<html lang="en">', whead, '<body class="join-page">',
+        '  <a class="skip-link" href="#main">Skip to content</a>', "", svgdefs, "",
+        merch_header.replace(' aria-current="page"', ''), "",
+        '  <main id="main">',
+        '    <section class="section section--paper join" aria-labelledby="join-title">',
+        '      <div class="container">',
+        '        <div class="join__intro reveal">',
+        '          <p class="eyebrow">Work with us</p>',
+        '          <h1 class="section-title" id="join-title">You’ve opened doors. Come build what’s next.</h1>',
+        '          <p class="section-intro">You’ve been there before opening day. And after, when the real work begins.</p>',
+        '          <p class="section-intro">You’ve helped bring new locations to life, worked through the problems, and made the next opening better. You know what it takes because you’ve had to make it work.</p>',
+        '          <p class="section-intro join__punch">That’s the experience we want at SKALA.</p>',
+        '        </div>',
+        '        <div class="join__body reveal">',
+        '          <h2 class="join__sub">Different specialties. Same hands-on instinct.</h2>',
+        '          <p class="join__disciplines">Field operations. Real estate. Store development. Franchising. People and training. Finance. Marketing. Technology. Supply chain.</p>',
+        '          <p>Whatever your discipline, you understand how your work lands in a real location, with a real team and customers walking through the door.</p>',
+        '          <p>You get close to the work. Take ownership. Leave people better equipped to run it.</p>',
+        '          <h2 class="join__sub">Bring what you’ve learned. Build what’s next.</h2>',
+        '          <p>We’re connecting with experienced operators who want to help multiunit brands get ready for their next stage of growth.</p>',
+        '          <p>Tell us what you’ve opened, improved, or put into practice, and where you do your best work.</p>',
+        '          <div class="join__cta">',
+        '            <a class="button button--ink" href="index.html#contact">Let’s build <span class="arrow" aria-hidden="true">→</span></a>',
+        '            <p class="join__note">A short introduction and a link to your experience are a good place to start.</p>',
+        '          </div>',
+        '        </div>',
+        '      </div>', '    </section>', '  </main>', "", footer, "",
+        '  <script src="js/site.js" defer></script>', '</body>', '</html>', "",
+    ]
+    return "\n".join(parts)
+(ROOT / "work-with-us.html").write_text(clean_links(work_page()))
+print("built: index.html band + dialogs, playbook.html, merch.html, privacy.html, terms.html, work-with-us.html")
