@@ -1,4 +1,4 @@
-# Does Your Opening Checklist Cover This?
+# Make Sure Your Opening Checklist Covers This
 
 2026-09-16
 
