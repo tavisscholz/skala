@@ -99,7 +99,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .wordmark__svg { display: none; width: 8.25em; height: 2.6em; font-size: 1rem; }
 .no-brush .wordmark__text { display: none; }
 .no-brush .wordmark__svg { display: block; }
-/* Both As tuck in under the letter before them (Oracle Brush sets them a touch wide). */
+/* A, L and the final A each tuck in under the letter before them (Oracle Brush sets them a touch wide). */
 .wordmark__tuck { display: inline-block; margin-left: var(--tuck, -0.14em); }
 .wordmark__crown { width: 0.85em; height: auto; font-size: var(--wordmark-header); margin-left: 0.2em; margin-top: -0.3em; transform: rotate(4deg); flex: none; }
 .site-footer .wordmark__crown { display: none; }
