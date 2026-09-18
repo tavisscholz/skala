@@ -1,4 +1,4 @@
-# Why your Best Manager Cannot Be the Whole System
+# Why Your Best Manager Cannot Be the Whole System
 
 2026-09-16
 
