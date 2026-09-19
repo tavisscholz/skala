@@ -10,11 +10,14 @@ Usage: python3 tools/build-notes.py
 import re, html, pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-ARTICLES = [  # order on the page, lane tag, lane name
-    ("your-best-manager-cannot-be-the-whole-system", "OPS", "Field Operations"),
-    ("5-things-your-opening-checklist-must-cover", "DEV", "Development"),
-    ("a-good-site-can-still-be-the-wrong-site", "RE", "Real Estate &amp; Leasing"),
-    ("how-your-item-19-will-break-your-sales-pipeline", "FRAN", "Franchise Development"),
+ARTICLES = [  # order on the page, lane tag, lane name, shown on the homepage band
+    ("your-best-manager-cannot-be-the-whole-system", "OPS", "Field Operations", True),
+    ("5-things-your-opening-checklist-must-cover", "DEV", "Development", True),
+    ("a-good-site-can-still-be-the-wrong-site", "RE", "Real Estate &amp; Leasing", True),
+    ("how-your-item-19-will-break-your-sales-pipeline", "FRAN", "Franchise Development", True),
+    ("scaling-chaos-7-signs", "SCALE", "Scaling Up", False),
+    ("the-founder-bottleneck", "SCALE", "Scaling Up", False),
+    ("the-next-ten-locations", "SCALE", "Scaling Up", False),
 ]
 ACCENTS = ["orange", "periwinkle", "orange", "periwinkle"]
 RINGS = [
@@ -29,6 +32,9 @@ QUOTES = {  # one line from each piece, shown while its row is hovered
     "a-good-site-can-still-be-the-wrong-site": "The address was fine. The market wasn\u2019t.",
     "how-your-item-19-will-break-your-sales-pipeline": "Any daylight between the two is exactly where your pipeline is leaking.",
     "5-things-your-opening-checklist-must-cover": "A schedule with no room for either isn\u2019t a schedule, it\u2019s a hope.",
+    "scaling-chaos-7-signs": "Growth is a stress test, not a reward.",
+    "the-founder-bottleneck": "The founder decides what the rules are. The founder stops being the rule.",
+    "the-next-ten-locations": "Your management infrastructure didn\u2019t grow with you.",
 }
 def clean_links(html):
     """Live site uses clean URLs: / for the home page and /playbook, /merch, /privacy, /terms for the rest (see .htaccess)."""
@@ -77,23 +83,56 @@ def parse(slug):
             out.append(t + "</tbody></table></div>"); continue
         if l.startswith("**This week:**"):
             out.append(f'<aside class="note-article__week"><p class="note-article__week-label">This week</p><p>{inline(l[len("**This week:**"):].strip())}</p></aside>'); k += 1; continue
+        if l.startswith("- "):
+            items = []
+            while k < len(body) and body[k].startswith("- "):
+                items.append(f"<li>{inline(body[k][2:].strip())}</li>"); k += 1
+            out.append('<ul class="note-article__list">' + "".join(items) + "</ul>"); continue
+        if l.startswith("**Fast Facts**"):
+            k += 1; items = []
+            while k < len(body) and body[k].startswith("> - "):
+                items.append(f"<li>{inline(body[k][4:].strip())}</li>"); k += 1
+            out.append('<aside class="note-article__facts"><p class="note-article__facts-label">Fast facts</p><ul class="note-article__list">' + "".join(items) + "</ul></aside>"); continue
+        if l.startswith(">"):
+            q = []
+            while k < len(body) and body[k].startswith(">"):
+                q.append(body[k][1:].strip()); k += 1
+            first = q[0]
+            m = re.fullmatch(r"\*\*\"(.+)\"\*\*", first)
+            if m and len(q) <= 2:  # a lifted line, optionally with an attribution underneath
+                cite = ""
+                if len(q) == 2:
+                    who = re.sub(r"^\*\((.+)\)\*$", r"\1", q[1])
+                    cite = "<cite>" + inline(who) + "</cite>"
+                out.append(f'<blockquote class="note-article__pull note-article__pull--own"><p>{inline(m.group(1))}</p>{cite}</blockquote>'); continue
+            m = re.fullmatch(r"\*\*(.+?)\*\*", first)
+            if m and len(q) > 1:  # a titled box
+                text = "".join(f"<p>{inline(x)}</p>" for x in q[1:] if x)
+                if m.group(1).lower() == "do this week":
+                    out.append(f'<aside class="note-article__week"><p class="note-article__week-label">This week</p>{text}</aside>')
+                else:
+                    out.append(f'<aside class="note-article__callout"><p class="note-article__callout-label">{inline(m.group(1))}</p>{text}</aside>')
+                continue
+            out.append('<blockquote class="note-article__quote">' + "".join(f"<p>{inline(x)}</p>" for x in q if x) + "</blockquote>"); continue
         out.append(f"<p>{inline(l)}</p>"); k += 1
     # Pull quote after the second paragraph, magazine style
     quote = QUOTES.get(slug)
     paras = [j for j, o in enumerate(out) if o.startswith("<p>")]
-    if quote and len(paras) > 2:
+    if quote and len(paras) > 2 and not any("note-article__pull--own" in o for o in out):
         out.insert(paras[1] + 1, f'<blockquote class="note-article__pull"><p>{esc(quote)}</p></blockquote>')
     words = len(re.findall(r"[A-Za-z0-9\u2019']+", " ".join(body)))
     minutes = max(1, round(words / 200))
     return dict(slug=slug, title=title, date=date, stand=stand, kind=kind, minutes=minutes, body="\n        ".join(out))
 
 notes = []
-for i, (slug, tag, lane) in enumerate(ARTICLES, start=1):
-    n = parse(slug); n.update(i=i, tag=tag, lane=lane, accent=ACCENTS[i-1], ring=RINGS[i-1]); notes.append(n)
+for i, (slug, tag, lane, home) in enumerate(ARTICLES, start=1):
+    n = parse(slug); n.update(i=i, tag=tag, lane=lane, home=home, accent=ACCENTS[(i-1) % len(ACCENTS)], ring=RINGS[(i-1) % len(RINGS)]); notes.append(n)
+home_notes = [n for n in notes if n["home"]]
 
 # ---------- stacked pull quote (default + one per play; sized by the tallest) ----------
-quote_stack = f'<span class="notes__pull-item is-active" data-quote-for="default">{esc(PULL)}</span>' + "".join(
-    f'<span class="notes__pull-item" data-quote-for="{slug}" aria-hidden="true">{esc(q)}</span>' for slug, q in QUOTES.items() if q != PULL)
+def quote_stack_for(items):
+    return f'<span class="notes__pull-item is-active" data-quote-for="default">{esc(PULL)}</span>' + "".join(
+        f'<span class="notes__pull-item" data-quote-for="{n["slug"]}" aria-hidden="true">{esc(QUOTES[n["slug"]])}</span>' for n in items if QUOTES[n["slug"]] != PULL)
 
 # ---------- homepage band ----------
 rows = "\n".join(f'''          <li class="note-line" data-quote-for="{n['slug'] if QUOTES[n['slug']] != PULL else 'default'}">
@@ -105,7 +144,7 @@ rows = "\n".join(f'''          <li class="note-line" data-quote-for="{n['slug'] 
               </span>
               <span class="arrow" aria-hidden="true">→</span>
             </button>
-          </li>''' for n in notes)
+          </li>''' for n in home_notes)
 band = f'''<!-- notes:start -->
     <section class="section section--paper notes" id="playbook" aria-labelledby="notes-title">
       <div class="container notes__grid">
@@ -140,7 +179,7 @@ dialogs = "\n\n".join(f'''  <dialog class="note-dialog" id="note-{n['i']}" aria-
         <a class="text-link" href="playbook.html#{n['slug']}">Open in the playbook <span class="arrow" aria-hidden="true">→</span></a>
       </div>
     </article>
-  </dialog>''' for n in notes)
+  </dialog>''' for n in home_notes)
 dialogs = "<!-- dialogs:start -->\n" + dialogs + "\n  <!-- dialogs:end -->"
 
 idx = ROOT / "index.html"; s = idx.read_text()
@@ -203,7 +242,7 @@ page = f'''<!doctype html>
           <p class="eyebrow">Playbook</p>
           <h1 class="section-title" id="fn-title">Plays from the work.</h1>
           <p class="section-intro">Practical notes and working tools on building a business that can keep moving. Written from the store floor, the development schedule, the site walk, and the franchise pipeline.</p>
-          <p class="notes__pull brush" aria-live="polite">{quote_stack}</p>
+          <p class="notes__pull brush" aria-live="polite">{quote_stack_for(notes)}</p>
         </div>
         <figure class="figure figure--tall reveal">
           <img src="assets/images/notes-field-notebook.webp" width="1024" height="1536" alt="A SKALA field notebook and printed plans on a wooden worktable" fetchpriority="high">
