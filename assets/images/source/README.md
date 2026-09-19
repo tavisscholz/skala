@@ -1,5 +1,5 @@
 # Drop original photographs here (any format), named:
-#   hero-store-floor.*
+#   SKALA_01_store_floor_hero.*
 #   campaign-team-training.*
 #   approach-before-doors-open.*
 #   tool-opening-checklist.*

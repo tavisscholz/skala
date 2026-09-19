@@ -43,7 +43,7 @@ mapping at the top of that script names which source feeds which slot.
 
 | Source | On the page | Notes |
 |---|---|---|
-| `hero-store-floor` (was SKALA_01) | Hero | |
+| `SKALA_01_store_floor_hero` | Hero | |
 | `campaign-team-training` (SKALA_02) | Campaign poster | |
 | `approach-before-doors-open` (SKALA_03) | How we work | |
 | `about-between-locations` (SKALA_18, cropped 2:3) | About | Not presented as Tavis |
