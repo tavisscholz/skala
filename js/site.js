@@ -154,7 +154,12 @@
   var boardRows = Array.prototype.slice.call(document.querySelectorAll('.workboard__table tbody tr'));
   var readySection = document.getElementById('ready');
 
-  function freshProgress() { return STAGES.map(function (s) { return s.rows.map(function () { return false; }); }); }
+  /* On phones the board is hidden and tiles are the checklist, so Siloed
+     starts checked: it is the condition every business already has. */
+  var phone = window.matchMedia('(max-width: 767px)');
+  function freshProgress() {
+    return STAGES.map(function (s, i) { return s.rows.map(function () { return phone.matches && i === 0; }); });
+  }
   function loadProgress() {
     try {
       var raw = localStorage.getItem(STORE_KEY);
@@ -218,7 +223,6 @@
     if (currentStage !== pinnedStage) showStage(pinnedStage, false);
   }
   /* On phones the board is hidden: tapping a tile checks the whole stage off (or back on). */
-  var phone = window.matchMedia('(max-width: 767px)');
   function toggleStage(step) {
     var i = steps.indexOf(step);
     var done = !stageDone(i);

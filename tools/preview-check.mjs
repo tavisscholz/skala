@@ -138,7 +138,8 @@ note('reset restores Working on', (await status.getAttribute('data-status')) ===
   await ph.evaluate(() => localStorage.clear());
   await ph.reload({ waitUntil: 'networkidle' });
   note('phone: the workboard is hidden', !(await ph.locator('.workboard').isVisible()));
-  for (let i = 0; i < 5; i++) { await ph.locator('.ladder__step').nth(i).click(); await ph.waitForTimeout(120); }
+  note('phone: Siloed starts selected and checked off', await ph.evaluate(() => { const s = document.querySelector('.ladder__step'); return s.classList.contains('is-active') && s.classList.contains('is-complete') && document.querySelectorAll('.ladder__step.is-complete').length === 1; }));
+  for (let i = 1; i < 5; i++) { await ph.locator('.ladder__step').nth(i).click(); await ph.waitForTimeout(120); }
   note('phone: tapping all five tiles lights them and opens the celebration', await ph.evaluate(() => document.querySelectorAll('.ladder__step.is-complete').length === 5) && await ph.locator('.hoopla.is-open').count() === 1);
   await ph.screenshot({ path: join(outDir, 'ready-to-scale-390.png') });
   await ph.locator('.hoopla__close').click();
