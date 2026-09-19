@@ -11,10 +11,10 @@ import re, html, pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 ARTICLES = [  # order on the page, lane tag, lane name, shown on the homepage band
-    ("your-best-manager-cannot-be-the-whole-system", "OPS", "Field Operations", True),
-    ("5-things-your-opening-checklist-must-cover", "DEV", "Development", True),
-    ("a-good-site-can-still-be-the-wrong-site", "RE", "Real Estate &amp; Leasing", True),
-    ("how-your-item-19-will-break-your-sales-pipeline", "FRAN", "Franchise Development", True),
+    ("your-best-manager-cannot-be-the-operating-system", "OPS", "Field Operations", True),
+    ("why-new-store-openings-fall-behind", "DEV", "Development", True),
+    ("before-you-sign-the-lease", "RE", "Real Estate &amp; Leasing", True),
+    ("when-your-sales-story-outruns-your-item-19", "FRAN", "Franchise Development", True),
     ("scaling-chaos-7-signs", "SCALE", "Scaling Up", False),
     ("the-founder-bottleneck", "SCALE", "Scaling Up", False),
     ("the-next-ten-locations", "SCALE", "Scaling Up", False),
@@ -28,10 +28,10 @@ RINGS = [
 ]
 PULL = "The strongest performer becomes the biggest single point of failure."
 QUOTES = {  # one line from each piece, shown while its row is hovered
-    "your-best-manager-cannot-be-the-whole-system": "The strongest performer becomes the biggest single point of failure.",
-    "a-good-site-can-still-be-the-wrong-site": "The address was fine. The market wasn\u2019t.",
-    "how-your-item-19-will-break-your-sales-pipeline": "Any daylight between the two is exactly where your pipeline is leaking.",
-    "5-things-your-opening-checklist-must-cover": "A schedule with no room for either isn\u2019t a schedule, it\u2019s a hope.",
+    "your-best-manager-cannot-be-the-operating-system": "Documents don\u2019t run stores. Routines do.",
+    "why-new-store-openings-fall-behind": "A checklist without owners and dates is a document, not a control system.",
+    "before-you-sign-the-lease": "Measure the door, not the neighborhood.",
+    "when-your-sales-story-outruns-your-item-19": "Any daylight between the two is exactly where your pipeline is leaking.",
     "scaling-chaos-7-signs": "Growth is a stress test, not a reward.",
     "the-founder-bottleneck": "The founder decides what the rules are. The founder stops being the rule.",
     "the-next-ten-locations": "Your management infrastructure didn\u2019t grow with you.",
