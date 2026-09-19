@@ -150,9 +150,10 @@ import hashlib
 def asset_version(rel):
     return hashlib.sha1((ROOT / rel).read_bytes()).hexdigest()[:8]
 def stamp_assets(html):
+    """Append a content hash to every css/js/image URL so a swapped file is never served from cache."""
     for rel in ("css/fonts.css", "css/tokens.css", "css/site.css", "js/site.js"):
         html = re.sub(r'(["\'])' + re.escape(rel) + r'(\?v=[0-9a-f]+)?(["\'])', lambda m: m.group(1) + rel + "?v=" + asset_version(rel) + m.group(3), html)
-    return html
+    return re.sub(r'(assets/images/[A-Za-z0-9_-]+\.webp)(\?v=[0-9a-f]+)?', lambda m: m.group(1) + "?v=" + asset_version(m.group(1)), html)
 s = stamp_assets(s)
 s = re.sub(r"<!-- notes:start -->.*?<!-- notes:end -->", lambda m: band, s, flags=re.S)
 s = re.sub(r"<!-- dialogs:start -->.*?<!-- dialogs:end -->", lambda m: dialogs, s, flags=re.S)
@@ -243,7 +244,7 @@ page = f'''<!doctype html>
 </body>
 </html>
 '''
-(ROOT / "playbook.html").write_text(clean_links(page))
+(ROOT / "playbook.html").write_text(clean_links(stamp_assets(page)))
 
 # ---------- merch page ----------
 MERCH = [
@@ -301,7 +302,7 @@ merch = f'''<!doctype html>
 </body>
 </html>
 '''
-(ROOT / "merch.html").write_text(clean_links(merch))
+(ROOT / "merch.html").write_text(clean_links(stamp_assets(merch)))
 # ---------- legal pages (linked from the footer only) ----------
 LEGAL = {
     "privacy": {
@@ -372,7 +373,7 @@ def legal_page(slug, spec):
     ]
     return "\n".join(parts)
 for slug, spec in LEGAL.items():
-    (ROOT / f"{slug}.html").write_text(clean_links(legal_page(slug, spec)))
+    (ROOT / f"{slug}.html").write_text(clean_links(stamp_assets(legal_page(slug, spec))))
 # ---------- work with us ----------
 def work_page():
     whead = head.replace("<title>Playbook — SKALA</title>", "<title>Work With SKALA</title>")
@@ -410,5 +411,5 @@ def work_page():
         '  <script src="js/site.js" defer></script>', '</body>', '</html>', "",
     ]
     return "\n".join(parts)
-(ROOT / "work-with-us.html").write_text(clean_links(work_page()))
+(ROOT / "work-with-us.html").write_text(clean_links(stamp_assets(work_page())))
 print("built: index.html band + dialogs, playbook.html, merch.html, privacy.html, terms.html, work-with-us.html")
