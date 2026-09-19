@@ -7,7 +7,7 @@ Writes:
 
 Usage: python3 tools/build-notes.py
 """
-import re, html, pathlib
+import re, html, hashlib, pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 ARTICLES = [  # order on the page, lane tag, lane name, shown on the homepage band
@@ -124,6 +124,18 @@ def parse(slug):
     minutes = max(1, round(words / 200))
     return dict(slug=slug, title=title, date=date, stand=stand, kind=kind, minutes=minutes, body="\n        ".join(out))
 
+def asset_version(rel):
+    return hashlib.sha1((ROOT / rel).read_bytes()).hexdigest()[:8]
+def listen_button(n, where):
+    """Play/pause control beside the read time. Uses a recorded MP3 when
+    tools/build-audio.mjs has made one, otherwise the device's own voice."""
+    rel = f"assets/audio/{n['slug']}.mp3"
+    audio = f' data-audio="{rel}?v={asset_version(rel)}"' if (ROOT / rel).exists() else ""
+    return (f'<button class="listen" type="button" data-listen="{where}-{n["slug"]}"{audio} data-state="idle" aria-pressed="false" aria-label="Listen to this play">'
+            '<svg class="listen__play" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0.5 9 5 1 9.5z"/></svg>'
+            '<svg class="listen__pause" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0.5h3v9H1zM6 0.5h3v9H6z"/></svg>'
+            '<span class="listen__label">Listen</span><span class="listen__time"></span></button>')
+
 notes = []
 for i, (slug, tag, lane, home) in enumerate(ARTICLES, start=1):
     n = parse(slug); n.update(i=i, tag=tag, lane=lane, home=home, accent=ACCENTS[(i-1) % len(ACCENTS)], ring=RINGS[(i-1) % len(RINGS)]); notes.append(n)
@@ -170,7 +182,7 @@ dialogs = "\n\n".join(f'''  <dialog class="note-dialog" id="note-{n['i']}" aria-
       </div>
       <h2 class="note-article__title" id="note-{n['i']}-heading" tabindex="-1">{esc(n['title'])}</h2>
       <p class="note-article__stand">{esc(n['stand'])}</p>
-      <p class="note-article__byline"><span class="note-article__author">Tavis Scholz</span> · {n['date']} · {n['minutes']} min read</p>
+      <p class="note-article__byline"><span class="note-article__author">Tavis Scholz</span> · {n['date']} · {n['minutes']} min read {listen_button(n, 'note')}</p>
       <div class="note-article__body">
         {n['body']}
       </div>
@@ -185,9 +197,6 @@ dialogs = "<!-- dialogs:start -->\n" + dialogs + "\n  <!-- dialogs:end -->"
 idx = ROOT / "index.html"; s = idx.read_text()
 
 # ---------- cache busting: stamp each stylesheet and script link with a hash of its contents ----------
-import hashlib
-def asset_version(rel):
-    return hashlib.sha1((ROOT / rel).read_bytes()).hexdigest()[:8]
 def stamp_assets(html):
     """Append a content hash to every css/js/image URL so a swapped file is never served from cache."""
     for rel in ("css/fonts.css", "css/tokens.css", "css/site.css", "js/site.js"):
@@ -219,7 +228,7 @@ articles = "\n\n".join(f'''        <article class="fn-article reveal" id="{n['sl
           </div>
           <h2 class="note-article__title" id="{n['slug']}-title">{esc(n['title'])}</h2>
           <p class="note-article__stand">{esc(n['stand'])}</p>
-          <p class="note-article__byline"><span class="note-article__author">Tavis Scholz</span> · {n['date']} · {n['minutes']} min read</p>
+          <p class="note-article__byline"><span class="note-article__author">Tavis Scholz</span> · {n['date']} · {n['minutes']} min read {listen_button(n, 'play')}</p>
           <div class="note-article__body">
             {n['body']}
           </div>

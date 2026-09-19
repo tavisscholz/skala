@@ -373,6 +373,140 @@
     dlg.addEventListener('cancel', function (e) { e.preventDefault(); closeNote(dlg); });
   });
 
+  /* ---------- Listen: read a play aloud ----------
+     A recorded MP3 is used when the build found one (data-audio). Otherwise
+     the device's own voice reads the article through the Web Speech API.
+     One player runs at a time; closing a dialog or leaving the page stops it. */
+  (function () {
+    var buttons = Array.prototype.slice.call(document.querySelectorAll('[data-listen]'));
+    if (!buttons.length) return;
+    var synth = window.speechSynthesis;
+    var canSpeak = !!(synth && window.SpeechSynthesisUtterance);
+    var active = null;
+
+    function fmt(sec) { sec = Math.max(0, Math.round(sec)); return Math.floor(sec / 60) + ':' + ('0' + (sec % 60)).slice(-2); }
+    function paint(btn, state, time) {
+      btn.setAttribute('data-state', state);
+      btn.setAttribute('aria-pressed', state === 'playing' ? 'true' : 'false');
+      btn.querySelector('.listen__label').textContent = state === 'playing' ? 'Pause' : state === 'paused' ? 'Resume' : state === 'loading' ? 'Loading' : 'Listen';
+      btn.querySelector('.listen__time').textContent = time || '';
+    }
+    function stopActive() { if (active) { var a = active; active = null; a.stop(); } }
+
+    /* The article as a list of short spoken chunks: title, standfirst, then the body in order. */
+    function script(btn) {
+      var art = btn.closest('article');
+      var out = [];
+      function push(t) { t = (t || '').replace(/\s+/g, ' ').trim(); if (!t) return; if (!/[.!?…]["”’)]*$/.test(t)) t += '.'; out.push(t); }
+      var title = art.querySelector('.note-article__title'); if (title) push(title.textContent);
+      var stand = art.querySelector('.note-article__stand'); if (stand) push(stand.textContent);
+      var body = art.querySelector('.note-article__body');
+      Array.prototype.forEach.call(body ? body.children : [], function (el) {
+        if (el.matches('h3')) { push(el.textContent); return; }
+        if (el.matches('blockquote')) { var c = el.querySelector('cite'); push(el.querySelector('p') ? el.querySelector('p').textContent : el.textContent); if (c) push(c.textContent); return; }
+        if (el.matches('aside')) { Array.prototype.forEach.call(el.querySelectorAll('p, li'), function (x) { push(x.textContent); }); return; }
+        if (el.matches('ul, ol')) { Array.prototype.forEach.call(el.querySelectorAll('li'), function (x) { push(x.textContent); }); return; }
+        if (el.matches('.note-table__wrap')) { Array.prototype.forEach.call(el.querySelectorAll('tr'), function (r) { push(Array.prototype.map.call(r.children, function (c) { return c.textContent.trim(); }).join(', ')); }); return; }
+        push(el.textContent);
+      });
+      /* Long paragraphs get cut off by some engines; split them at sentence ends. */
+      var chunks = [];
+      out.forEach(function (t) {
+        var parts = t.match(/[^.!?…]+[.!?…]+["”’)]*\s*|[^.!?…]+$/g) || [t];
+        var buf = '';
+        parts.forEach(function (p) { if (buf && (buf + p).length > 220) { chunks.push(buf.trim()); buf = ''; } buf += p; });
+        if (buf.trim()) chunks.push(buf.trim());
+      });
+      return chunks;
+    }
+    function pickVoice() {
+      var voices = synth.getVoices();
+      var en = voices.filter(function (v) { return /^en[-_]/i.test(v.lang); });
+      var prefer = ['Samantha', 'Ava', 'Allison', 'Daniel', 'Karen', 'Moira', 'Google US English', 'Microsoft Aria', 'Microsoft Jenny', 'Microsoft Guy', 'Google UK English Male'];
+      for (var i = 0; i < prefer.length; i++) {
+        for (var j = 0; j < en.length; j++) if (en[j].name.indexOf(prefer[i]) === 0) return en[j];
+      }
+      return en.filter(function (v) { return v.localService && /US/i.test(v.lang); })[0] || en[0] || voices[0] || null;
+    }
+    function whenVoicesReady(cb) {
+      if (synth.getVoices().length) { cb(); return; }
+      var done = false;
+      function go() { if (done) return; done = true; cb(); }
+      synth.addEventListener('voiceschanged', go, { once: true });
+      window.setTimeout(go, 600);
+    }
+
+    function speechPlayer(btn) {
+      var chunks = script(btn), i = 0, ended = false, elapsed = 0, startedAt = 0, timer = null;
+      var words = chunks.join(' ').split(' ').length, estimate = Math.round(words / 2.6);
+      function tick() { paint(btn, 'playing', fmt(elapsed + (Date.now() - startedAt) / 1000) + ' / ' + fmt(estimate)); }
+      function finish() { if (ended) return; ended = true; window.clearInterval(timer); paint(btn, 'idle'); if (active && active.btn === btn) active = null; }
+      function next() {
+        if (ended) return;
+        if (i >= chunks.length) { finish(); return; }
+        var u = new SpeechSynthesisUtterance(chunks[i++]);
+        var v = pickVoice(); if (v) u.voice = v;
+        u.rate = 1; u.pitch = 1;
+        u.onend = function () { if (!ended) next(); };
+        u.onerror = function (e) { if (e.error === 'interrupted' || e.error === 'canceled') return; if (!ended) next(); };
+        synth.speak(u);
+      }
+      var me = {
+        btn: btn,
+        stop: function () { ended = true; window.clearInterval(timer); synth.cancel(); paint(btn, 'idle'); },
+        pause: function () { elapsed += (Date.now() - startedAt) / 1000; window.clearInterval(timer); synth.pause(); paint(btn, 'paused', fmt(elapsed) + ' / ' + fmt(estimate)); },
+        resume: function () {
+          startedAt = Date.now(); timer = window.setInterval(tick, 500); tick();
+          synth.resume();
+          /* Some phones drop a paused queue; pick up at the current chunk. */
+          window.setTimeout(function () { if (!ended && !synth.speaking && !synth.pending) { i = Math.max(0, i - 1); synth.cancel(); next(); } }, 400);
+        },
+        paused: false
+      };
+      paint(btn, 'loading');
+      whenVoicesReady(function () { if (ended) return; startedAt = Date.now(); timer = window.setInterval(tick, 500); tick(); next(); });
+      return me;
+    }
+
+    function audioPlayer(btn, src) {
+      var a = new Audio(src), ended = false;
+      a.preload = 'metadata';
+      function show(state) { paint(btn, state, a.duration ? fmt(a.currentTime) + ' / ' + fmt(a.duration) : ''); }
+      a.addEventListener('timeupdate', function () { if (!ended && !a.paused) show('playing'); });
+      a.addEventListener('ended', function () { ended = true; paint(btn, 'idle'); if (active && active.btn === btn) active = null; });
+      a.addEventListener('error', function () { ended = true; paint(btn, 'idle'); if (active && active.btn === btn) active = null; });
+      var me = {
+        btn: btn,
+        stop: function () { ended = true; a.pause(); a.src = ''; paint(btn, 'idle'); },
+        pause: function () { a.pause(); show('paused'); },
+        resume: function () { a.play(); show('playing'); },
+        paused: false
+      };
+      paint(btn, 'loading');
+      var p = a.play(); if (p && p.catch) p.catch(function () { me.stop(); });
+      return me;
+    }
+
+    buttons.forEach(function (btn) {
+      var src = btn.getAttribute('data-audio');
+      if (!src && !canSpeak) { btn.hidden = true; return; }
+      btn.addEventListener('click', function () {
+        if (active && active.btn === btn) {
+          if (active.paused) { active.paused = false; active.resume(); }
+          else { active.paused = true; active.pause(); }
+          return;
+        }
+        stopActive();
+        active = src ? audioPlayer(btn, src) : speechPlayer(btn);
+      });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.note-dialog'), function (dlg) {
+      dlg.addEventListener('close', stopActive);
+      Array.prototype.forEach.call(dlg.querySelectorAll('[data-close-note]'), function (el) { el.addEventListener('click', stopActive); });
+    });
+    window.addEventListener('pagehide', function () { stopActive(); if (canSpeak) synth.cancel(); });
+  })();
+
   /* ---------- Contact draft ---------- */
   var form = document.getElementById('contact-form');
   var draft = document.getElementById('draft');

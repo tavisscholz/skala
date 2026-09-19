@@ -236,6 +236,35 @@ await fn.goto(url + 'playbook.html', { waitUntil: 'networkidle' });
 note('playbook page loads without errors', fnErrors.length === 0, fnErrors.join(' | '));
 note('playbook page has seven articles', (await fn.locator('.fn-article').count()) === 7);
 note('homepage band keeps four plays and sends the rest to the playbook', await fn.evaluate(async (u) => { const h = await (await fetch(u + 'index.html')).text(); return (h.match(/class="note-line"/g) || []).length === 4 && (h.match(/<dialog class="note-dialog"/g) || []).length === 4; }, url));
+note('every play carries a Listen button beside its read time', (await fn.locator('.fn-article .note-article__byline .listen').count()) === 7 && await fn.evaluate(async (u) => { const h = await (await fetch(u + 'index.html')).text(); return (h.match(/class="listen"/g) || []).length === 4; }, url));
+{
+  /* Headless Chromium has no speech engine, so stand one in: each utterance "ends" after 150ms. */
+  const lp = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  await lp.addInitScript(() => {
+    const voices = [{ name: 'Samantha', lang: 'en-US', localService: true, default: true }];
+    let queue = [], paused = false, timer = null, speaking = false;
+    function pump() { if (paused || speaking || !queue.length) return; const u = queue.shift(); speaking = true; timer = setTimeout(() => { speaking = false; u.onend && u.onend({}); pump(); }, 150); }
+    window.SpeechSynthesisUtterance = function (t) { this.text = t; };
+    Object.defineProperty(window, 'speechSynthesis', { configurable: true, value: { getVoices: () => voices, addEventListener() {}, speak(u) { queue.push(u); pump(); }, cancel() { clearTimeout(timer); queue = []; speaking = false; }, pause() { paused = true; clearTimeout(timer); speaking = false; }, resume() { paused = false; pump(); }, get speaking() { return speaking; }, get pending() { return queue.length > 0; } } });
+  });
+  await lp.goto(url + 'playbook.html', { waitUntil: 'networkidle' });
+  const btn = lp.locator('#the-founder-bottleneck .listen');
+  await btn.scrollIntoViewIfNeeded(); await btn.click(); await lp.waitForTimeout(400);
+  const state1 = await btn.getAttribute('data-state');
+  const label1 = await btn.locator('.listen__label').textContent();
+  const time1 = await btn.locator('.listen__time').textContent();
+  await btn.click(); await lp.waitForTimeout(200);
+  const state2 = await btn.getAttribute('data-state');
+  const label2 = await btn.locator('.listen__label').textContent();
+  await btn.click(); await lp.waitForTimeout(200);
+  const state3 = await btn.getAttribute('data-state');
+  note('Listen plays, pauses and resumes with a running clock', state1 === 'playing' && label1 === 'Pause' && /\d:\d\d \/ \d+:\d\d/.test(time1) && state2 === 'paused' && label2 === 'Resume' && state3 === 'playing', `${state1}/${label1}/${time1}/${state2}/${label2}/${state3}`);
+  const other = lp.locator('#the-next-ten-locations .listen');
+  await other.scrollIntoViewIfNeeded(); await other.click(); await lp.waitForTimeout(300);
+  note('starting another play stops the first', (await btn.getAttribute('data-state')) === 'idle' && (await other.getAttribute('data-state')) === 'playing');
+  await lp.screenshot({ path: join(outDir, 'listen-playing-1440.png'), clip: { x: 0, y: 0, width: 1440, height: 900 } });
+  await lp.close();
+}
 note('scaling plays render their facts, callouts and weekly move', (await fn.locator('#scaling-chaos-7-signs .note-article__facts').count()) === 1 && (await fn.locator('#the-next-ten-locations .note-article__callout').count()) === 1 && (await fn.locator('#the-founder-bottleneck .note-article__week').count()) === 1 && (await fn.locator('#the-next-ten-locations .note-article__pull cite').textContent()).includes('Mellon'));
 note('playbook page: no horizontal overflow', (await fn.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)) <= 0);
 await fn.setViewportSize({ width: 390, height: 844 });

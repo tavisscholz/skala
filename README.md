@@ -41,3 +41,4 @@ Screenshots land in `preview-out/`; the script exits non-zero if any check fails
 ## Publishing
 
 See [docs/deploy.md](docs/deploy.md) for the Hostinger Git deployment steps.
+- Audio versions of the plays: see [docs/audio.md](docs/audio.md).
