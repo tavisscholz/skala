@@ -173,7 +173,7 @@
     btn.setAttribute('aria-pressed', String(inUse));
     btn.querySelector('.status-btn__text').textContent = inUse ? 'Done' : 'Working on';
   }
-  var pinnedStage = STAGES.length - 1;
+  var pinnedStage = 0;   /* Siloed is where every business starts */
   var currentStage = pinnedStage;
   function paintStamp() {
     if (!stamp) return;

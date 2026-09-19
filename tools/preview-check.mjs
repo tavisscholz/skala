@@ -88,18 +88,18 @@ note('status switches back to Working on', (await status.getAttribute('data-stat
   await page.locator('.ladder__step').first().scrollIntoViewIfNeeded();
   await page.locator('.ladder__step').first().hover();
   await page.waitForTimeout(150);
-  note('hovering stage 1 lights its tile and mutes stage 5', await page.evaluate(() => document.querySelector('.ladder__step').classList.contains('is-active') && document.querySelector('.ladder__step--ready').classList.contains('is-muted')));
+  note('hovering stage 1 lights its tile and mutes stage 5', await page.evaluate(() => document.querySelector('.ladder__step').classList.contains('is-active') && document.querySelectorAll('.ladder__step')[4].classList.contains('is-muted')));
   note('hovering stage S swaps the board to the Siloed plan', (await page.locator('.workboard__head .eyebrow').textContent()).trim() === 'Start here: uncover the gaps.' && (await page.locator('.board-stamp__word').textContent()).trim() === 'Siloed.' && (await page.locator('.workboard__table tbody tr').first().locator('td').first().textContent()).includes('who people rely on'));
   await page.locator('.ladder__step').nth(4).hover();
   await page.waitForTimeout(150);
   note('hovering stage 5 shows the expansion plan and stamp', (await page.locator('.workboard__head .eyebrow').textContent()).trim() === 'From Linked to Expansion-ready' && (await page.locator('.board-stamp__word').textContent()).trim() === 'You\u2019re ready to scale.');
   await page.mouse.move(10, 10);
   await page.waitForTimeout(150);
-  note('leaving the ladder falls back to the pinned expansion stage', (await page.locator('.workboard__head .eyebrow').textContent()).trim() === 'From Linked to Expansion-ready' && !(await page.evaluate(() => document.querySelector('.ladder__step--ready').classList.contains('is-muted'))));
+  note('leaving the ladder falls back to the pinned Siloed stage', (await page.locator('.workboard__head .eyebrow').textContent()).trim() === 'Start here: uncover the gaps.' && await page.evaluate(() => document.querySelectorAll('.ladder__step')[0].classList.contains('is-active') && !document.querySelectorAll('.ladder__step')[0].classList.contains('is-muted')));
   await page.locator('.ladder__step').nth(2).click();
   await page.mouse.move(5, 5);
   await page.waitForTimeout(250);
-  note('clicking stage 3 pins it after the mouse leaves', (await page.locator('.workboard__head .eyebrow').textContent()).trim() === 'From Captured to Adopted' && await page.evaluate(() => document.querySelectorAll('.ladder__step')[2].classList.contains('is-active') && document.querySelector('.ladder__step--ready').classList.contains('is-muted')));
+  note('clicking stage 3 pins it after the mouse leaves', (await page.locator('.workboard__head .eyebrow').textContent()).trim() === 'From Captured to Adopted' && await page.evaluate(() => document.querySelectorAll('.ladder__step')[2].classList.contains('is-active') && document.querySelectorAll('.ladder__step')[0].classList.contains('is-muted')));
   await page.locator('.ladder__step').nth(4).click();
   await page.mouse.move(5, 5);
   await page.waitForTimeout(250);
@@ -108,15 +108,16 @@ note('status switches back to Working on', (await status.getAttribute('data-stat
 // Progress sticks, stages light up, and completing all five is a celebration
 {
   const btns = page.locator('.status-btn');
+  await page.locator('.ladder__step').nth(0).click(); await page.mouse.move(5, 5); await page.waitForTimeout(200);
   for (let i = 0; i < 3; i++) if ((await btns.nth(i).getAttribute('data-status')) !== 'in-use') await btns.nth(i).click();
   note('stamp fills in when every step of the stage is in use', await page.locator('#board-stamp').isVisible() && !(await page.locator('#board-stamp').evaluate(el => el.classList.contains('is-pending'))));
-  note('a completed stage lights its tile', await page.evaluate(() => document.querySelectorAll('.ladder__step')[4].classList.contains('is-complete')));
-  await page.locator('.ladder__step').nth(0).click(); await page.mouse.move(5, 5); await page.waitForTimeout(200);
+  note('a completed stage lights its tile', await page.evaluate(() => document.querySelectorAll('.ladder__step')[0].classList.contains('is-complete')));
   await page.locator('.ladder__step').nth(4).click(); await page.mouse.move(5, 5); await page.waitForTimeout(200);
+  await page.locator('.ladder__step').nth(0).click(); await page.mouse.move(5, 5); await page.waitForTimeout(200);
   note('progress persists when moving between stages', await page.evaluate(() => [...document.querySelectorAll('.status-btn')].every(b => b.getAttribute('data-status') === 'in-use')));
   await page.reload({ waitUntil: 'networkidle' });
-  note('progress persists across a reload', await page.evaluate(() => document.querySelectorAll('.ladder__step')[4].classList.contains('is-complete')));
-  for (let s = 0; s < 4; s++) {
+  note('progress persists across a reload', await page.evaluate(() => document.querySelectorAll('.ladder__step')[0].classList.contains('is-complete')));
+  for (let s = 1; s < 5; s++) {
     await page.locator('.ladder__step').nth(s).click(); await page.mouse.move(5, 5); await page.waitForTimeout(150);
     for (let i = 0; i < 3; i++) if ((await btns.nth(i).getAttribute('data-status')) !== 'in-use') await btns.nth(i).click();
   }
