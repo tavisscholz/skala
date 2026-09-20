@@ -173,8 +173,8 @@ await page.fill('#f-message', 'Opening two more stores next year and the manager
 await page.locator('#contact-form button[type=submit]').click();
 note('invalid email caught', (await page.locator('#err-email').textContent()) === 'Enter a valid email address.');
 await page.fill('#f-email', 'jordan@example.com');
-await page.locator('#contact-form button[type=submit]').click();
-note('valid submit shows draft panel', await page.locator('#draft').isVisible() && (await page.locator('#draft-body').textContent()).includes('Jordan Reyes'));
+await page.locator('#contact-form button[type=submit]').click(); await page.waitForTimeout(400);
+note('valid submit with no mail handler falls back to the draft panel', await page.locator('#draft').isVisible() && (await page.locator('#draft-body').textContent()).includes('Jordan Reyes'));
 note('form live region announces draft', (await page.locator('#form-live').textContent()) === 'Your draft is ready. Nothing has been sent.');
 await page.locator('#contact').screenshot({ path: join(outDir, 'draft-1440.png') });
 await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
@@ -237,6 +237,26 @@ note('playbook page loads without errors', fnErrors.length === 0, fnErrors.join(
 note('playbook page has seven articles', (await fn.locator('.fn-article').count()) === 7);
 note('homepage band keeps four plays and sends the rest to the playbook', await fn.evaluate(async (u) => { const h = await (await fetch(u + 'index.html')).text(); return (h.match(/class="note-line"/g) || []).length === 4 && (h.match(/<dialog class="note-dialog"/g) || []).length === 4; }, url));
 note('every play ends on the contributor note with a mailto link', (await fn.locator('.fn-article .note-article__closer').count()) === 7 && (await fn.locator('.fn-article .note-article__closer').first().textContent()).includes('East Tennessee') && (await fn.locator('.fn-article .note-article__closer a[href^="mailto:tavis@buildwithskala.com"]').count()) === 7 && await fn.evaluate(async (u) => { const h = await (await fetch(u + 'index.html')).text(); return (h.match(/note-article__closer/g) || []).length === 4; }, url));
+note('strip reads See. Plan. Do. Check. Act. Repeat. with See. and Repeat. in acid', await fn.evaluate(async (u) => {
+  const h = await (await fetch(u + 'index.html')).text();
+  const words = [...h.matchAll(/<span(?: class="([^"]*)")?>([A-Za-z]+\.)<\/span>/g)].filter(m => ['See.','Plan.','Do.','Check.','Act.','Repeat.'].includes(m[2]));
+  return words.map(m => m[2]).join(' ') === 'See. Plan. Do. Check. Act. Repeat.' && words[0][1] === 'strip__word--acid' && words[5][1] === 'strip__word--acid' && words.slice(1,5).every(m => !m[1]);
+}, url));
+{
+  const cp = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  await cp.goto(url + 'index.html', { waitUntil: 'networkidle' });
+  note('the honeypot field is off-screen and hidden from assistive tech', await cp.evaluate(() => { const r = document.getElementById('f-website').getBoundingClientRect(); return r.right < 0 && document.querySelector('.field--hp').getAttribute('aria-hidden') === 'true'; }));
+  const fill = async () => { await cp.fill('#f-name', 'Ada Operator'); await cp.fill('#f-email', 'ada@example.com'); await cp.fill('#f-message', 'Opening three more stores next year.'); };
+  await cp.evaluate(() => { window.__posted = null; window.fetch = (u, o) => { window.__posted = { url: u, body: JSON.parse(o.body) }; return Promise.resolve({ ok: true, json: () => Promise.resolve({ ok: true }) }); }; });
+  await fill(); await cp.click('#contact-submit'); await cp.waitForTimeout(300);
+  const posted = await cp.evaluate(() => window.__posted);
+  note('contact form posts to contact.php and shows the sent panel', posted && posted.url === 'contact.php' && posted.body.email === 'ada@example.com' && posted.body.website === '' && await cp.locator('#sent').isVisible() && (await cp.locator('#sent-note').textContent()).startsWith('Thanks, Ada') && !(await cp.locator('#contact-form').isVisible()), JSON.stringify(posted));
+  await cp.reload({ waitUntil: 'networkidle' });
+  await cp.evaluate(() => { window.fetch = () => Promise.reject(new Error('offline')); });
+  await fill(); await cp.click('#contact-submit'); await cp.waitForTimeout(300);
+  note('when sending fails the copyable draft appears with the email fallback', await cp.locator('#draft').isVisible() && (await cp.locator('#draft-status').textContent()).includes('couldn') && (await cp.locator('#draft a[href^="mailto:tavis@buildwithskala.com"]').count()) === 1 && (await cp.locator('#draft-body').textContent()).includes('Ada Operator'));
+  await cp.close();
+}
 note('the playbook index has no download button', (await fn.locator('.fn-index__cta').count()) === 0 && (await fn.locator('a[href*="skala-playbook.pdf"]').count()) === 0);
 {
   await fn.evaluate(() => { window.__copied = null; Object.defineProperty(navigator, 'share', { configurable: true, value: undefined }); Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: t => { window.__copied = t; return Promise.resolve(); } } }); });

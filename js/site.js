@@ -610,18 +610,50 @@
     return lines.join('\n');
   }
 
+  var sentPanel = document.getElementById('sent');
+  var sentNote = document.getElementById('sent-note');
+  var submitBtn = document.getElementById('contact-submit');
+  var hp = document.getElementById('f-website');
+
+  /* The draft is the fallback: shown when the site cannot send the inquiry itself. */
+  function showDraft(reason) {
+    draftText = buildDraft();
+    draftBody.textContent = draftText;
+    draftStatus.textContent = reason || '';
+    form.hidden = true;
+    draft.hidden = false;
+    formLive.textContent = 'Your draft is ready. Nothing has been sent.';
+    draft.focus();
+  }
+  function showSent() {
+    if (sentNote) sentNote.textContent = 'Thanks, ' + fields.name.el.value.trim().split(' ')[0] + '. We read every inquiry and reply within two business days.';
+    form.hidden = true;
+    if (sentPanel) { sentPanel.hidden = false; sentPanel.focus(); }
+    formLive.textContent = 'Your inquiry was sent.';
+    form.reset();
+  }
+  function send() {
+    var payload = { name: fields.name.el.value.trim(), email: fields.email.el.value.trim(), company: company.value.trim(), message: fields.message.el.value.trim(), website: hp ? hp.value : '' };
+    if (!window.fetch) return Promise.reject(new Error('no fetch'));
+    return fetch('contact.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), credentials: 'same-origin' })
+      .then(function (r) { return r.json().then(function (j) { if (!r.ok || !j || !j.ok) throw new Error((j && j.reason) || 'failed'); }); });
+  }
+
   if (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var firstBad = validate();
       if (firstBad) { firstBad.focus(); formLive.textContent = 'Check the highlighted fields.'; return; }
-      draftText = buildDraft();
-      draftBody.textContent = draftText;
-      draftStatus.textContent = '';
-      form.hidden = true;
-      draft.hidden = false;
-      formLive.textContent = 'Your draft is ready. Nothing has been sent.';
-      draft.focus();
+      form.classList.add('is-sending');
+      if (submitBtn) submitBtn.setAttribute('aria-busy', 'true');
+      formLive.textContent = 'Sending your inquiry.';
+      send().then(function () {
+        form.classList.remove('is-sending'); if (submitBtn) submitBtn.removeAttribute('aria-busy');
+        showSent();
+      }, function () {
+        form.classList.remove('is-sending'); if (submitBtn) submitBtn.removeAttribute('aria-busy');
+        showDraft('We couldn\u2019t send this from the site just now. Copy it and email it to us instead.');
+      });
     });
 
     document.getElementById('draft-edit').addEventListener('click', function () {

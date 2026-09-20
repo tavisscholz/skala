@@ -13,7 +13,7 @@
   <link rel="preload" href="assets/fonts/newsreader-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/fonts.css?v=34bdafdb">
   <link rel="stylesheet" href="css/tokens.css?v=d354f249">
-  <link rel="stylesheet" href="css/site.css?v=8a23a758">
+  <link rel="stylesheet" href="css/site.css?v=14a3ee96">
 </head>
 <body class="tears">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -106,10 +106,12 @@
       <i class="tear tear--top" aria-hidden="true"></i>
       <div class="container">
         <p class="strip__words brush">
-          <span>People.</span>
-          <span>Systems.</span>
-          <span>Momentum.</span>
-          <span>Impact.</span>
+          <span class="strip__word--acid">See.</span>
+          <span>Plan.</span>
+          <span>Do.</span>
+          <span>Check.</span>
+          <span>Act.</span>
+          <span class="strip__word--acid">Repeat.</span>
         </p>
       </div>
       <svg class="torn-edge" aria-hidden="true" focusable="false"><use href="#mark-torn"/></svg>
@@ -541,10 +543,20 @@
             <textarea class="field__input field__textarea" id="f-message" name="message" rows="1" required aria-describedby="err-message" placeholder="Share a bit about your goals"></textarea>
             <p class="field__error" id="err-message" hidden></p>
           </div>
+          <div class="field field--hp" aria-hidden="true">
+            <label for="f-website">Leave this field empty</label>
+            <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
+          </div>
           <div class="field field--wide contact-form__actions">
-            <button class="button button--ink" type="submit">Start the conversation <span class="arrow" aria-hidden="true">→</span></button>
+            <button class="button button--ink" type="submit" id="contact-submit">Start the conversation <span class="arrow" aria-hidden="true">→</span></button>
           </div>
         </form>
+
+        <div class="draft draft--sent" id="sent" hidden tabindex="-1" aria-labelledby="sent-title">
+          <p class="eyebrow">Sent</p>
+          <h3 class="draft__title" id="sent-title">Thanks. Your inquiry is on its way.</h3>
+          <p class="draft__note" id="sent-note">We read every one and reply within two business days.</p>
+        </div>
 
         <div class="draft" id="draft" hidden tabindex="-1" aria-labelledby="draft-title">
           <p class="eyebrow">Your inquiry</p>
@@ -555,6 +567,7 @@
             <button class="button button--ghost-ink" type="button" id="draft-edit">Edit draft</button>
           </div>
           <p class="draft__status" id="draft-status" aria-live="polite"></p>
+          <p class="draft__note">Or email it to <a href="mailto:tavis@buildwithskala.com">tavis@buildwithskala.com</a>.</p>
         </div>
         <p class="visually-hidden" id="form-live" aria-live="polite"></p>
       </div>
@@ -596,7 +609,7 @@
       </div>
       <h2 class="note-article__title" id="note-1-heading" tabindex="-1">Your Best Manager Cannot Be the Operating System</h2>
       <p class="note-article__stand">How to turn one manager's judgment into a field system every location can use.</p>
-      <p class="note-article__byline"><span class="note-article__author">Tavis Scholz</span> · 19 September 2026 · 5 min read <button class="byline-btn listen" type="button" data-listen="note-your-best-manager-cannot-be-the-operating-system" data-state="idle" aria-pressed="false" aria-label="Listen to this play"><svg class="listen__play" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0.5 9 5 1 9.5z"/></svg><svg class="listen__pause" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0.5h3v9H1zM6 0.5h3v9H6z"/></svg><span class="listen__label">Listen</span><span class="listen__time"></span></button> <button class="byline-btn speed" type="button" data-speed hidden aria-label="Playback speed, 1 times"><span class="speed__label">1×</span></button> <button class="byline-btn share" type="button" data-share="your-best-manager-cannot-be-the-operating-system" data-share-title="Your Best Manager Cannot Be the Operating System" aria-label="Share this play"><svg viewBox="0 0 10 10" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6.2V1.2M2.9 3.2 5 1.1l2.1 2.1M1.6 5.6v3h6.8v-3"/></svg><span class="share__label">Share</span></button></p>
+      <p class="note-article__byline"><span class="note-article__author">Tavis Scholz</span> · 19 September 2026 · 5 min read <button class="byline-btn listen" type="button" data-listen="note-your-best-manager-cannot-be-the-operating-system" data-audio="assets/audio/your-best-manager-cannot-be-the-operating-system.mp3?v=f9a568f6" data-state="idle" aria-pressed="false" aria-label="Listen to this play"><svg class="listen__play" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0.5 9 5 1 9.5z"/></svg><svg class="listen__pause" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0.5h3v9H1zM6 0.5h3v9H6z"/></svg><span class="listen__label">Listen</span><span class="listen__time"></span></button> <button class="byline-btn speed" type="button" data-speed hidden aria-label="Playback speed, 1 times"><span class="speed__label">1×</span></button> <button class="byline-btn share" type="button" data-share="your-best-manager-cannot-be-the-operating-system" data-share-title="Your Best Manager Cannot Be the Operating System" aria-label="Share this play"><svg viewBox="0 0 10 10" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6.2V1.2M2.9 3.2 5 1.1l2.1 2.1M1.6 5.6v3h6.8v-3"/></svg><span class="share__label">Share</span></button></p>
       <div class="note-article__body">
         <p>You have one. Every multi-unit operator does. The manager whose store just runs. Labor lands, shrink stays low, the team stays, the reviews are good, and when something goes sideways at another location, she’s the one you send. You’ve thought about cloning her. You’ve probably tried: put her in charge of training, had new managers shadow her for two weeks, asked her to write down how she does it. And the other stores still don’t run like hers.</p>
         <p>That’s not a talent gap in the rest of your bench. It’s a transfer problem, and it has a specific cause.</p>
@@ -755,6 +768,6 @@
   </dialog>
   <!-- dialogs:end -->
 
-  <script src="js/site.js?v=07415380" defer></script>
+  <script src="js/site.js?v=e41ac15b" defer></script>
 </body>
 </html>

@@ -865,3 +865,11 @@ body.has-hoopla { overflow: hidden; }
   .site-footer__copy { border-top-color: #000; color: #000; }
   a { color: inherit; text-decoration: none; }
 }
+
+/* Strip: the first and last words carry the acid */
+.strip__word--acid { color: var(--color-acid); }
+/* Contact: honeypot lives off-screen; sent panel and notes */
+.field--hp { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+.draft__note { margin-top: var(--space-3); font-size: 0.9375rem; color: var(--color-muted-dark); }
+.draft__note a { color: inherit; }
+.contact-form.is-sending .button { opacity: 0.6; pointer-events: none; }
