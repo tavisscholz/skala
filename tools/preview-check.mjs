@@ -11,13 +11,13 @@ const rootDir = resolve(new URL('..', import.meta.url).pathname);
 const outDir = resolve(process.argv[2] || 'preview-out');
 mkdirSync(outDir, { recursive: true });
 
-const types = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.md': 'text/markdown', '.webp': 'image/webp', '.png': 'image/png' };
+const types = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.md': 'text/markdown', '.webp': 'image/webp', '.png': 'image/png', '.mp3': 'audio/mpeg' };
 const server = createServer(async (req, res) => {
   let path = req.url === '/' ? '/index.html' : req.url.split('?')[0];
   if (!extname(path)) path += '.html';   // clean URLs, as the live .htaccess serves them
   try {
     const body = await readFile(join(rootDir, path));
-    res.writeHead(200, { 'content-type': types[extname(path)] || 'application/octet-stream' });
+    res.writeHead(200, { 'content-type': types[extname(path)] || 'application/octet-stream', 'content-length': body.length });
     res.end(body);
   } catch { res.writeHead(404); res.end(); }
 });
@@ -258,7 +258,7 @@ note('every play carries a Listen button beside its read time', (await fn.locato
     Object.defineProperty(window, 'speechSynthesis', { configurable: true, value: { getVoices: () => voices, addEventListener() {}, speak(u) { queue.push(u); pump(); }, cancel() { clearTimeout(timer); queue = []; speaking = false; }, pause() { paused = true; clearTimeout(timer); speaking = false; }, resume() { paused = false; pump(); }, get speaking() { return speaking; }, get pending() { return queue.length > 0; } } });
   });
   await lp.goto(url + 'playbook.html', { waitUntil: 'networkidle' });
-  const btn = lp.locator('#the-founder-bottleneck .listen');
+  const btn = lp.locator('#the-next-ten-locations .listen');
   await btn.scrollIntoViewIfNeeded(); await btn.click(); await lp.waitForTimeout(400);
   const state1 = await btn.getAttribute('data-state');
   const label1 = await btn.locator('.listen__label').textContent();
@@ -269,10 +269,17 @@ note('every play carries a Listen button beside its read time', (await fn.locato
   await btn.click(); await lp.waitForTimeout(200);
   const state3 = await btn.getAttribute('data-state');
   note('Listen plays, pauses and resumes with a running clock', state1 === 'playing' && label1 === 'Pause' && /\d:\d\d \/ \d+:\d\d/.test(time1) && state2 === 'paused' && label2 === 'Resume' && state3 === 'playing', `${state1}/${label1}/${time1}/${state2}/${label2}/${state3}`);
-  const other = lp.locator('#the-next-ten-locations .listen');
+  const other = lp.locator('#scaling-chaos-7-signs .listen');
   await other.scrollIntoViewIfNeeded(); await other.click(); await lp.waitForTimeout(300);
   note('starting another play stops the first', (await btn.getAttribute('data-state')) === 'idle' && (await other.getAttribute('data-state')) === 'playing');
   await lp.screenshot({ path: join(outDir, 'listen-playing-1440.png'), clip: { x: 0, y: 0, width: 1440, height: 900 } });
+  {
+    const rec = lp.locator('#the-founder-bottleneck .listen');
+    await rec.scrollIntoViewIfNeeded(); await rec.click(); await lp.waitForTimeout(2500);
+    const st = await rec.getAttribute('data-state'); const tm = await rec.locator('.listen__time').textContent();
+    await rec.click(); await lp.waitForTimeout(200);
+    note('a recorded play streams its MP3 with a real running time', !!(await rec.getAttribute('data-audio')) && st === 'playing' && /^\d:\d\d \/ 8:2\d$/.test(tm) && (await rec.getAttribute('data-state')) === 'paused' && (await other.getAttribute('data-state')) === 'idle', `${st}/${tm}`);
+  }
   await lp.close();
 }
 note('scaling plays render their facts, callouts and weekly move', (await fn.locator('#scaling-chaos-7-signs .note-article__facts').count()) === 1 && (await fn.locator('#the-next-ten-locations .note-article__callout').count()) === 1 && (await fn.locator('#the-founder-bottleneck .note-article__week').count()) === 1 && (await fn.locator('#the-next-ten-locations .note-article__pull cite').textContent()).includes('Mellon'));

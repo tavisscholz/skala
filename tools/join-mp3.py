@@ -24,9 +24,22 @@ def frames(data):
         f = data[i:i+length]
         if b"Xing" in f[:64] or b"Info" in f[:64]: i += length; continue
         yield f; i += length
+def xing_frame(first):
+    """An Info frame carrying the joined frame and byte totals, so players know the duration even when the server sends no length."""
+    hdr = bytearray(first[:4]); hdr[2] &= 0xFD  # same header, no padding bit
+    ver = (hdr[1] >> 3) & 3; mode = (hdr[3] >> 6) & 3
+    side = (17 if mode == 3 else 32) if ver == 3 else (9 if mode == 3 else 17)
+    return bytes(hdr), side
 out, parts = sys.argv[1], sys.argv[2:]
-with open(out, "wb") as o:
-    total = 0
-    for p in parts:
-        for f in frames(open(p, "rb").read()): o.write(f); total += 1
-print(f"wrote {out}: {total} frames from {len(parts)} parts")
+audio = []
+for p in parts: audio.extend(frames(open(p, "rb").read()))
+hdr, side = xing_frame(audio[0])
+body = b"".join(audio)
+length = len(audio[0]) - (1 if (audio[0][2] >> 1) & 1 else 0)
+info = bytearray(length); info[:4] = hdr
+info[4 + side:4 + side + 4] = b"Info"
+info[4 + side + 4:4 + side + 8] = (3).to_bytes(4, "big")                 # flags: frames + bytes
+info[4 + side + 8:4 + side + 12] = len(audio).to_bytes(4, "big")
+info[4 + side + 12:4 + side + 16] = (len(body) + length).to_bytes(4, "big")
+with open(out, "wb") as o: o.write(bytes(info)); o.write(body)
+print(f"wrote {out}: {len(audio)} frames from {len(parts)} parts, {(len(body) + length) / 1048576:.2f} MB")

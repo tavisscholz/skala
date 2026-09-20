@@ -472,7 +472,7 @@
     function audioPlayer(btn, src) {
       var a = new Audio(src), ended = false;
       a.preload = 'metadata';
-      function show(state) { paint(btn, state, a.duration ? fmt(a.currentTime) + ' / ' + fmt(a.duration) : ''); }
+      function show(state) { paint(btn, state, isFinite(a.duration) && a.duration > 0 ? fmt(a.currentTime) + ' / ' + fmt(a.duration) : fmt(a.currentTime)); }
       a.addEventListener('timeupdate', function () { if (!ended && !a.paused) show('playing'); });
       a.addEventListener('ended', function () { ended = true; paint(btn, 'idle'); if (active && active.btn === btn) active = null; });
       a.addEventListener('error', function () { ended = true; paint(btn, 'idle'); if (active && active.btn === btn) active = null; });
