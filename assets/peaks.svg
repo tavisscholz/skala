@@ -1,6 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-label="SKALA" role="img">
-  <rect width="64" height="64" fill="#E5FF2A"/>
-  <g fill="#050505" transform="translate(5 10) scale(0.84)">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 48" aria-hidden="true">
+  <g fill="#050505">
     <path d="M2 37 L7 28 L13 17 L19 6 L22 7 L27 17 L31 22 L36 15 L41 7 L45 0.5 L48 4 L54 17 L59 29 L63 37 L58 39 L54 31 L49 19 L45 11 L42 16 L36 27 L31 33 L28 30 L23 19 L20 15 L16 24 L10 34 L7 40 Z"/>
     <path d="M4 45 C 18 41.5, 40 40, 61 42.5 L60.5 46 C 40 43.5, 18 45.5, 5 48 Z"/>
   </g>

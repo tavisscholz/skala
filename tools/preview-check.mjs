@@ -67,7 +67,7 @@ await row2.click();
 note('second row collapses', await row2.getAttribute('aria-expanded') === 'false' && !(await page.locator('#service-store-development').isVisible()));
 
 // Playbook band: the tilted card carries the section line
-note('playbook card carries the section line', (await page.locator('#playbook .notes__pull').textContent()).includes('Practical notes and working tools') && (await page.locator('#playbook .section-intro').count()) === 0);
+note('playbook card carries the section line', (await page.locator('#playbook .notes__pull').textContent()).includes('Check out these articles') && (await page.locator('#playbook .section-intro').count()) === 0);
 
 // Stylesheet sanity: an unbalanced brace silently drops every rule after it
 {
@@ -214,7 +214,7 @@ await m.evaluate(() => { const r = document.querySelector('.hero').getBoundingCl
 await m.waitForTimeout(500);
 note('first row tugs once the hero has scrolled away', await m.evaluate(() => document.querySelector('.service-row').classList.contains('is-nudged')));
 note('torn seams present and gated', await m.evaluate(() => document.body.classList.contains('tears') && document.querySelectorAll('.tear').length === 7 && [...document.querySelectorAll('.tear')].every(t => { const r = t.getBoundingClientRect(); return r.height > 30; })));
-note('header crown sits beside the wordmark', await m.evaluate(() => { const c = document.querySelector('.wordmark--header .wordmark__crown'); if (!c) return false; const r = c.getBoundingClientRect(), t = document.querySelector('.wordmark__text').getBoundingClientRect(); return r.width > 20 && r.left >= t.right - 4; }));
+note('header mark sits beside the wordmark', await m.evaluate(() => { const c = document.querySelector('.wordmark--header .wordmark__peaks'); if (!c) return false; const r = c.getBoundingClientRect(), t = document.querySelector('.wordmark__text').getBoundingClientRect(); return r.width > 20 && r.left >= t.right - 4; }));
 await m.locator('.wordmark--header').click();
 await m.waitForTimeout(900);
 note('header wordmark click scrolls to top', await m.evaluate(() => window.scrollY === 0));

@@ -174,11 +174,11 @@ band = f'''<!-- notes:start -->
         <div class="notes__intro reveal">
           <p class="eyebrow">Playbook</p>
           <h2 class="section-title" id="notes-title">Plays from the work.</h2>
-          <p class="notes__pull notes__pull--static brush">Practical notes and working tools on building a business that can keep moving.</p>
+          <p class="notes__pull notes__pull--static brush">Check out these articles with growth hacks from our playbook</p>
         </div>
         <ul class="note-lines reveal">
 {rows}
-          <li class="note-lines__all"><a class="text-link" href="playbook.html">Open more plays <span class="arrow" aria-hidden="true">→</span></a></li>
+          <li class="note-lines__all"><a class="text-link" href="playbook.html">See all articles <span class="arrow" aria-hidden="true">→</span></a></li>
         </ul>
       </div>
     </section>

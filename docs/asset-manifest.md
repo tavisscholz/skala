@@ -10,11 +10,11 @@
 | About figure | **Supplied** — `assets/images/about-between-locations.webp` (683 × 1024, portrait crop of SKALA_18) | `.about__aside` | Operator seen from behind walking between locations; not a portrait and not presented as Tavis. Notebook card overlaps it. A real portrait of Tavis can replace this. |
 | Brush wordmark | Created (trial) | Permanent Marker text; `assets/wordmark.svg` as SVG fallback | Not finished logo artwork. |
 | Brush underline | Created | inline SVG in the hero; `assets/underline.svg` | Two overlapping strokes, tilted upward, animated draw. |
-| Crown | Created | `#mark-crown` symbol; `assets/crown.svg` | Two visible placements: hero poster, About notebook. |
+| Peaks | Created | `#mark-peaks` symbol; `assets/peaks.svg` | Two-peak mountain as a graffiti brushstroke with a sweep beneath, replacing the crown (20 September). Placements: header wordmark, hero poster, campaign card. The photographs still show the crown. |
 | Smile | Created | `#mark-smile` symbol; `assets/smile.svg` | One campaign use, acid panel. |
 | Torn paper edge | Created | `#mark-torn` symbol; `assets/torn-edge.svg` | One use, bottom of the campaign strip. Hidden from AT. |
 | Paper grain tile | Created | data-URI in `css/site.css`; `assets/paper-grain.svg` | Applied only to the hero acid panel and black poster surfaces, never on reading surfaces. |
-| Favicon | Created | `assets/favicon.svg` | Crown on acid square. |
+| Favicon | Created | `assets/favicon.svg` | Peaks on acid square. |
 | Inter (variable 400–900) | Downloaded, OFL | `assets/fonts/inter-variable-latin*.woff2` | Latin and latin-ext subsets. |
 | Permanent Marker | Downloaded, OFL | `assets/fonts/permanent-marker-latin.woff2` | Latin subset. |
 
