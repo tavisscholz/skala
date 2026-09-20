@@ -269,6 +269,16 @@ note('every play carries a Listen button beside its read time', (await fn.locato
   await btn.click(); await lp.waitForTimeout(200);
   const state3 = await btn.getAttribute('data-state');
   note('Listen plays, pauses and resumes with a running clock', state1 === 'playing' && label1 === 'Pause' && /\d:\d\d \/ \d+:\d\d/.test(time1) && state2 === 'paused' && label2 === 'Resume' && state3 === 'playing', `${state1}/${label1}/${time1}/${state2}/${label2}/${state3}`);
+  {
+    const pill = lp.locator('#the-next-ten-locations .speed');
+    const shown = await pill.isVisible();
+    await pill.click(); await lp.waitForTimeout(250);
+    const l1 = await pill.locator('.speed__label').textContent(); const st = await btn.getAttribute('data-state');
+    await pill.click(); await lp.waitForTimeout(100);
+    const l2 = await pill.locator('.speed__label').textContent();
+    const saved = await lp.evaluate(() => localStorage.getItem('skala-listen-rate'));
+    note('speed pill appears while playing and cycles 1\u00d7 \u2192 1.25\u00d7 \u2192 1.5\u00d7', shown && l1 === '1.25\u00d7' && st === 'playing' && l2 === '1.5\u00d7' && saved === '1.5', `${shown}/${l1}/${st}/${l2}/${saved}`);
+  }
   const other = lp.locator('#scaling-chaos-7-signs .listen');
   await other.scrollIntoViewIfNeeded(); await other.click(); await lp.waitForTimeout(300);
   note('starting another play stops the first', (await btn.getAttribute('data-state')) === 'idle' && (await other.getAttribute('data-state')) === 'playing');
@@ -278,7 +288,10 @@ note('every play carries a Listen button beside its read time', (await fn.locato
     await rec.scrollIntoViewIfNeeded(); await rec.click(); await lp.waitForTimeout(2500);
     const st = await rec.getAttribute('data-state'); const tm = await rec.locator('.listen__time').textContent();
     await rec.click(); await lp.waitForTimeout(200);
-    note('a recorded play streams its MP3 with a real running time', !!(await rec.getAttribute('data-audio')) && st === 'playing' && /^\d:\d\d \/ 8:2\d$/.test(tm) && (await rec.getAttribute('data-state')) === 'paused' && (await other.getAttribute('data-state')) === 'idle', `${st}/${tm}`);
+    const hiddenBefore = await lp.evaluate(() => document.querySelector('#the-founder-bottleneck .speed').hidden);
+    note('a recorded play streams its MP3 with a real running time', !!(await rec.getAttribute('data-audio')) && st === 'playing' && /^\d:\d\d \/ \d:\d\d$/.test(tm) && (await rec.getAttribute('data-state')) === 'paused' && (await other.getAttribute('data-state')) === 'idle', `${st}/${tm}`);
+    const pillNow = lp.locator('#the-founder-bottleneck .speed');
+    note('the remembered speed applies to the recording and hides again when idle', hiddenBefore === false && (await pillNow.locator('.speed__label').textContent()) === '1.5\u00d7' && await lp.evaluate(() => document.querySelector('#the-next-ten-locations .speed').hidden));
   }
   await lp.close();
 }

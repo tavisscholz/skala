@@ -384,12 +384,29 @@
     var canSpeak = !!(synth && window.SpeechSynthesisUtterance);
     var active = null;
 
+    /* Playback speed: one preset list, remembered per device, applied to both players. */
+    var RATES = [1, 1.25, 1.5, 2, 0.8], RATE_KEY = 'skala-listen-rate', rate = 1;
+    try { var savedRate = parseFloat(localStorage.getItem(RATE_KEY)); if (RATES.indexOf(savedRate) !== -1) rate = savedRate; } catch (e) {}
+    function rateLabel(r) { return (r % 1 === 0 ? String(r) : String(r).replace(/^0\./, '0.')) + '\u00d7'; }
+    function paintSpeed(pill) { if (!pill) return; pill.querySelector('.speed__label').textContent = rateLabel(rate); pill.setAttribute('aria-label', 'Playback speed, ' + rate + ' times'); }
+    function speedPillFor(btn) { var line = btn.closest('.note-article__byline'); return line ? line.querySelector('.speed') : null; }
+    Array.prototype.forEach.call(document.querySelectorAll('.speed'), function (pill) {
+      paintSpeed(pill);
+      pill.addEventListener('click', function () {
+        rate = RATES[(RATES.indexOf(rate) + 1) % RATES.length];
+        try { localStorage.setItem(RATE_KEY, String(rate)); } catch (e) {}
+        Array.prototype.forEach.call(document.querySelectorAll('.speed'), paintSpeed);
+        if (active && active.setRate) active.setRate(rate);
+      });
+    });
+
     function fmt(sec) { sec = Math.max(0, Math.round(sec)); return Math.floor(sec / 60) + ':' + ('0' + (sec % 60)).slice(-2); }
     function paint(btn, state, time) {
       btn.setAttribute('data-state', state);
       btn.setAttribute('aria-pressed', state === 'playing' ? 'true' : 'false');
       btn.querySelector('.listen__label').textContent = state === 'playing' ? 'Pause' : state === 'paused' ? 'Resume' : state === 'loading' ? 'Loading' : 'Listen';
       btn.querySelector('.listen__time').textContent = time || '';
+      var pill = speedPillFor(btn); if (pill) pill.hidden = (state === 'idle');
     }
     function stopActive() { if (active) { var a = active; active = null; a.stop(); } }
 
@@ -438,7 +455,7 @@
     }
 
     function speechPlayer(btn) {
-      var chunks = script(btn), i = 0, ended = false, elapsed = 0, startedAt = 0, timer = null;
+      var chunks = script(btn), i = 0, ended = false, elapsed = 0, startedAt = 0, timer = null, gen = 0, restartOnResume = false;
       var words = chunks.join(' ').split(' ').length, estimate = Math.round(words / 2.6);
       function tick() { paint(btn, 'playing', fmt(elapsed + (Date.now() - startedAt) / 1000) + ' / ' + fmt(estimate)); }
       function finish() { if (ended) return; ended = true; window.clearInterval(timer); paint(btn, 'idle'); if (active && active.btn === btn) active = null; }
@@ -447,17 +464,24 @@
         if (i >= chunks.length) { finish(); return; }
         var u = new SpeechSynthesisUtterance(chunks[i++]);
         var v = pickVoice(); if (v) u.voice = v;
-        u.rate = 1; u.pitch = 1;
-        u.onend = function () { if (!ended) next(); };
-        u.onerror = function (e) { if (e.error === 'interrupted' || e.error === 'canceled') return; if (!ended) next(); };
+        u.rate = rate; u.pitch = 1;
+        var myGen = ++gen;
+        u.onend = function () { if (!ended && myGen === gen) next(); };
+        u.onerror = function (e) { if (e.error === 'interrupted' || e.error === 'canceled') return; if (!ended && myGen === gen) next(); };
         synth.speak(u);
       }
       var me = {
         btn: btn,
         stop: function () { ended = true; window.clearInterval(timer); synth.cancel(); paint(btn, 'idle'); },
         pause: function () { elapsed += (Date.now() - startedAt) / 1000; window.clearInterval(timer); synth.pause(); paint(btn, 'paused', fmt(elapsed) + ' / ' + fmt(estimate)); },
+        setRate: function () {
+          if (ended) return;
+          gen++; i = Math.max(0, i - 1); synth.cancel();
+          if (me.paused) { restartOnResume = true; } else { next(); }
+        },
         resume: function () {
           startedAt = Date.now(); timer = window.setInterval(tick, 500); tick();
+          if (restartOnResume) { restartOnResume = false; next(); return; }
           synth.resume();
           /* Some phones drop a paused queue; pick up at the current chunk. */
           window.setTimeout(function () { if (!ended && !synth.speaking && !synth.pending) { i = Math.max(0, i - 1); synth.cancel(); next(); } }, 400);
@@ -472,6 +496,7 @@
     function audioPlayer(btn, src) {
       var a = new Audio(src), ended = false;
       a.preload = 'metadata';
+      a.playbackRate = rate; a.preservesPitch = true; a.mozPreservesPitch = true;
       function show(state) { paint(btn, state, isFinite(a.duration) && a.duration > 0 ? fmt(a.currentTime) + ' / ' + fmt(a.duration) : fmt(a.currentTime)); }
       a.addEventListener('timeupdate', function () { if (!ended && !a.paused) show('playing'); });
       a.addEventListener('ended', function () { ended = true; paint(btn, 'idle'); if (active && active.btn === btn) active = null; });
@@ -481,6 +506,7 @@
         stop: function () { ended = true; a.pause(); a.src = ''; paint(btn, 'idle'); },
         pause: function () { a.pause(); show('paused'); },
         resume: function () { a.play(); show('playing'); },
+        setRate: function (r) { a.playbackRate = r; },
         paused: false
       };
       paint(btn, 'loading');

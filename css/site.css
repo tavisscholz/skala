@@ -720,6 +720,7 @@ body.has-hoopla { overflow: hidden; }
 .listen__time:empty { display: none; }
 .listen__time { font-weight: 600; opacity: 0.8; font-variant-numeric: tabular-nums; }
 .share.is-copied { background: var(--color-acid); color: var(--color-ink); }
+.speed { min-width: 3.4em; justify-content: center; font-variant-numeric: tabular-nums; }
 .byline-btn[hidden] { display: none; }
 .note-article__body > p:first-of-type::first-letter { float: left; font-size: 4.9em; font-weight: 500; line-height: 0.78; padding: 0.07em 0.12em 0 0; margin-top: 0.02em; color: var(--color-ink); }
 /* Crossheads: a rule across the measure, then the heading in the house sans */

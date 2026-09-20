@@ -26,7 +26,7 @@ When an MP3 exists at `assets/audio/<slug>.mp3`, the build wires the button to i
 
 4. Commit `assets/audio/` with the rebuilt pages and push. Files are about half a megabyte a minute, so seven plays are around 20 MB.
 
-To use a different voice, set `ELEVENLABS_VOICE_ID` to any voice ID from your ElevenLabs library. The default is George, a calm US narrator. `ELEVENLABS_MODEL` and `ELEVENLABS_FORMAT` are also honoured.
+To use a different voice, set `ELEVENLABS_VOICE_ID` to any voice ID from your ElevenLabs library. The default is Mark (Solid, Clear and Dependable), the voice in the owner's library. `ELEVENLABS_MODEL` and `ELEVENLABS_FORMAT` are also honoured.
 
 Whenever a play's text changes, run the recorder again before publishing, otherwise the audio and the page drift apart.
 
@@ -41,7 +41,7 @@ python3 tools/join-mp3.py assets/audio/<slug>.mp3 part1.mp3 part2.mp3
 python3 tools/build-notes.py
 ```
 
-The current narrator is Jonathan (Warm Executive Narrator), voice ID `eocOcfJL8piTXLNNpSCR`, on `eleven_multilingual_v2`. Files come back at 128 kbps, about 1 MB a minute.
+The current narrator is Mark (Solid, Clear and Dependable), voice ID `v3p1kjzUvro6S76qmYmH`, on `eleven_multilingual_v2`. Files come back at 128 kbps, about 1 MB a minute.
 
 ## Your own voice
 

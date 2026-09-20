@@ -137,6 +137,10 @@ def share_button(n):
     return (f'<button class="byline-btn share" type="button" data-share="{n["slug"]}" data-share-title="{esc(n["title"])}" aria-label="Share this play">'
             '<svg viewBox="0 0 10 10" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6.2V1.2M2.9 3.2 5 1.1l2.1 2.1M1.6 5.6v3h6.8v-3"/></svg>'
             '<span class="share__label">Share</span></button>')
+def speed_button():
+    """Playback speed, shown once a play is playing. Cycles through presets."""
+    return ('<button class="byline-btn speed" type="button" data-speed hidden aria-label="Playback speed, 1 times">'
+            '<span class="speed__label">1\u00d7</span></button>')
 def listen_button(n, where):
     """Play/pause control beside the read time. Uses a recorded MP3 when
     tools/build-audio.mjs has made one, otherwise the device's own voice."""
@@ -193,7 +197,7 @@ dialogs = "\n\n".join(f'''  <dialog class="note-dialog" id="note-{n['i']}" aria-
       </div>
       <h2 class="note-article__title" id="note-{n['i']}-heading" tabindex="-1">{esc(n['title'])}</h2>
       <p class="note-article__stand">{esc(n['stand'])}</p>
-      <p class="note-article__byline"><span class="note-article__author">Tavis Scholz</span> · {n['date']} · {n['minutes']} min read {listen_button(n, 'note')} {share_button(n)}</p>
+      <p class="note-article__byline"><span class="note-article__author">Tavis Scholz</span> · {n['date']} · {n['minutes']} min read {listen_button(n, 'note')} {share_button(n)} {speed_button()}</p>
       <div class="note-article__body">
         {n['body']}
       </div>
@@ -240,7 +244,7 @@ articles = "\n\n".join(f'''        <article class="fn-article reveal" id="{n['sl
           </div>
           <h2 class="note-article__title" id="{n['slug']}-title">{esc(n['title'])}</h2>
           <p class="note-article__stand">{esc(n['stand'])}</p>
-          <p class="note-article__byline"><span class="note-article__author">Tavis Scholz</span> · {n['date']} · {n['minutes']} min read {listen_button(n, 'play')} {share_button(n)}</p>
+          <p class="note-article__byline"><span class="note-article__author">Tavis Scholz</span> · {n['date']} · {n['minutes']} min read {listen_button(n, 'play')} {share_button(n)} {speed_button()}</p>
           <div class="note-article__body">
             {n['body']}
           </div>
