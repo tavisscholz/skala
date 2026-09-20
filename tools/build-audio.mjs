@@ -10,7 +10,7 @@
      node tools/build-audio.mjs --dry-run the-founder-bottleneck               # print the reading script
 
    Optional:
-     ELEVENLABS_VOICE_ID   voice to use (default: Alex - Conversational Business)
+     ELEVENLABS_VOICE_ID   voice to use (default: Chris Anthony)
      ELEVENLABS_MODEL      default eleven_multilingual_v2
      ELEVENLABS_FORMAT     default mp3_44100_64 (about half a megabyte a minute) */
 import { createHash } from 'node:crypto';
@@ -23,7 +23,7 @@ const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
 const key = process.env.ELEVENLABS_API_KEY;
 if (!key && !dryRun) { console.error('Set ELEVENLABS_API_KEY first (or pass --dry-run to print the reading script).'); process.exit(1); }
-const voice = process.env.ELEVENLABS_VOICE_ID || 'hLygPNd2gK6Azddorc5W';
+const voice = process.env.ELEVENLABS_VOICE_ID || 'uKGPYP2uuyRQv8SeFre0';
 const model = process.env.ELEVENLABS_MODEL || 'eleven_multilingual_v2';
 const format = process.env.ELEVENLABS_FORMAT || 'mp3_44100_64';
 const force = args.includes('--force');
@@ -40,7 +40,7 @@ function readingScript(md) {
   while (k < lines.length) {
     const l = lines[k].trim();
     if (!l) { k++; continue; }
-    if (l.startsWith('## ')) { out.push('\n' + clean(l.slice(3)) + '.'); k++; continue; }
+    if (l.startsWith('## ')) { out.push('\n' + clean(l.slice(3)).replace(/[.:]$/, '') + '.'); k++; continue; }
     if (l.startsWith('|')) { while (k < lines.length && lines[k].startsWith('|')) { const cells = lines[k].split('|').map(c => c.trim()).filter(Boolean); if (!/^-+$/.test(cells[0])) out.push(cells.map(clean).join(', ') + '.'); k++; } continue; }
     if (l.startsWith('**This week:**')) { out.push('\nThis week. ' + clean(l.slice(14))); k++; continue; }
     if (l.startsWith('**Fast Facts**')) { out.push('\nFast facts.'); k++; continue; }
