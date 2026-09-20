@@ -197,7 +197,7 @@ dialogs = "\n\n".join(f'''  <dialog class="note-dialog" id="note-{n['i']}" aria-
       </div>
       <h2 class="note-article__title" id="note-{n['i']}-heading" tabindex="-1">{esc(n['title'])}</h2>
       <p class="note-article__stand">{esc(n['stand'])}</p>
-      <p class="note-article__byline"><span class="note-article__author">Tavis Scholz</span> · {n['date']} · {n['minutes']} min read {listen_button(n, 'note')} {share_button(n)} {speed_button()}</p>
+      <p class="note-article__byline"><span class="note-article__author">Tavis Scholz</span> · {n['date']} · {n['minutes']} min read {listen_button(n, 'note')} {speed_button()} {share_button(n)}</p>
       <div class="note-article__body">
         {n['body']}
       </div>
@@ -244,7 +244,7 @@ articles = "\n\n".join(f'''        <article class="fn-article reveal" id="{n['sl
           </div>
           <h2 class="note-article__title" id="{n['slug']}-title">{esc(n['title'])}</h2>
           <p class="note-article__stand">{esc(n['stand'])}</p>
-          <p class="note-article__byline"><span class="note-article__author">Tavis Scholz</span> · {n['date']} · {n['minutes']} min read {listen_button(n, 'play')} {share_button(n)} {speed_button()}</p>
+          <p class="note-article__byline"><span class="note-article__author">Tavis Scholz</span> · {n['date']} · {n['minutes']} min read {listen_button(n, 'play')} {speed_button()} {share_button(n)}</p>
           <div class="note-article__body">
             {n['body']}
           </div>
