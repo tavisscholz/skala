@@ -272,7 +272,6 @@ page = f'''<!doctype html>
         </div>
         <figure class="figure figure--tall reveal">
           <img src="assets/images/notes-field-notebook.webp" width="1024" height="1536" alt="A SKALA field notebook and printed plans on a wooden worktable" fetchpriority="high">
-          <figcaption class="figure__caption">The field notebook</figcaption>
         </figure>
       </div>
     </section>
