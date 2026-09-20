@@ -426,7 +426,7 @@ for slug, spec in LEGAL.items():
 def work_page():
     whead = head.replace("<title>Playbook — SKALA</title>", "<title>Work With SKALA</title>")
     whead = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="description" content="Operators wanted. SKALA is connecting with experienced operators across specialties who want to help multiunit brands get ready for their next stage of growth.">', whead)
-    chips = ["Brand &amp; growth marketing", "Finance &amp; unit economics", "Merchandising &amp; category management", "People operations", "Data &amp; automation", "Supply chain &amp; logistics", "Tech &amp; networking", "Production &amp; manufacturing", "Program &amp; launch management"]
+    chips = ["Brand &amp; growth marketing", "Finance &amp; unit economics", "Merchandising &amp; category management", "People operations", "Data &amp; automation", "Supply chain &amp; logistics", "Tech &amp; networking", "Production &amp; manufacturing", "Store development &amp; construction", "Program &amp; launch management"]
     chip_html = "\n".join(f'            <li class="join__chip">{t}</li>' for t in chips)
     underline = '<svg class="brush-underline" viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path class="underline-stroke" d="M4 18 C 120 15, 260 10, 396 6" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" pathLength="1"/><path class="underline-stroke underline-stroke--2" d="M12 22 C 130 20, 250 16, 384 12" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" pathLength="1"/></svg>'
     parts = [
