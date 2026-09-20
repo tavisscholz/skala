@@ -73,11 +73,12 @@ async function record(text) {
 const srcDir = join(rootDir, 'assets/articles');
 const outDir = join(rootDir, 'assets/audio');
 await mkdir(outDir, { recursive: true });
-const slugs = (await readdir(srcDir)).filter(f => f.endsWith('.md')).map(f => f.slice(0, -3)).filter(s => !only.length || only.includes(s));
+const closer = (await readFile(join(srcDir, '_closer.md'), 'utf8')).trim();
+const slugs = (await readdir(srcDir)).filter(f => f.endsWith('.md') && !f.startsWith('_')).map(f => f.slice(0, -3)).filter(s => !only.length || only.includes(s));
 let made = 0;
 for (const slug of slugs) {
   const md = await readFile(join(srcDir, slug + '.md'), 'utf8');
-  const text = readingScript(md);
+  const text = readingScript(md) + '\n\n' + closer;
   const sha = createHash('sha1').update(text + '|' + voice + '|' + model + '|' + format).digest('hex');
   const mp3 = join(outDir, slug + '.mp3'), side = join(outDir, slug + '.sha1');
   if (dryRun) { console.log(`\n===== ${slug} =====\n${text}\n`); continue; }

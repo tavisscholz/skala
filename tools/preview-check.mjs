@@ -236,6 +236,7 @@ await fn.goto(url + 'playbook.html', { waitUntil: 'networkidle' });
 note('playbook page loads without errors', fnErrors.length === 0, fnErrors.join(' | '));
 note('playbook page has seven articles', (await fn.locator('.fn-article').count()) === 7);
 note('homepage band keeps four plays and sends the rest to the playbook', await fn.evaluate(async (u) => { const h = await (await fetch(u + 'index.html')).text(); return (h.match(/class="note-line"/g) || []).length === 4 && (h.match(/<dialog class="note-dialog"/g) || []).length === 4; }, url));
+note('every play ends on the contributor note with a mailto link', (await fn.locator('.fn-article .note-article__closer').count()) === 7 && (await fn.locator('.fn-article .note-article__closer').first().textContent()).includes('East Tennessee') && (await fn.locator('.fn-article .note-article__closer a[href^="mailto:tavis@buildwithskala.com"]').count()) === 7 && await fn.evaluate(async (u) => { const h = await (await fetch(u + 'index.html')).text(); return (h.match(/note-article__closer/g) || []).length === 4; }, url));
 note('every play carries a Listen button beside its read time', (await fn.locator('.fn-article .note-article__byline .listen').count()) === 7 && await fn.evaluate(async (u) => { const h = await (await fetch(u + 'index.html')).text(); return (h.match(/class="listen"/g) || []).length === 4; }, url));
 {
   /* Headless Chromium has no speech engine, so stand one in: each utterance "ends" after 150ms. */

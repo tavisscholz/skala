@@ -409,6 +409,7 @@
         if (el.matches('.note-table__wrap')) { Array.prototype.forEach.call(el.querySelectorAll('tr'), function (r) { push(Array.prototype.map.call(r.children, function (c) { return c.textContent.trim(); }).join(', ')); }); return; }
         push(el.textContent);
       });
+      var closer = art.querySelector('.note-article__closer'); if (closer) push(closer.textContent);
       /* Long paragraphs get cut off by some engines; split them at sentence ends. */
       var chunks = [];
       out.forEach(function (t) {

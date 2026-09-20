@@ -126,6 +126,12 @@ def parse(slug):
 
 def asset_version(rel):
     return hashlib.sha1((ROOT / rel).read_bytes()).hexdigest()[:8]
+CLOSER = (ROOT / "assets/articles/_closer.md").read_text().strip()
+def closer_html():
+    """Contributor note at the foot of every play, newspaper style."""
+    t = smart(esc(CLOSER))
+    t = re.sub(r"([\w.+-]+@[\w.-]+\.\w+)", r'<a href="mailto:\1">\1</a>', t)
+    return f'<p class="note-article__closer">{t}</p>'
 def listen_button(n, where):
     """Play/pause control beside the read time. Uses a recorded MP3 when
     tools/build-audio.mjs has made one, otherwise the device's own voice."""
@@ -186,6 +192,7 @@ dialogs = "\n\n".join(f'''  <dialog class="note-dialog" id="note-{n['i']}" aria-
       <div class="note-article__body">
         {n['body']}
       </div>
+      {closer_html()}
       <div class="note-article__foot">
         <button class="button button--ink" type="button" data-close-note><span class="arrow" aria-hidden="true">←</span> Back</button>
         <a class="text-link" href="playbook.html#{n['slug']}">Open in the playbook <span class="arrow" aria-hidden="true">→</span></a>
@@ -232,6 +239,7 @@ articles = "\n\n".join(f'''        <article class="fn-article reveal" id="{n['sl
           <div class="note-article__body">
             {n['body']}
           </div>
+          {closer_html()}
         </article>''' for n in notes)
 
 page = f'''<!doctype html>

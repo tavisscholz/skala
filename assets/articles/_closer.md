@@ -1,0 +1,1 @@
+Tavis Scholz is the founder of SKALA, an operating practice for multiunit brands. He spent twelve years building teams and opening stores across the U.S. and Canada. He is based in East Tennessee and can be reached at tavis@buildwithskala.com.
