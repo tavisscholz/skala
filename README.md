@@ -17,7 +17,8 @@ npx http-server . -p 8080
 | Path | What it is |
 |---|---|
 | `index.html` | Long-form homepage with `#work`, `#approach`, `#field-notes`, `#about`, `#contact` |
-| `playbook.html` | The playbook: all four notes and tools in full, built from `assets/articles` by `tools/build-notes.py` |
+| `playbook.html` | The playbook hub: one card per play with lane filters, built from `assets/articles` by `tools/build-notes.py` |
+| `plays/<slug>.html` | One page per play (category, title, deck, article, next play), also built by `tools/build-notes.py` |
 | `merch.html` | Merch: the tee, hat, jacket and notebook with prices, also built by `tools/build-notes.py` |
 | `css/tokens.css` | Locked trial tokens plus the type, spacing, and motion scale |
 | `css/site.css` | Component styles (Header, Hero, CampaignStrip, ServiceRow, ApproachStep, OperatingTool, FieldNote, AboutBlock, ContactForm, Footer) |

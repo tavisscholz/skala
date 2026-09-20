@@ -229,14 +229,30 @@ await m.locator('[data-open-note="note-1"]').click();
 await m.screenshot({ path: join(outDir, 'note-dialog-390.png') });
 await m.close();
 
-// Field notes page
+// Playbook hub and the play pages
+const SLUGS = ['your-best-manager-cannot-be-the-operating-system', 'why-new-store-openings-fall-behind', 'before-you-sign-the-lease', 'when-your-sales-story-outruns-your-item-19', 'scaling-chaos-7-signs', 'the-founder-bottleneck', 'the-next-ten-locations'];
 const fn = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 const fnErrors = []; fn.on('pageerror', e => fnErrors.push(e.message));
 await fn.goto(url + 'playbook.html', { waitUntil: 'networkidle' });
-note('playbook page loads without errors', fnErrors.length === 0, fnErrors.join(' | '));
-note('playbook page has seven articles', (await fn.locator('.fn-article').count()) === 7);
-note('homepage band keeps four plays and sends the rest to the playbook', await fn.evaluate(async (u) => { const h = await (await fetch(u + 'index.html')).text(); return (h.match(/class="note-line"/g) || []).length === 4 && (h.match(/<dialog class="note-dialog"/g) || []).length === 4; }, url));
-note('every play ends on the contributor note with a mailto link', (await fn.locator('.fn-article .note-article__closer').count()) === 7 && (await fn.locator('.fn-article .note-article__closer').first().textContent()).includes('East Tennessee') && (await fn.locator('.fn-article .note-article__closer a[href^="mailto:tavis@buildwithskala.com"]').count()) === 7 && await fn.evaluate(async (u) => { const h = await (await fetch(u + 'index.html')).text(); return (h.match(/note-article__closer/g) || []).length === 4; }, url));
+note('playbook hub loads without errors', fnErrors.length === 0, fnErrors.join(' | '));
+note('hub hero carries one message: eyebrow, title, one line, the photo', (await fn.locator('.fn-hero .eyebrow').textContent()).trim() === 'Field notes' && (await fn.locator('#fn-title').textContent()) === 'Plays from the work.' && (await fn.locator('.fn-hero .section-intro').textContent()).startsWith('Practical notes and tools') && (await fn.locator('.fn-hero .notes__pull, .fn-hero .figure__caption').count()) === 0 && (await fn.locator('.fn-hero .figure img').count()) === 1);
+note('hub lists the seven plays as cards, no article bodies', (await fn.locator('.fn-card').count()) === 7 && (await fn.locator('.fn-article, .note-article__body, .fn-index').count()) === 0 && await fn.evaluate((s) => [...document.querySelectorAll('.fn-card')].every((c, i) => c.id === s[i] && c.querySelector('.fn-card__link').getAttribute('href') === '/plays/' + s[i] && c.querySelector('.fn-card__tag') && c.querySelector('.fn-card__stand').textContent.length > 20), SLUGS));
+note('hub cards sit in two columns on desktop', await fn.evaluate(() => { const [a, b, c] = document.querySelectorAll('.fn-card'); return Math.abs(a.getBoundingClientRect().top - b.getBoundingClientRect().top) < 2 && b.getBoundingClientRect().left > a.getBoundingClientRect().right && c.getBoundingClientRect().top > a.getBoundingClientRect().bottom - 1; }));
+{
+  await fn.locator('.fn-filter[data-filter="SCALE"]').click(); await fn.waitForTimeout(100);
+  const scale = await fn.evaluate(() => [...document.querySelectorAll('.fn-card')].filter(c => !c.hidden).map(c => c.getAttribute('data-lane')));
+  const pressed = await fn.evaluate(() => [...document.querySelectorAll('.fn-filter')].filter(f => f.getAttribute('aria-pressed') === 'true').map(f => f.getAttribute('data-filter')));
+  await fn.locator('.fn-filter[data-filter="all"]').click(); await fn.waitForTimeout(100);
+  const all = await fn.evaluate(() => [...document.querySelectorAll('.fn-card')].filter(c => !c.hidden).length);
+  note('lane filters show one lane at a time and All brings every play back', scale.length === 3 && scale.every(l => l === 'SCALE') && pressed.join() === 'SCALE' && all === 7, `${scale}/${pressed}/${all}`);
+}
+await fn.screenshot({ path: join(outDir, 'playbook-hub-1440.png'), fullPage: true });
+note('homepage band keeps four plays and sends the rest to the playbook', await fn.evaluate(async (u) => { const h = await (await fetch(u + 'index.html')).text(); return (h.match(/class="note-line"/g) || []).length === 4 && (h.match(/<dialog class="note-dialog"/g) || []).length === 4 && (h.match(/href="\/plays\/[a-z0-9-]+">Open on its own page/g) || []).length === 4; }, url));
+const playPages = await fn.evaluate(async ({ u, s }) => Object.fromEntries(await Promise.all(s.map(async k => [k, await (await fetch(u + 'plays/' + k + '.html')).text()]))), { u: url, s: SLUGS });
+note('every play has its own page with one article, the contributor note and a Listen button', SLUGS.every(k => { const h = playPages[k]; return (h.match(/<article class="fn-article/g) || []).length === 1 && h.includes('<h1 class="note-article__title"') && (h.match(/note-article__closer/g) || []).length === 1 && h.includes('East Tennessee') && h.includes('href="mailto:tavis@buildwithskala.com"') && (h.match(/class="byline-btn listen"/g) || []).length === 1 && h.includes('class="byline-btn share"') && !h.includes('class="fn-index'); }));
+note('play pages reach site assets one folder up and link the next play', SLUGS.every((k, i) => { const h = playPages[k]; const nxt = SLUGS[(i + 1) % SLUGS.length]; return h.includes('href="../css/site.css') && h.includes('src="../js/site.js') && h.includes('data-audio="../assets/audio/' + k + '.mp3') && h.includes('href="/plays/' + nxt + '"') && h.includes('href="/playbook"') && !/(href|src)="(css|js|assets)\//.test(h); }));
+note('play pages carry their own title and description', SLUGS.every(k => /<title>[^<]+ — SKALA<\/title>/.test(playPages[k]) && !playPages[k].includes('<title>Playbook — SKALA</title>')) && playPages['the-founder-bottleneck'].includes('<meta name="description" content="The thing that made you indispensable'));
+note('scaling plays render their facts, callouts and weekly move', playPages['scaling-chaos-7-signs'].includes('note-article__facts') && playPages['the-next-ten-locations'].includes('note-article__callout') && playPages['the-founder-bottleneck'].includes('note-article__week') && /<cite>[^<]*Mellon/.test(playPages['the-next-ten-locations']));
 note('strip reads See. Plan. Do. Check. Act. Repeat. with See. and Repeat. in acid', await fn.evaluate(async (u) => {
   const h = await (await fetch(u + 'index.html')).text();
   const words = [...h.matchAll(/<span(?: class="([^"]*)")?>([A-Za-z]+\.)<\/span>/g)].filter(m => ['See.','Plan.','Do.','Check.','Act.','Repeat.'].includes(m[2]));
@@ -257,16 +273,21 @@ note('strip reads See. Plan. Do. Check. Act. Repeat. with See. and Repeat. in ac
   note('when sending fails the copyable draft appears with the email fallback', await cp.locator('#draft').isVisible() && (await cp.locator('#draft-status').textContent()).includes('couldn') && (await cp.locator('#draft a[href^="mailto:tavis@buildwithskala.com"]').count()) === 1 && (await cp.locator('#draft-body').textContent()).includes('Ada Operator'));
   await cp.close();
 }
-note('the playbook index has no download button', (await fn.locator('.fn-index__cta').count()) === 0 && (await fn.locator('a[href*="skala-playbook.pdf"]').count()) === 0);
+note('the hub has no download button', (await fn.locator('.fn-index__cta, a[href*="skala-playbook.pdf"]').count()) === 0);
 {
+  await fn.goto(url + 'merch.html', { waitUntil: 'networkidle' });   /* leave the hub first, so the hash arrives with a fresh load */
+  await fn.goto(url + 'playbook.html#the-founder-bottleneck', { waitUntil: 'networkidle' }); await fn.waitForTimeout(300);
+  note('an old #slug link on the hub opens the play on its own page', /\/plays\/the-founder-bottleneck$/.test(fn.url()) && (await fn.locator('h1.note-article__title').textContent()).startsWith('The Founder Bottleneck'), fn.url());
+  const pgErrors = []; fn.on('pageerror', e => pgErrors.push(e.message));
+  note('play page: category, back link, title, deck, article, next play', (await fn.locator('.fn-article .note-article__top .eyebrow').textContent()) === 'Scaling Up' && (await fn.locator('.fn-play__back').getAttribute('href')) === '/playbook' && (await fn.locator('.note-article__stand').count()) === 1 && (await fn.locator('.fn-article .note__tag').count()) === 0 && (await fn.locator('.fn-next__link').getAttribute('href')) === '/plays/the-next-ten-locations' && (await fn.locator('.fn-next__title').textContent()).startsWith('The Next Ten Locations') && pgErrors.length === 0);
+  await fn.screenshot({ path: join(outDir, 'play-page-1440.png'), clip: { x: 0, y: 0, width: 1440, height: 900 } });
   await fn.evaluate(() => { window.__copied = null; Object.defineProperty(navigator, 'share', { configurable: true, value: undefined }); Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: t => { window.__copied = t; return Promise.resolve(); } } }); });
-  const sh = fn.locator('#the-founder-bottleneck .share');
+  const sh = fn.locator('.fn-article .share');
   await sh.scrollIntoViewIfNeeded(); await sh.click(); await fn.waitForTimeout(150);
   const copiedUrl = await fn.evaluate(() => window.__copied);
   const label = await sh.locator('.share__label').textContent();
-  note('Share copies a link to the play when there is no share sheet', /playbook(\.html)?#the-founder-bottleneck$/.test(copiedUrl || '') && label === 'Copied' && (await fn.locator('.fn-article .share').count()) === 7, `${copiedUrl}/${label}`);
+  note('Share on a play page copies that page\u2019s link when there is no share sheet', /\/plays\/the-founder-bottleneck$/.test(copiedUrl || '') && label === 'Copied', `${copiedUrl}/${label}`);
 }
-note('every play carries a Listen button beside its read time', (await fn.locator('.fn-article .note-article__byline .listen').count()) === 7 && await fn.evaluate(async (u) => { const h = await (await fetch(u + 'index.html')).text(); return (h.match(/class="byline-btn listen"/g) || []).length === 4; }, url));
 {
   /* Headless Chromium has no speech engine, so stand one in: each utterance "ends" after 150ms. */
   const lp = await browser.newPage({ viewport: { width: 1440, height: 900 } });
@@ -277,9 +298,11 @@ note('every play carries a Listen button beside its read time', (await fn.locato
     window.SpeechSynthesisUtterance = function (t) { this.text = t; };
     Object.defineProperty(window, 'speechSynthesis', { configurable: true, value: { getVoices: () => voices, addEventListener() {}, speak(u) { queue.push(u); pump(); }, cancel() { clearTimeout(timer); queue = []; speaking = false; }, pause() { paused = true; clearTimeout(timer); speaking = false; }, resume() { paused = false; pump(); }, get speaking() { return speaking; }, get pending() { return queue.length > 0; } } });
   });
-  await lp.goto(url + 'playbook.html', { waitUntil: 'networkidle' });
-  const btn = lp.locator('#the-next-ten-locations .listen');
-  await btn.scrollIntoViewIfNeeded(); await btn.click(); await lp.waitForTimeout(400);
+  await lp.goto(url + 'index.html', { waitUntil: 'networkidle' });
+  await lp.evaluate(() => document.querySelectorAll('[data-listen]').forEach(b => b.removeAttribute('data-audio')));   /* exercise the device voice here */
+  await lp.locator('[data-open-note="note-1"]').click(); await lp.waitForTimeout(200);
+  const btn = lp.locator('#note-1 .listen');
+  await btn.click(); await lp.waitForTimeout(400);
   const state1 = await btn.getAttribute('data-state');
   const label1 = await btn.locator('.listen__label').textContent();
   const time1 = await btn.locator('.listen__time').textContent();
@@ -290,37 +313,47 @@ note('every play carries a Listen button beside its read time', (await fn.locato
   const state3 = await btn.getAttribute('data-state');
   note('Listen plays, pauses and resumes with a running clock', state1 === 'playing' && label1 === 'Pause' && /\d:\d\d \/ \d+:\d\d/.test(time1) && state2 === 'paused' && label2 === 'Resume' && state3 === 'playing', `${state1}/${label1}/${time1}/${state2}/${label2}/${state3}`);
   {
-    const pill = lp.locator('#the-next-ten-locations .speed');
+    const pill = lp.locator('#note-1 .speed');
     const shown = await pill.isVisible();
     const l0 = await pill.locator('.speed__label').textContent();
-    note('playback opens at the 1.1\u00d7 house default', l0 === '1.1\u00d7');
+    note('playback opens at the 1.25\u00d7 house default', l0 === '1.25\u00d7');
     await pill.click(); await lp.waitForTimeout(250);
     const l1 = await pill.locator('.speed__label').textContent(); const st = await btn.getAttribute('data-state');
     await pill.click(); await lp.waitForTimeout(100);
     const l2 = await pill.locator('.speed__label').textContent();
     const saved = await lp.evaluate(() => localStorage.getItem('skala-listen-rate'));
-    note('speed pill appears while playing and cycles 1.1\u00d7 \u2192 1.25\u00d7 \u2192 1.5\u00d7', shown && l1 === '1.25\u00d7' && st === 'playing' && l2 === '1.5\u00d7' && saved === '1.5', `${shown}/${l1}/${st}/${l2}/${saved}`);
+    note('speed pill appears while playing and cycles 1.25\u00d7 \u2192 1.5\u00d7 \u2192 2\u00d7', shown && l1 === '1.5\u00d7' && st === 'playing' && l2 === '2\u00d7' && saved === '2', `${shown}/${l1}/${st}/${l2}/${saved}`);
+    await pill.click(); await pill.click(); await pill.click(); await lp.waitForTimeout(100);   /* 0.8, 1, back to 1.25 */
+    note('the cycle has no 1.1\u00d7 step and returns to 1.25\u00d7', (await pill.locator('.speed__label').textContent()) === '1.25\u00d7');
+    await pill.click(); await lp.waitForTimeout(100);   /* leave 1.5x remembered for the recorded play below */
   }
-  const other = lp.locator('#scaling-chaos-7-signs .listen');
-  await other.scrollIntoViewIfNeeded(); await other.click(); await lp.waitForTimeout(300);
-  note('starting another play stops the first', (await btn.getAttribute('data-state')) === 'idle' && (await other.getAttribute('data-state')) === 'playing');
+  await lp.locator('#note-1 [data-close-note]').first().click(); await lp.waitForTimeout(200);
+  await lp.locator('[data-open-note="note-2"]').click(); await lp.waitForTimeout(200);
+  const other = lp.locator('#note-2 .listen');
+  await other.click(); await lp.waitForTimeout(300);
+  note('closing a play and starting another stops the first', (await btn.getAttribute('data-state')) === 'idle' && (await other.getAttribute('data-state')) === 'playing');
   await lp.screenshot({ path: join(outDir, 'listen-playing-1440.png'), clip: { x: 0, y: 0, width: 1440, height: 900 } });
   {
-    const rec = lp.locator('#the-founder-bottleneck .listen');
-    await rec.scrollIntoViewIfNeeded(); await rec.click(); await lp.waitForTimeout(2500);
+    await lp.goto(url + 'plays/the-founder-bottleneck.html', { waitUntil: 'networkidle' });
+    const rec = lp.locator('.fn-article .listen');
+    const pillIdle = await lp.evaluate(() => document.querySelector('.fn-article .speed').hidden);
+    await rec.click(); await lp.waitForTimeout(2500);
     const st = await rec.getAttribute('data-state'); const tm = await rec.locator('.listen__time').textContent();
     await rec.click(); await lp.waitForTimeout(200);
-    const hiddenBefore = await lp.evaluate(() => document.querySelector('#the-founder-bottleneck .speed').hidden);
-    note('a recorded play streams its MP3 with a real running time', !!(await rec.getAttribute('data-audio')) && st === 'playing' && /^\d:\d\d \/ \d:\d\d$/.test(tm) && (await rec.getAttribute('data-state')) === 'paused' && (await other.getAttribute('data-state')) === 'idle', `${st}/${tm}`);
-    const pillNow = lp.locator('#the-founder-bottleneck .speed');
-    note('the remembered speed applies to the recording and hides again when idle', hiddenBefore === false && (await pillNow.locator('.speed__label').textContent()) === '1.5\u00d7' && await lp.evaluate(() => document.querySelector('#the-next-ten-locations .speed').hidden));
+    const pillNow = lp.locator('.fn-article .speed');
+    note('a recorded play streams its MP3 with a real running time', !!(await rec.getAttribute('data-audio')) && st === 'playing' && /^\d:\d\d \/ \d:\d\d$/.test(tm) && (await rec.getAttribute('data-state')) === 'paused', `${st}/${tm}`);
+    note('the remembered speed applies to the recording; the pill hides while idle', pillIdle === true && (await pillNow.isVisible()) && (await pillNow.locator('.speed__label').textContent()) === '1.5\u00d7');
   }
   await lp.close();
 }
-note('scaling plays render their facts, callouts and weekly move', (await fn.locator('#scaling-chaos-7-signs .note-article__facts').count()) === 1 && (await fn.locator('#the-next-ten-locations .note-article__callout').count()) === 1 && (await fn.locator('#the-founder-bottleneck .note-article__week').count()) === 1 && (await fn.locator('#the-next-ten-locations .note-article__pull cite').textContent()).includes('Mellon'));
-note('playbook page: no horizontal overflow', (await fn.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)) <= 0);
+await fn.goto(url + 'playbook.html', { waitUntil: 'networkidle' });
+note('playbook hub: no horizontal overflow', (await fn.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)) <= 0);
 await fn.setViewportSize({ width: 390, height: 844 });
-note('playbook page 390: no overflow', (await fn.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)) <= 0);
+note('playbook hub 390: one column, no overflow', (await fn.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)) <= 0 && await fn.evaluate(() => { const [a, b] = document.querySelectorAll('.fn-card'); return b.getBoundingClientRect().top >= a.getBoundingClientRect().bottom - 1; }));
+await fn.screenshot({ path: join(outDir, 'playbook-hub-390.png'), fullPage: true });
+await fn.goto(url + 'plays/scaling-chaos-7-signs.html', { waitUntil: 'networkidle' });
+note('play page 390: no overflow', (await fn.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)) <= 0);
+await fn.screenshot({ path: join(outDir, 'play-page-390.png'), clip: { x: 0, y: 0, width: 390, height: 844 } });
 await fn.close();
 
 // Reduced motion

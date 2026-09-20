@@ -3,7 +3,8 @@
 Writes:
   - the compact Playbook band on index.html (between notes markers)
   - the article dialogs on index.html (between dialog markers)
-  - playbook.html, the full page
+  - playbook.html, the hub: one card per play, filtered by lane
+  - plays/<slug>.html, one page per play
 
 Usage: python3 tools/build-notes.py
 """
@@ -42,7 +43,7 @@ def clean_links(html):
                  ('href="merch.html"', 'href="/merch"'), ('href="privacy.html"', 'href="/privacy"'), ('href="terms.html"', 'href="/terms"'),
                  ('href="work-with-us.html"', 'href="/work-with-us"')):
         html = html.replace(a, z)
-    return html
+    return re.sub(r'href="plays/([a-z0-9-]+)\.html"', r'href="/plays/\1"', html)
 
 MONTHS = "January February March April May June July August September October November December".split()
 
@@ -156,11 +157,6 @@ for i, (slug, tag, lane, home) in enumerate(ARTICLES, start=1):
     n = parse(slug); n.update(i=i, tag=tag, lane=lane, home=home, accent=ACCENTS[(i-1) % len(ACCENTS)], ring=RINGS[(i-1) % len(RINGS)]); notes.append(n)
 home_notes = [n for n in notes if n["home"]]
 
-# ---------- stacked pull quote (default + one per play; sized by the tallest) ----------
-def quote_stack_for(items):
-    return f'<span class="notes__pull-item is-active" data-quote-for="default">{esc(PULL)}</span>' + "".join(
-        f'<span class="notes__pull-item" data-quote-for="{n["slug"]}" aria-hidden="true">{esc(QUOTES[n["slug"]])}</span>' for n in items if QUOTES[n["slug"]] != PULL)
-
 # ---------- homepage band ----------
 rows = "\n".join(f'''          <li class="note-line" data-quote-for="{n['slug'] if QUOTES[n['slug']] != PULL else 'default'}">
             <button class="note-line__button" type="button" data-open-note="note-{n['i']}">
@@ -204,7 +200,7 @@ dialogs = "\n\n".join(f'''  <dialog class="note-dialog" id="note-{n['i']}" aria-
       {closer_html()}
       <div class="note-article__foot">
         <button class="button button--ink" type="button" data-close-note><span class="arrow" aria-hidden="true">←</span> Back</button>
-        <a class="text-link" href="playbook.html#{n['slug']}">Open in the playbook <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="text-link" href="plays/{n['slug']}.html">Open on its own page <span class="arrow" aria-hidden="true">→</span></a>
       </div>
     </article>
   </dialog>''' for n in home_notes)
@@ -237,19 +233,16 @@ header = header.replace('<a class="nav-link" href="#playbook">Playbook</a>', '<a
 footer = s[s.index('  <footer class="site-footer">'):s.index("</footer>")+9]
 footer = footer.replace('href="#top"', 'href="index.html"').replace('href="#work"', 'href="index.html#work"').replace('href="#approach"', 'href="index.html#approach"').replace('href="#about"', 'href="index.html#about"').replace('href="#contact"', 'href="index.html#contact"')
 
-index_links = "\n".join(f'            <li data-quote-for="{n["slug"] if QUOTES[n["slug"]] != PULL else "default"}"><a href="#{n["slug"]}"><span class="note__tag" aria-hidden="true">{n["tag"]}</span><span>{esc(n["title"])}</span></a></li>' for n in notes)
-articles = "\n\n".join(f'''        <article class="fn-article reveal" id="{n['slug']}" aria-labelledby="{n['slug']}-title">
-          <div class="note-article__top">
-            <p class="eyebrow"><span class="note__tag" aria-hidden="true">{n['tag']}</span> {n['kind']} {n['i']} · <span class="note-article__lane">{n['lane']}</span></p>
-          </div>
-          <h2 class="note-article__title" id="{n['slug']}-title">{esc(n['title'])}</h2>
-          <p class="note-article__stand">{esc(n['stand'])}</p>
-          <p class="note-article__byline"><span class="note-article__author">Tavis Scholz</span> · {n['date']} · {n['minutes']} min read {listen_button(n, 'play')} {speed_button()} {share_button(n)}</p>
-          <div class="note-article__body">
-            {n['body']}
-          </div>
-          {closer_html()}
-        </article>''' for n in notes)
+# ---------- playbook hub: one card per play, filtered by lane ----------
+FILTERS = [("all", "All"), ("OPS", "Operations"), ("DEV", "Development"), ("RE", "Real estate"), ("FRAN", "Franchise"), ("SCALE", "Scaling")]
+def play_href(n): return f"plays/{n['slug']}.html"
+filters = "\n".join(f'          <button class="fn-filter" type="button" data-filter="{key}" aria-pressed="{"true" if key == "all" else "false"}">{label}</button>' for key, label in FILTERS)
+cards = "\n".join(f'''          <li class="fn-card" id="{n['slug']}" data-lane="{n['tag']}">
+            <p class="fn-card__tag">{n['tag']}</p>
+            <h3 class="fn-card__title"><a class="fn-card__link" href="{play_href(n)}">{esc(n['title'])}</a></h3>
+            <p class="fn-card__stand">{esc(n['stand'])}</p>
+            <p class="fn-card__more" aria-hidden="true">Open play <span class="arrow">→</span></p>
+          </li>''' for n in notes)
 
 page = f'''<!doctype html>
 <html lang="en">
@@ -265,10 +258,9 @@ page = f'''<!doctype html>
     <section class="section section--paper fn-hero" aria-labelledby="fn-title">
       <div class="container fn-hero__grid">
         <div class="fn-hero__copy reveal">
-          <p class="eyebrow">Field notes on the work</p>
-          <h1 class="section-title" id="fn-title">Peek into our Playbook.</h1>
-          <p class="section-intro">Written from the store floor, the development schedule, the site walk, and the franchise pipeline.</p>
-          <p class="notes__pull notes__pull--static brush">Practical notes and working tools on building a business that can keep moving.</p>
+          <p class="eyebrow">Field notes</p>
+          <h1 class="section-title" id="fn-title">Plays from the work.</h1>
+          <p class="section-intro">Practical notes and tools for building a business that can keep moving.</p>
         </div>
         <figure class="figure figure--tall reveal">
           <img src="assets/images/notes-field-notebook.webp" width="1024" height="1536" alt="A SKALA field notebook and printed plans on a wooden worktable" fetchpriority="high">
@@ -276,17 +268,14 @@ page = f'''<!doctype html>
       </div>
     </section>
 
-    <section class="section section--paper fn-body" aria-label="Playbook">
-      <div class="container fn-body__grid">
-        <nav class="fn-index reveal" aria-label="Playbook index">
-          <p class="eyebrow">In the playbook</p>
-          <ol class="fn-index__list">
-{index_links}
-          </ol>
-        </nav>
-        <div class="fn-articles">
-{articles}
+    <section class="section section--paper fn-hub" aria-label="All plays">
+      <div class="container">
+        <div class="fn-filters reveal" role="group" aria-label="Show plays from one lane">
+{filters}
         </div>
+        <ul class="fn-cards reveal" id="fn-cards">
+{cards}
+        </ul>
       </div>
     </section>
 
@@ -308,6 +297,71 @@ page = f'''<!doctype html>
 </html>
 '''
 (ROOT / "playbook.html").write_text(clean_links(stamp_assets(page)))
+
+# ---------- one page per play ----------
+def nested(html):
+    """Play pages live one folder down, so site assets are reached with ../"""
+    return re.sub(r'(href|src|data-audio)="(css|js|assets)/', r'\1="../\2/', html)
+def play_page(n, nxt):
+    phead = head.replace("<title>Playbook — SKALA</title>", f"<title>{esc(n['title'])} — SKALA</title>")
+    phead = re.sub(r'<meta name="description" content="[^"]*">', f'<meta name="description" content="{html.escape(n["stand"])}">', phead)
+    return f'''<!doctype html>
+<html lang="en">
+{phead}
+<body class="notes-page play-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+{svgdefs}
+
+{header}
+
+  <main id="main">
+    <section class="section section--paper fn-play" aria-labelledby="{n['slug']}-title">
+      <div class="container fn-play__wrap">
+        <article class="fn-article fn-article--page reveal" id="{n['slug']}">
+          <div class="note-article__top">
+            <p class="eyebrow">{n['lane']}</p>
+            <a class="text-link fn-play__back" href="playbook.html"><span class="arrow" aria-hidden="true">←</span> All plays</a>
+          </div>
+          <h1 class="note-article__title" id="{n['slug']}-title">{esc(n['title'])}</h1>
+          <p class="note-article__stand">{esc(n['stand'])}</p>
+          <p class="note-article__byline"><span class="note-article__author">Tavis Scholz</span> · {n['date']} · {n['minutes']} min read {listen_button(n, 'play')} {speed_button()} {share_button(n)}</p>
+          <div class="note-article__body">
+            {n['body']}
+          </div>
+          {closer_html()}
+        </article>
+        <nav class="fn-next reveal" aria-label="Next play">
+          <p class="eyebrow">Next play</p>
+          <a class="fn-next__link" href="{play_href(nxt)}">
+            <span class="fn-next__lane">{nxt['lane']}</span>
+            <span class="fn-next__title">{esc(nxt['title'])}</span>
+            <span class="fn-next__more">Open play <span class="arrow" aria-hidden="true">→</span></span>
+          </a>
+        </nav>
+      </div>
+    </section>
+
+    <section class="section section--acid fn-close" aria-labelledby="fn-close-title">
+      <div class="container fn-close__grid">
+        <h2 class="campaign-heading" id="fn-close-title">Build better brands for more people.</h2>
+        <div>
+          <p class="section-intro">Share what you are building and where the operation needs to get stronger.</p>
+          <a class="button button--ink" href="index.html#contact">Let’s build <span class="arrow" aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+{footer}
+
+  <script src="js/site.js" defer></script>
+</body>
+</html>
+'''
+(ROOT / "plays").mkdir(exist_ok=True)
+for j, n in enumerate(notes):
+    (ROOT / "plays" / f"{n['slug']}.html").write_text(nested(clean_links(stamp_assets(play_page(n, notes[(j + 1) % len(notes)])))))
 
 # ---------- merch page ----------
 MERCH = [

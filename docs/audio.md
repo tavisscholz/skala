@@ -49,4 +49,4 @@ Record each play as an MP3, name it `assets/audio/<slug>.mp3`, rebuild, and comm
 
 ## Playback speed
 
-The Listen button opens at 1.1×, since the narrator reads a touch slow at natural pace. Listeners can cycle 1.1, 1.25, 1.5, 2, 0.8 and 1×; the choice is remembered per device. Pitch is preserved at every speed.
+The Listen button opens at 1.25×, since the narrator reads a touch slow at natural pace. Listeners can cycle 1.25, 1.5, 2, 0.8 and 1×; the choice is remembered per device. Pitch is preserved at every speed.

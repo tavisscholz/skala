@@ -385,7 +385,7 @@
     var active = null;
 
     /* Playback speed: one preset list, remembered per device, applied to both players. */
-    var RATES = [1.1, 1.25, 1.5, 2, 0.8, 1], RATE_KEY = 'skala-listen-rate', rate = 1.1;   /* 1.1 is the house default: the narrator reads a touch slow */
+    var RATES = [1.25, 1.5, 2, 0.8, 1], RATE_KEY = 'skala-listen-rate', rate = 1.25;   /* 1.1 is the house default: the narrator reads a touch slow */
     try { var savedRate = parseFloat(localStorage.getItem(RATE_KEY)); if (RATES.indexOf(savedRate) !== -1) rate = savedRate; } catch (e) {}
     function rateLabel(r) { return String(r) + '\u00d7'; }
     function paintSpeed(pill) { if (!pill) return; pill.querySelector('.speed__label').textContent = rateLabel(rate); pill.setAttribute('aria-label', 'Playback speed, ' + rate + ' times'); }
@@ -534,12 +534,32 @@
     window.addEventListener('pagehide', function () { stopActive(); if (canSpeak) synth.cancel(); });
   })();
 
+  /* ---------- Playbook hub: lane filters, and old #slug links open the play's page ---------- */
+  var cards = document.getElementById('fn-cards');
+  if (cards) {
+    var wanted = location.hash ? document.getElementById(location.hash.slice(1)) : null;
+    var wantedLink = wanted && wanted.classList.contains('fn-card') ? wanted.querySelector('.fn-card__link') : null;
+    if (wantedLink) location.replace(wantedLink.href);
+    var filters = Array.prototype.slice.call(document.querySelectorAll('.fn-filter'));
+    filters.forEach(function (f) {
+      f.addEventListener('click', function () {
+        var key = f.getAttribute('data-filter');
+        filters.forEach(function (o) { o.setAttribute('aria-pressed', o === f ? 'true' : 'false'); });
+        Array.prototype.forEach.call(cards.querySelectorAll('.fn-card'), function (card) {
+          card.hidden = key !== 'all' && card.getAttribute('data-lane') !== key;
+        });
+      });
+    });
+  }
+
   /* ---------- Share a play: the device share sheet, or copy the link ---------- */
   Array.prototype.forEach.call(document.querySelectorAll('[data-share]'), function (btn) {
     var slug = btn.getAttribute('data-share');
     var title = btn.getAttribute('data-share-title') || document.title;
-    var page = /\.html$/.test(location.pathname) ? 'playbook.html' : '/playbook';
-    var url = new URL(page + '#' + slug, location.href).href;
+    /* On a play's own page share that page; from the homepage dialogs point at the play's page. */
+    var onPlay = /\/plays\//.test(location.pathname);
+    var page = /\.html$/.test(location.pathname) ? 'plays/' + slug + '.html' : '/plays/' + slug;
+    var url = onPlay ? location.href.split('#')[0] : new URL(page, location.href).href;
     var label = btn.querySelector('.share__label');
     function copied(ok) {
       btn.classList.add('is-copied'); label.textContent = ok ? 'Copied' : 'Copy failed';

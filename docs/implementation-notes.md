@@ -69,10 +69,12 @@ carries the standfirst, a byline and date from the file, the body, any table
 (as a scrollable table), and the closing "This week" callout on acid. Copy is
 verbatim from the files; the articles keep their author's first person because
 they are bylined writing, not brand copy. `tools/build-notes.py` regenerates
-the homepage band, the dialogs, and `playbook.html` from the folder. The
-homepage keeps a compact list (tag, title, standfirst) that opens each note in
-place; the page carries all four in full with a sticky index and per-article
-anchors, and is the shareable destination.
+the homepage band, the dialogs, `playbook.html` and `plays/<slug>.html` from
+the folder. The homepage keeps a compact list (tag, title, standfirst) that
+opens each note in place. Since 20 September the playbook page is a hub (hero,
+lane filters, one card per play) and each play has its own page with the
+category, title, deck, article and a "Next play" link, which is the shareable
+destination. Old `/playbook#slug` links forward to the play's page.
 
 ## Departures from the brief, and why
 
