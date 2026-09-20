@@ -519,10 +519,8 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .ladder__step.is-complete .ladder__name, .ladder__step.is-complete .ladder__text { color: var(--color-ink); }
 .ladder__step.is-complete:not(.is-active) { padding-left: var(--space-3); margin-left: 0; }
 /* Phones: the board is hidden and the tiles are the checklist */
-.ladder__hint { display: none; }
 @media (max-width: 767px) {
   .ready .workboard { display: none; }
-  .ladder__hint { display: block; margin-top: var(--space-4); color: var(--color-muted-light); font-size: var(--text-ui); }
   .ready .ladder__step { cursor: pointer; }
   .ready .ladder__step.is-complete { transform: none; margin: var(--space-2) 0; padding: var(--space-4); }
 }
