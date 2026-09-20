@@ -508,6 +508,30 @@
     window.addEventListener('pagehide', function () { stopActive(); if (canSpeak) synth.cancel(); });
   })();
 
+  /* ---------- Share a play: the device share sheet, or copy the link ---------- */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-share]'), function (btn) {
+    var slug = btn.getAttribute('data-share');
+    var title = btn.getAttribute('data-share-title') || document.title;
+    var page = /\.html$/.test(location.pathname) ? 'playbook.html' : '/playbook';
+    var url = new URL(page + '#' + slug, location.href).href;
+    var label = btn.querySelector('.share__label');
+    function copied(ok) {
+      btn.classList.add('is-copied'); label.textContent = ok ? 'Copied' : 'Copy failed';
+      window.setTimeout(function () { btn.classList.remove('is-copied'); label.textContent = 'Share'; }, 1600);
+    }
+    btn.addEventListener('click', function () {
+      if (navigator.share) {
+        navigator.share({ title: title, url: url }).catch(function () {});
+        return;
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(function () { copied(true); }, function () { copied(false); });
+      } else {
+        window.prompt('Copy this link', url);
+      }
+    });
+  });
+
   /* ---------- Contact draft ---------- */
   var form = document.getElementById('contact-form');
   var draft = document.getElementById('draft');

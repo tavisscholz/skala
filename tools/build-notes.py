@@ -132,12 +132,17 @@ def closer_html():
     t = smart(esc(CLOSER))
     t = re.sub(r"([\w.+-]+@[\w.-]+\.\w+)", r'<a href="mailto:\1">\1</a>', t)
     return f'<p class="note-article__closer">{t}</p>'
+def share_button(n):
+    """Share the play: the device share sheet where there is one, otherwise copy the link."""
+    return (f'<button class="byline-btn share" type="button" data-share="{n["slug"]}" data-share-title="{esc(n["title"])}" aria-label="Share this play">'
+            '<svg viewBox="0 0 10 10" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6.2V1.2M2.9 3.2 5 1.1l2.1 2.1M1.6 5.6v3h6.8v-3"/></svg>'
+            '<span class="share__label">Share</span></button>')
 def listen_button(n, where):
     """Play/pause control beside the read time. Uses a recorded MP3 when
     tools/build-audio.mjs has made one, otherwise the device's own voice."""
     rel = f"assets/audio/{n['slug']}.mp3"
     audio = f' data-audio="{rel}?v={asset_version(rel)}"' if (ROOT / rel).exists() else ""
-    return (f'<button class="listen" type="button" data-listen="{where}-{n["slug"]}"{audio} data-state="idle" aria-pressed="false" aria-label="Listen to this play">'
+    return (f'<button class="byline-btn listen" type="button" data-listen="{where}-{n["slug"]}"{audio} data-state="idle" aria-pressed="false" aria-label="Listen to this play">'
             '<svg class="listen__play" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0.5 9 5 1 9.5z"/></svg>'
             '<svg class="listen__pause" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 0.5h3v9H1zM6 0.5h3v9H6z"/></svg>'
             '<span class="listen__label">Listen</span><span class="listen__time"></span></button>')
@@ -188,7 +193,7 @@ dialogs = "\n\n".join(f'''  <dialog class="note-dialog" id="note-{n['i']}" aria-
       </div>
       <h2 class="note-article__title" id="note-{n['i']}-heading" tabindex="-1">{esc(n['title'])}</h2>
       <p class="note-article__stand">{esc(n['stand'])}</p>
-      <p class="note-article__byline"><span class="note-article__author">Tavis Scholz</span> · {n['date']} · {n['minutes']} min read {listen_button(n, 'note')}</p>
+      <p class="note-article__byline"><span class="note-article__author">Tavis Scholz</span> · {n['date']} · {n['minutes']} min read {listen_button(n, 'note')} {share_button(n)}</p>
       <div class="note-article__body">
         {n['body']}
       </div>
@@ -235,7 +240,7 @@ articles = "\n\n".join(f'''        <article class="fn-article reveal" id="{n['sl
           </div>
           <h2 class="note-article__title" id="{n['slug']}-title">{esc(n['title'])}</h2>
           <p class="note-article__stand">{esc(n['stand'])}</p>
-          <p class="note-article__byline"><span class="note-article__author">Tavis Scholz</span> · {n['date']} · {n['minutes']} min read {listen_button(n, 'play')}</p>
+          <p class="note-article__byline"><span class="note-article__author">Tavis Scholz</span> · {n['date']} · {n['minutes']} min read {listen_button(n, 'play')} {share_button(n)}</p>
           <div class="note-article__body">
             {n['body']}
           </div>
@@ -275,7 +280,6 @@ page = f'''<!doctype html>
           <ol class="fn-index__list">
 {index_links}
           </ol>
-          <a class="button button--ink fn-index__cta" href="assets/downloads/skala-playbook.pdf" target="_blank" rel="noopener">Download the playbook <span class="fn-index__format">PDF</span> <span class="arrow" aria-hidden="true">↓</span></a>
         </nav>
         <div class="fn-articles">
 {articles}

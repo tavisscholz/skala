@@ -237,7 +237,16 @@ note('playbook page loads without errors', fnErrors.length === 0, fnErrors.join(
 note('playbook page has seven articles', (await fn.locator('.fn-article').count()) === 7);
 note('homepage band keeps four plays and sends the rest to the playbook', await fn.evaluate(async (u) => { const h = await (await fetch(u + 'index.html')).text(); return (h.match(/class="note-line"/g) || []).length === 4 && (h.match(/<dialog class="note-dialog"/g) || []).length === 4; }, url));
 note('every play ends on the contributor note with a mailto link', (await fn.locator('.fn-article .note-article__closer').count()) === 7 && (await fn.locator('.fn-article .note-article__closer').first().textContent()).includes('East Tennessee') && (await fn.locator('.fn-article .note-article__closer a[href^="mailto:tavis@buildwithskala.com"]').count()) === 7 && await fn.evaluate(async (u) => { const h = await (await fetch(u + 'index.html')).text(); return (h.match(/note-article__closer/g) || []).length === 4; }, url));
-note('every play carries a Listen button beside its read time', (await fn.locator('.fn-article .note-article__byline .listen').count()) === 7 && await fn.evaluate(async (u) => { const h = await (await fetch(u + 'index.html')).text(); return (h.match(/class="listen"/g) || []).length === 4; }, url));
+note('the playbook index has no download button', (await fn.locator('.fn-index__cta').count()) === 0 && (await fn.locator('a[href*="skala-playbook.pdf"]').count()) === 0);
+{
+  await fn.evaluate(() => { window.__copied = null; Object.defineProperty(navigator, 'share', { configurable: true, value: undefined }); Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: t => { window.__copied = t; return Promise.resolve(); } } }); });
+  const sh = fn.locator('#the-founder-bottleneck .share');
+  await sh.scrollIntoViewIfNeeded(); await sh.click(); await fn.waitForTimeout(150);
+  const copiedUrl = await fn.evaluate(() => window.__copied);
+  const label = await sh.locator('.share__label').textContent();
+  note('Share copies a link to the play when there is no share sheet', /playbook(\.html)?#the-founder-bottleneck$/.test(copiedUrl || '') && label === 'Copied' && (await fn.locator('.fn-article .share').count()) === 7, `${copiedUrl}/${label}`);
+}
+note('every play carries a Listen button beside its read time', (await fn.locator('.fn-article .note-article__byline .listen').count()) === 7 && await fn.evaluate(async (u) => { const h = await (await fetch(u + 'index.html')).text(); return (h.match(/class="byline-btn listen"/g) || []).length === 4; }, url));
 {
   /* Headless Chromium has no speech engine, so stand one in: each utterance "ends" after 150ms. */
   const lp = await browser.newPage({ viewport: { width: 1440, height: 900 } });
