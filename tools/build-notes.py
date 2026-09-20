@@ -265,10 +265,10 @@ page = f'''<!doctype html>
     <section class="section section--paper fn-hero" aria-labelledby="fn-title">
       <div class="container fn-hero__grid">
         <div class="fn-hero__copy reveal">
-          <p class="eyebrow">Playbook</p>
-          <h1 class="section-title" id="fn-title">Plays from the work.</h1>
-          <p class="section-intro">Practical notes and working tools on building a business that can keep moving. Written from the store floor, the development schedule, the site walk, and the franchise pipeline.</p>
-          <p class="notes__pull brush" aria-live="polite">{quote_stack_for(notes)}</p>
+          <p class="eyebrow">Field notes on the work</p>
+          <h1 class="section-title" id="fn-title">Peek into our Playbook.</h1>
+          <p class="section-intro">Written from the store floor, the development schedule, the site walk, and the franchise pipeline.</p>
+          <p class="notes__pull notes__pull--static brush">Practical notes and working tools on building a business that can keep moving.</p>
         </div>
         <figure class="figure figure--tall reveal">
           <img src="assets/images/notes-field-notebook.webp" width="1024" height="1536" alt="A SKALA field notebook and printed plans on a wooden worktable" fetchpriority="high">
