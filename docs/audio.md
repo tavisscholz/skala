@@ -46,3 +46,7 @@ The current narrator is Chris Anthony, voice ID `uKGPYP2uuyRQv8SeFre0`, on `elev
 ## Your own voice
 
 Record each play as an MP3, name it `assets/audio/<slug>.mp3`, rebuild, and commit. The button behaves exactly as with generated narration.
+
+## Playback speed
+
+The Listen button opens at 1.1×, since the narrator reads a touch slow at natural pace. Listeners can cycle 1.1, 1.25, 1.5, 2, 0.8 and 1×; the choice is remembered per device. Pitch is preserved at every speed.

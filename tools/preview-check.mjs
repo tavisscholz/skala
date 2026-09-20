@@ -292,12 +292,14 @@ note('every play carries a Listen button beside its read time', (await fn.locato
   {
     const pill = lp.locator('#the-next-ten-locations .speed');
     const shown = await pill.isVisible();
+    const l0 = await pill.locator('.speed__label').textContent();
+    note('playback opens at the 1.1\u00d7 house default', l0 === '1.1\u00d7');
     await pill.click(); await lp.waitForTimeout(250);
     const l1 = await pill.locator('.speed__label').textContent(); const st = await btn.getAttribute('data-state');
     await pill.click(); await lp.waitForTimeout(100);
     const l2 = await pill.locator('.speed__label').textContent();
     const saved = await lp.evaluate(() => localStorage.getItem('skala-listen-rate'));
-    note('speed pill appears while playing and cycles 1\u00d7 \u2192 1.25\u00d7 \u2192 1.5\u00d7', shown && l1 === '1.25\u00d7' && st === 'playing' && l2 === '1.5\u00d7' && saved === '1.5', `${shown}/${l1}/${st}/${l2}/${saved}`);
+    note('speed pill appears while playing and cycles 1.1\u00d7 \u2192 1.25\u00d7 \u2192 1.5\u00d7', shown && l1 === '1.25\u00d7' && st === 'playing' && l2 === '1.5\u00d7' && saved === '1.5', `${shown}/${l1}/${st}/${l2}/${saved}`);
   }
   const other = lp.locator('#scaling-chaos-7-signs .listen');
   await other.scrollIntoViewIfNeeded(); await other.click(); await lp.waitForTimeout(300);

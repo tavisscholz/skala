@@ -385,9 +385,9 @@
     var active = null;
 
     /* Playback speed: one preset list, remembered per device, applied to both players. */
-    var RATES = [1, 1.25, 1.5, 2, 0.8], RATE_KEY = 'skala-listen-rate', rate = 1;
+    var RATES = [1.1, 1.25, 1.5, 2, 0.8, 1], RATE_KEY = 'skala-listen-rate', rate = 1.1;   /* 1.1 is the house default: the narrator reads a touch slow */
     try { var savedRate = parseFloat(localStorage.getItem(RATE_KEY)); if (RATES.indexOf(savedRate) !== -1) rate = savedRate; } catch (e) {}
-    function rateLabel(r) { return (r % 1 === 0 ? String(r) : String(r).replace(/^0\./, '0.')) + '\u00d7'; }
+    function rateLabel(r) { return String(r) + '\u00d7'; }
     function paintSpeed(pill) { if (!pill) return; pill.querySelector('.speed__label').textContent = rateLabel(rate); pill.setAttribute('aria-label', 'Playback speed, ' + rate + ' times'); }
     function speedPillFor(btn) { var line = btn.closest('.note-article__byline'); return line ? line.querySelector('.speed') : null; }
     Array.prototype.forEach.call(document.querySelectorAll('.speed'), function (pill) {
