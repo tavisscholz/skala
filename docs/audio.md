@@ -30,6 +30,19 @@ To use a different voice, set `ELEVENLABS_VOICE_ID` to any voice ID from your El
 
 Whenever a play's text changes, run the recorder again before publishing, otherwise the audio and the page drift apart.
 
+## Recording through the ElevenLabs connector
+
+When the ElevenLabs connector is attached to a Claude session, no API key is needed. The connector caps each prompt at 5,000 characters, so a play is recorded in two parts split at a section break and joined without re-encoding:
+
+```
+python3 tools/audio-parts.py <slug>                 # writes part1/part2 scripts
+# record each part with the connector's speech tool, same voice and model
+python3 tools/join-mp3.py assets/audio/<slug>.mp3 part1.mp3 part2.mp3
+python3 tools/build-notes.py
+```
+
+The current narrator is Jonathan (Warm Executive Narrator), voice ID `eocOcfJL8piTXLNNpSCR`, on `eleven_multilingual_v2`. Files come back at 128 kbps, about 1 MB a minute.
+
 ## Your own voice
 
 Record each play as an MP3, name it `assets/audio/<slug>.mp3`, rebuild, and commit. The button behaves exactly as with generated narration.
