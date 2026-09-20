@@ -103,8 +103,8 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 /* A, L and the final A each tuck in under the letter before them (Oracle Brush sets them a touch wide). */
 .wordmark__tuck { display: inline-block; margin-left: var(--tuck, -0.14em); }
 .wordmark__tuck--l { margin-left: -0.08em; }
-.wordmark__ridge { width: 0.85em; height: 0.64em; font-size: var(--wordmark-header); margin-left: 0.2em; margin-top: -0.34em; transform: rotate(4deg); flex: none; }
-.site-footer .wordmark__ridge { display: none; }
+.wordmark__crown { width: 0.85em; height: 0.64em; font-size: var(--wordmark-header); margin-left: 0.2em; margin-top: -0.34em; transform: rotate(4deg); flex: none; }
+.site-footer .wordmark__crown { display: none; }
 
 /* ---------- Header ---------- */
 .site-header {
@@ -177,10 +177,10 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .hero__media { position: relative; background: var(--color-ink); color: var(--color-acid); }
 .media-slot { position: relative; overflow: hidden; }
 .media-slot__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--focus-x, 60%) 40%; filter: grayscale(1) contrast(1.12); }
-/* When a photograph is present the poster becomes a caption layer: no giant wordmark, no ridge (the photos carry them). */
+/* When a photograph is present the poster becomes a caption layer: no giant wordmark, no crown (the photos carry them). */
 .media-slot__img ~ .poster { background: linear-gradient(180deg, rgba(5,5,5,0.08) 0%, rgba(5,5,5,0.18) 55%, rgba(5,5,5,0.78) 100%); }
 .media-slot__img ~ .poster::after { opacity: 0.08; }
-.media-slot__img ~ .poster .poster__wordmark, .media-slot__img ~ .poster .poster__ridge { display: none; }
+.media-slot__img ~ .poster .poster__wordmark, .media-slot__img ~ .poster .poster__crown { display: none; }
 .media-slot__img ~ .campaign__poster-copy { font-size: min(clamp(1.75rem, 0.8rem + 2.2vw, 3rem), calc(3.6vw - 6px)); max-width: 22ch; text-shadow: 0 2px 24px rgba(5,5,5,0.6); }
 @media (min-width: 768px) and (max-width: 1023px) { .media-slot__img ~ .campaign__poster-copy { font-size: min(clamp(1.5rem, 0.6rem + 2.2vw, 2.25rem), calc(3.6vw - 6px)); } }   /* stays clear of the torn edge on tablets */
 @media (min-width: 768px) { .media-slot__img ~ .campaign__poster-copy { max-width: none; white-space: nowrap; } }   /* one line from tablet up */
@@ -200,7 +200,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
   mix-blend-mode: screen;
 }
 .poster__wordmark { font-size: var(--wordmark-hero); line-height: 0.9; color: var(--color-acid); transform: rotate(-2.5deg); display: inline-block; align-self: flex-start; margin-left: -0.04em; }
-.poster__ridge { width: clamp(64px, 5vw + 32px, 96px); height: auto; color: var(--color-acid); margin-top: var(--space-4); margin-left: var(--space-2); transform: rotate(3deg); }
+.poster__crown { width: clamp(64px, 5vw + 32px, 96px); height: auto; color: var(--color-acid); margin-top: var(--space-4); margin-left: var(--space-2); transform: rotate(3deg); }
 .poster__line { margin-top: auto; align-self: flex-end; text-align: right; color: var(--color-white); font-size: clamp(1.5rem, 1rem + 1.6vw, 2.5rem); line-height: 1.1; transform: rotate(-2deg); }
 
 @media (max-width: 1023px) and (min-width: 768px) {
@@ -224,7 +224,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
   .hero__media .media-slot__img { object-position: 50% 30%; filter: grayscale(1) contrast(1.1) brightness(0.85); }
   .poster { padding: var(--space-5) var(--gutter) calc(var(--space-5) + 34px); flex-direction: row; align-items: flex-end; justify-content: space-between; }   /* bottom clears the strip's top tear */
   .poster__wordmark { display: none; }   /* header already carries the wordmark on mobile */
-  .poster__ridge { margin: 0; width: 56px; }
+  .poster__crown { margin: 0; width: 56px; }
   .poster__line { margin: 0; font-size: 1.75rem; }
 }
 
@@ -538,10 +538,10 @@ body.has-hoopla { overflow: hidden; }
 .hoopla__card .eyebrow { color: var(--color-ink); }
 .hoopla__title { margin-top: var(--space-4); font-size: clamp(3.5rem, 2rem + 6vw, 7rem); line-height: 0.92; text-transform: uppercase; }
 .hoopla__line { margin-top: var(--space-5); max-width: 32rem; font-size: 1.125rem; font-weight: 500; line-height: 1.5; }
-.hoopla__ridge { position: absolute; top: var(--space-5); right: var(--space-5); width: 72px; height: 54px; color: var(--color-ink); transform: rotate(8deg); }
+.hoopla__crown { position: absolute; top: var(--space-5); right: var(--space-5); width: 72px; height: 54px; color: var(--color-ink); transform: rotate(8deg); }
 .hoopla__close { margin-top: var(--space-6); }
 @keyframes hoopla-in { from { transform: rotate(-2deg) scale(0.6); opacity: 0; } to { transform: rotate(-2deg) scale(1); opacity: 1; } }
-@media (max-width: 767px) { .hoopla__card { padding: var(--space-6) var(--space-5); box-shadow: 8px 8px 0 var(--color-white); } .hoopla__ridge { width: 48px; height: 36px; } .scale-banner { font-size: 1.25rem; } }
+@media (max-width: 767px) { .hoopla__card { padding: var(--space-6) var(--space-5); box-shadow: 8px 8px 0 var(--color-white); } .hoopla__crown { width: 48px; height: 36px; } .scale-banner { font-size: 1.25rem; } }
 .workboard__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4); margin-top: var(--space-6); padding: var(--space-2) var(--space-3) var(--space-2) 0; }
 .workboard__foot .workboard__live { margin-top: 0; }
 .board-stamp { display: inline-flex; align-items: baseline; gap: var(--space-3); padding: var(--space-3) var(--space-5); margin-block: var(--space-2); background: var(--color-ink); color: var(--color-acid); transform: rotate(-2deg); }

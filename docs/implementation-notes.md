@@ -30,7 +30,7 @@ Internal record for the website trial. Nothing in this file renders on the site.
   shown. Nothing is transmitted anywhere; the draft lives in memory only.
 - Motion: hero underline draws in over 450 ms after fonts are ready; content
   enters over 220 ms with 12 px travel. `prefers-reduced-motion` shows final
-  states immediately. No marquee, no scroll hijacking, no looping ridge mark.
+  states immediately. No marquee, no scroll hijacking, no looping crown.
 - Focus rings are 3 px with 3 px offset, black on acid/paper and acid on black.
   All controls are at least 44 × 44 px.
 - Semantics: skip link, `header/nav/main/section/footer` landmarks, one `h1`,
@@ -131,7 +131,7 @@ touch behaviour on a physical device.
 ## Logo-free test
 
 Hide `.wordmark` and `.poster__wordmark`: the acid fields, torn edge, brush
-underline, numbered rows, ridge mark, and black poster surfaces still identify the
+underline, numbered rows, crown, and black poster surfaces still identify the
 territory.
 
 ## Labels and About (18 September)
