@@ -281,7 +281,7 @@
         '  <p class="eyebrow">Every stage done</p>' +
         '  <p class="hoopla__title brush" id="hoopla-title">Ready<br>to scale.</p>' +
         '  <p class="hoopla__line">Siloed, Captured, Adopted, Linked, Expansion-ready. The system holds without the person who built it, and the next location inherits it.</p>' +
-        '  <svg class="hoopla__peaks mark-peaks" aria-hidden="true" focusable="false"><use href="#mark-peaks"/></svg>' +
+        '  <svg class="hoopla__peaks mark-peaks" aria-hidden="true" focusable="false"><use href="#mark-peaks-sweep"/></svg>' +
         '  <button class="button button--ink hoopla__close" type="button">Keep building <span class="arrow" aria-hidden="true">→</span></button>' +
         '</div>';
       document.body.appendChild(hooplaEl);
