@@ -103,7 +103,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 /* A, L and the final A each tuck in under the letter before them (Oracle Brush sets them a touch wide). */
 .wordmark__tuck { display: inline-block; margin-left: var(--tuck, -0.14em); }
 .wordmark__tuck--l { margin-left: -0.08em; }
-.wordmark__peaks { width: 1em; height: 0.6em; font-size: var(--wordmark-header); margin-left: 0.2em; margin-top: -0.3em; flex: none; }
+.wordmark__peaks { width: 0.85em; height: 0.51em; font-size: var(--wordmark-header); margin-left: 0.2em; flex: none; align-self: center; }
 .site-footer .wordmark__peaks { display: none; }
 
 /* ---------- Header ---------- */
