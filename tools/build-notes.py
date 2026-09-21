@@ -228,7 +228,7 @@ svgdefs = s[s.index('  <svg class="svg-defs"'):s.index("</svg>", s.index('  <svg
 header = s[s.index('  <header class="site-header"'):s.index("</header>")+9]
 header = header.replace('href="#top" aria-label="SKALA — back to top"', 'href="index.html" aria-label="SKALA — home"')
 header = header.replace('href="#work"', 'href="index.html#work"').replace('href="#approach"', 'href="index.html#approach"').replace('href="#about"', 'href="index.html#about"').replace('href="#contact"', 'href="index.html#contact"')
-header = header.replace('<a class="nav-link" href="#playbook">Playbook</a>', '<a class="nav-link" href="playbook.html" aria-current="page">Playbook</a>')
+header = header.replace('<a class="nav-link" href="#playbook">The Playbook</a>', '<a class="nav-link" href="playbook.html" aria-current="page">The Playbook</a>')
 footer = s[s.index('  <footer class="site-footer">'):s.index("</footer>")+9]
 footer = footer.replace('href="#top"', 'href="index.html"').replace('href="#work"', 'href="index.html#work"').replace('href="#approach"', 'href="index.html#approach"').replace('href="#about"', 'href="index.html#about"').replace('href="#contact"', 'href="index.html#contact"')
 
@@ -280,9 +280,9 @@ page = f'''<!doctype html>
 
     <section class="section section--acid fn-close" aria-labelledby="fn-close-title">
       <div class="container fn-close__grid">
-        <h2 class="campaign-heading" id="fn-close-title">Build better brands for more people.</h2>
+        <h2 class="campaign-heading" id="fn-close-title">Build a<br>business<br>that’s ready<br>for growth.</h2>
         <div>
-          <p class="section-intro">Share what you are building and where the operation needs to get stronger.</p>
+          <p class="section-intro">Share where your operation needs to get stronger.</p>
           <a class="button button--ink" href="index.html#contact">Let’s build <span class="arrow" aria-hidden="true">→</span></a>
         </div>
       </div>
