@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 48" aria-hidden="true">
-  <clipPath id="peaks-outside" clipPathUnits="userSpaceOnUse"><path d="M-8 -8 H72 V56 H-8 Z M41 8 L60 45 L22 45 Z" clip-rule="evenodd"/></clipPath>
-  <g fill="none" stroke="#050505" stroke-width="4" stroke-linejoin="miter" stroke-miterlimit="6">
-    <path d="M5 38 L18 15 L31 38 Z" clip-path="url(#peaks-outside)"/>
+  <mask id="peaks-gap" maskUnits="userSpaceOnUse" x="-8" y="-8" width="80" height="64"><rect x="-8" y="-8" width="80" height="64" fill="#fff"/><path d="M41 8 L60 45 L22 45 Z" fill="#000" stroke="#000" stroke-width="5" stroke-linejoin="miter" stroke-miterlimit="6"/></mask>
+  <g fill="#050505">
+    <path d="M5 38 L18 15 L31 38 Z" mask="url(#peaks-gap)"/>
     <path d="M41 8 L60 45 L22 45 Z"/>
   </g>
 </svg>
