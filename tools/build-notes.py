@@ -257,9 +257,8 @@ page = f'''<!doctype html>
     <section class="section section--paper fn-hero" aria-labelledby="fn-title">
       <div class="container fn-hero__grid">
         <div class="fn-hero__copy reveal">
-          <p class="eyebrow">Field notes</p>
-          <h1 class="section-title" id="fn-title">Plays from the work.</h1>
-          <p class="section-intro">Practical notes and tools for building a business that can keep moving.</p>
+          <p class="eyebrow">The Playbook</p>
+          <h1 class="section-title fn-hero__title" id="fn-title">Practical notes and tools for building a business that can keep moving.</h1>
         </div>
         <figure class="figure figure--tall reveal">
           <img src="assets/images/notes-field-notebook.webp" width="1024" height="1536" alt="A SKALA field notebook and printed plans on a wooden worktable" fetchpriority="high">

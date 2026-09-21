@@ -1,7 +1,7 @@
 """Two-peak mountain as a dry-brush stroke in the wordmark's manner: frayed ends, ragged edges, a few flecks."""
 import math, random
 random.seed(7)
-def stroke(points, widths, step=1.6, jitter=0.55, fray=4):
+def stroke(points, widths, step=1.6, jitter=0.3, fray=4):
     # resample centerline
     pts=[]; 
     for (x0,y0),(x1,y1),(w0,w1) in zip(points, points[1:], zip(widths, widths[1:])):
@@ -15,8 +15,8 @@ def stroke(points, widths, step=1.6, jitter=0.55, fray=4):
         dx,dy=xb-xa,yb-ya; L=math.hypot(dx,dy) or 1; nx,ny=-dy/L,dx/L
         jl=random.uniform(-jitter,jitter); jr=random.uniform(-jitter,jitter)
         # dry-brush notches: occasionally bite into an edge
-        if random.random()<0.10: jl-=w*0.35
-        if random.random()<0.10: jr-=w*0.35
+        if random.random()<0.03: jl-=w*0.18
+        if random.random()<0.03: jr-=w*0.18
         left.append((x+nx*(w/2+jl), y+ny*(w/2+jl))); right.append((x-nx*(w/2+jr), y-ny*(w/2+jr)))
     # frayed ends: split the tip into bristles
     def bristles(end_pts_l, end_pts_r, tip, direction):
@@ -36,7 +36,7 @@ def stroke(points, widths, step=1.6, jitter=0.55, fray=4):
         tips.append(f"M{a[0]:.1f} {a[1]:.1f} L{b[0]:.1f} {b[1]:.1f} L{c[0]:.1f} {c[1]:.1f} Z")
     return body, tips
 ridge_body, ridge_tips = stroke([(4,38),(20,9),(31,26),(45,3),(61,38)], [4.4,7.4,6.6,7.6,4.2])
-sweep_body, sweep_tips = stroke([(4,45.5),(20,42.6),(38,41.4),(61,43.2)], [2.8,4.6,4.4,3.0], jitter=0.35, fray=3)
+sweep_body, sweep_tips = stroke([(4,45.5),(20,42.6),(38,41.4),(61,43.2)], [2.8,4.6,4.4,3.0], jitter=0.2, fray=3)
 flecks=[(9.5,20,0.9),(52,10,0.7),(58,24,0.6),(14,44,0.5),(48,47,0.6)]
 paths=[f'<path d="{ridge_body}"/>', f'<path d="{sweep_body}"/>'] + [f'<path d="{t}"/>' for t in ridge_tips+sweep_tips] + [f'<circle cx="{x}" cy="{y}" r="{r}"/>' for x,y,r in flecks]
 print("\n".join(paths))

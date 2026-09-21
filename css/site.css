@@ -794,6 +794,7 @@ body.has-hoopla { overflow: hidden; }
 /* ---------- Playbook hub: hero, lane filters, one card per play ---------- */
 .fn-hero__grid { display: grid; grid-template-columns: 7fr 5fr; gap: var(--space-8) var(--space-9); align-items: center; }
 .fn-hero .section-title { max-width: 14ch; }
+.fn-hero .fn-hero__title { max-width: 20ch; font-size: clamp(1.75rem, 1.1rem + 2.2vw, 3rem); }
 .fn-hub { padding-top: 0; }
 .fn-filters { display: flex; flex-wrap: wrap; gap: var(--space-2); padding-bottom: var(--space-5); border-bottom: 3px solid var(--color-ink); }
 .fn-filter { font: inherit; font-size: var(--text-label); font-weight: 700; letter-spacing: var(--tracking-label); text-transform: uppercase; line-height: 1; padding: 10px 14px; background: none; border: 1.5px solid var(--color-ink); border-radius: 999px; color: var(--color-ink); cursor: pointer; transition: background-color 150ms, color 150ms; }
