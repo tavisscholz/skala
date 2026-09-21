@@ -103,7 +103,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 /* A, L and the final A each tuck in under the letter before them (Oracle Brush sets them a touch wide). */
 .wordmark__tuck { display: inline-block; margin-left: var(--tuck, -0.14em); }
 .wordmark__tuck--l { margin-left: -0.08em; }
-.wordmark__peaks { width: 0.85em; height: 0.64em; font-size: var(--wordmark-header); margin-left: 0.2em; margin-top: -0.34em; transform: rotate(4deg); flex: none; }
+.wordmark__peaks { width: 0.85em; height: 0.64em; font-size: var(--wordmark-header); margin-left: 0.25em; margin-top: -0.3em; flex: none; }
 .site-footer .wordmark__peaks { display: none; }
 
 /* ---------- Header ---------- */
@@ -200,7 +200,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
   mix-blend-mode: screen;
 }
 .poster__wordmark { font-size: var(--wordmark-hero); line-height: 0.9; color: var(--color-acid); transform: rotate(-2.5deg); display: inline-block; align-self: flex-start; margin-left: -0.04em; }
-.poster__peaks { width: clamp(64px, 5vw + 32px, 96px); height: auto; color: var(--color-acid); margin-top: var(--space-4); margin-left: var(--space-2); transform: rotate(3deg); }
+.poster__peaks { width: clamp(64px, 5vw + 32px, 96px); height: auto; color: var(--color-acid); margin-top: var(--space-4); margin-left: var(--space-2); }
 .poster__line { margin-top: auto; align-self: flex-end; text-align: right; color: var(--color-white); font-size: clamp(1.5rem, 1rem + 1.6vw, 2.5rem); line-height: 1.1; transform: rotate(-2deg); }
 
 @media (max-width: 1023px) and (min-width: 768px) {
@@ -435,8 +435,8 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .workboard { margin-top: var(--space-8); background: var(--color-paper); color: var(--color-ink); padding: var(--space-5) var(--space-6) var(--space-6); border: 3px solid var(--color-acid); }
 .workboard__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-4); }
 .workboard__head .eyebrow { margin: 0; color: var(--color-ink); background: var(--color-acid); padding: 4px 8px; }
-.workboard .button--ghost { color: var(--color-ink); border-color: var(--color-ink); }
-.workboard .button--ghost:hover { background: var(--color-ink); color: var(--color-white); }
+.workboard__reset { font: inherit; font-size: var(--text-label); font-weight: 700; letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--color-muted-dark); background: none; border: 0; padding: 4px 0; cursor: pointer; box-shadow: inset 0 -1.5px 0 currentColor; }
+.workboard__reset:hover, .workboard__reset:focus-visible { color: var(--color-ink); }
 .workboard__table { width: 100%; margin-top: var(--space-5); border-collapse: collapse; font-size: 1rem; }
 @media (min-width: 768px) { .workboard__table { table-layout: fixed; } .workboard__table thead th:nth-child(1) { width: 3.5rem; } .workboard__table thead th:nth-child(3) { width: 12rem; } }   /* status column stays put whatever the action text */
 .workboard__table th, .workboard__table td { text-align: left; padding: var(--space-4) var(--space-3); vertical-align: middle; border-top: 2px solid var(--color-ink); }
@@ -538,14 +538,13 @@ body.has-hoopla { overflow: hidden; }
 .hoopla__card .eyebrow { color: var(--color-ink); }
 .hoopla__title { margin-top: var(--space-4); font-size: clamp(3.5rem, 2rem + 6vw, 7rem); line-height: 0.92; text-transform: uppercase; }
 .hoopla__line { margin-top: var(--space-5); max-width: 32rem; font-size: 1.125rem; font-weight: 500; line-height: 1.5; }
-.hoopla__peaks { position: absolute; top: var(--space-5); right: var(--space-5); width: 72px; height: 54px; color: var(--color-ink); transform: rotate(8deg); }
+.hoopla__peaks { position: absolute; top: var(--space-5); right: var(--space-5); width: 72px; height: 54px; color: var(--color-ink); }
 .hoopla__close { margin-top: var(--space-6); }
 @keyframes hoopla-in { from { transform: rotate(-2deg) scale(0.6); opacity: 0; } to { transform: rotate(-2deg) scale(1); opacity: 1; } }
 @media (max-width: 767px) { .hoopla__card { padding: var(--space-6) var(--space-5); box-shadow: 8px 8px 0 var(--color-white); } .hoopla__peaks { width: 48px; height: 36px; } .scale-banner { font-size: 1.25rem; } }
 .workboard__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4); margin-top: var(--space-6); padding: var(--space-2) var(--space-3) var(--space-2) 0; }
 .workboard__foot .workboard__live { margin-top: 0; }
-.board-stamp { display: inline-flex; align-items: baseline; gap: var(--space-3); padding: var(--space-3) var(--space-5); margin-block: var(--space-2); background: var(--color-ink); color: var(--color-acid); transform: rotate(-2deg); }
-@media (min-width: 768px) { .board-stamp { min-width: 34rem; box-sizing: border-box; } }   /* sized to the longest stage stamp so it never shifts */
+.board-stamp { display: inline-flex; align-items: baseline; gap: var(--space-3); padding: var(--space-2) var(--space-4); margin-block: var(--space-2); background: var(--color-ink); color: var(--color-acid); transform: rotate(-2deg); width: fit-content; }   /* hugs its words; the length changes with the stage */
 .board-stamp__word { font-size: 1.5rem; line-height: 1; }
 .board-stamp__line { font-size: 0.875rem; font-weight: 600; color: var(--color-white); }
 @media (max-width: 767px) { .board-stamp { flex-direction: column; align-items: flex-start; gap: var(--space-1); } .board-stamp__word, .board-stamp__line { white-space: nowrap; } }
