@@ -103,7 +103,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 /* A, L and the final A each tuck in under the letter before them (Oracle Brush sets them a touch wide). */
 .wordmark__tuck { display: inline-block; margin-left: var(--tuck, -0.14em); }
 .wordmark__tuck--l { margin-left: -0.08em; }
-.wordmark__peaks { width: 0.85em; height: 0.51em; font-size: var(--wordmark-header); margin-left: 0.2em; flex: none; align-self: center; }
+.wordmark__peaks { width: 0.9em; height: 0.54em; font-size: var(--wordmark-header); margin-left: 0.2em; flex: none; align-self: center; }
 .site-footer .wordmark__peaks { display: none; }
 
 /* ---------- Header ---------- */
@@ -406,12 +406,12 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .campaign__word:nth-child(5) { margin-left: 0.88em; }
 .campaign__word--underlined { position: relative; padding-bottom: 0.14em; }
 .campaign__underline { position: absolute; left: -0.02em; bottom: -0.06em; width: 100%; height: 0.24em; overflow: visible; }
-.campaign__smile { width: 84px; height: auto; margin-top: var(--space-6); align-self: flex-end; transform: rotate(4deg); }
+.campaign__smile { width: 84px; height: 50px; margin-top: var(--space-6); align-self: flex-end; transform: rotate(4deg); }
 @media (max-width: 767px) {
   .campaign { grid-template-columns: 1fr; min-height: 0; }
   .campaign__media { min-height: 260px; padding: var(--space-6) var(--gutter); }
   .campaign__panel { padding: var(--space-7) var(--gutter); }
-  .campaign__smile { width: 56px; height: 56px; }
+  .campaign__smile { width: 56px; height: 34px; }
 }
 
 /* ---------- Approach ---------- */
