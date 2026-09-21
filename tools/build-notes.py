@@ -177,7 +177,7 @@ band = f'''<!-- notes:start -->
         </div>
         <ul class="note-lines reveal">
 {rows}
-          <li class="note-lines__all"><a class="text-link" href="playbook.html">See all articles <span class="arrow" aria-hidden="true">→</span></a></li>
+          <li class="note-lines__all"><a class="text-link" href="playbook.html">See more articles <span class="arrow" aria-hidden="true">→</span></a></li>
         </ul>
       </div>
     </section>
