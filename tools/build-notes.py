@@ -173,8 +173,7 @@ band = f'''<!-- notes:start -->
       <div class="container notes__grid">
         <div class="notes__intro reveal">
           <p class="eyebrow">Playbook</p>
-          <h2 class="section-title" id="notes-title">Plays from the work.</h2>
-          <p class="notes__pull notes__pull--static brush">Check out these articles with growth hacks from our playbook</p>
+          <h2 class="section-title" id="notes-title">Check out these growth hacks from our playbook.</h2>
         </div>
         <ul class="note-lines reveal">
 {rows}
