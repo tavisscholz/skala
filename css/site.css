@@ -772,7 +772,7 @@ body.has-hoopla { overflow: hidden; }
 .note-lines { border-top: 3px solid var(--color-ink); margin-block: var(--space-7) var(--space-6); }
 @media (max-width: 1023px) { .note-lines { margin-block: var(--space-6) var(--space-5); } }
 .note-line { border-bottom: 2px solid var(--color-ink); }
-.note-line__button { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--space-5); width: 100%; min-height: 72px; padding: var(--space-4) var(--space-2) var(--space-4) 0; text-align: left; background: none; border: 0; cursor: pointer; }
+.note-line__button { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: var(--space-5); width: 100%; min-height: 72px; padding: var(--space-4) var(--space-2) var(--space-4) 0; text-align: left; background: none; border: 0; cursor: pointer; }
 .note-line__button:hover .note__tag, .note-line__button:focus-visible .note__tag { background: var(--color-acid); color: var(--color-ink); }
 .note__tag { transition: background-color 150ms, color 150ms; }
 .notes__pull { display: grid; align-items: center; }   /* card is sized to the longest quote; shorter ones sit centred */
@@ -781,8 +781,8 @@ body.has-hoopla { overflow: hidden; }
 .note-line__text { display: flex; flex-direction: column; gap: 2px; }
 .note-line__title { font-size: var(--text-subhead); font-weight: 800; letter-spacing: var(--tracking-tight); line-height: 1.1; }
 .note-line__stand { color: var(--color-muted-dark); font-size: 0.9375rem; }
-.note-line__kind { font-size: var(--text-label); font-weight: 700; letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--color-ink); margin-right: var(--space-2); }
-.note-line .arrow { font-size: 1.5rem; margin: 0; }
+.note-line__read { margin-top: var(--space-2); font-size: var(--text-ui); font-weight: 700; color: var(--color-ink); }
+.note-line__read .arrow { margin-left: 0.3em; }
 .note-lines__all { padding-top: var(--space-7); padding-left: var(--space-4); }
 .notes__grid .notes__intro .notes__pull { margin-top: calc(var(--space-6) + 8px); }
 .notes__pull--static { max-width: 17ch; }

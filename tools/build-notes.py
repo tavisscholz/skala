@@ -163,9 +163,9 @@ rows = "\n".join(f'''          <li class="note-line" data-quote-for="{n['slug'] 
               <span class="note__tag" aria-hidden="true">{n['tag']}</span>
               <span class="note-line__text">
                 <span class="note-line__title">{esc(n['title'])}</span>
-                <span class="note-line__stand"><span class="note-line__kind">{n['kind']}</span> {esc(n['stand'])}</span>
+                <span class="note-line__stand">{esc(n['stand'])}</span>
+                <span class="note-line__read">Read <span class="arrow" aria-hidden="true">→</span></span>
               </span>
-              <span class="arrow" aria-hidden="true">→</span>
             </button>
           </li>''' for n in home_notes)
 band = f'''<!-- notes:start -->
@@ -240,7 +240,7 @@ cards = "\n".join(f'''          <li class="fn-card" id="{n['slug']}" data-lane="
             <p class="fn-card__tag">{n['tag']}</p>
             <h3 class="fn-card__title"><a class="fn-card__link" href="{play_href(n)}">{esc(n['title'])}</a></h3>
             <p class="fn-card__stand">{esc(n['stand'])}</p>
-            <p class="fn-card__more" aria-hidden="true">Open play <span class="arrow">→</span></p>
+            <p class="fn-card__more" aria-hidden="true">Read <span class="arrow">→</span></p>
           </li>''' for n in notes)
 
 page = f'''<!doctype html>
@@ -334,7 +334,7 @@ def play_page(n, nxt):
           <a class="fn-next__link" href="{play_href(nxt)}">
             <span class="fn-next__lane">{nxt['lane']}</span>
             <span class="fn-next__title">{esc(nxt['title'])}</span>
-            <span class="fn-next__more">Open play <span class="arrow" aria-hidden="true">→</span></span>
+            <span class="fn-next__more">Read <span class="arrow" aria-hidden="true">→</span></span>
           </a>
         </nav>
       </div>
