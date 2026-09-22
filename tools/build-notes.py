@@ -259,7 +259,7 @@ page = f'''<!doctype html>
       <div class="container fn-hero__grid">
         <div class="fn-hero__copy reveal">
           <p class="eyebrow">The Playbook</p>
-          <h1 class="section-title fn-hero__title" id="fn-title">Growth hacks, field notes, and what we learned along the way.</h1>
+          <h1 class="section-title fn-hero__title" id="fn-title">Operating insights, field notes, and things we learned along the way.</h1>
         </div>
         <figure class="figure figure--tall reveal">
           <img src="assets/images/notes-field-notebook.webp" width="1024" height="1536" alt="A SKALA field notebook and printed plans on a wooden worktable" fetchpriority="high">
