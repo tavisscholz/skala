@@ -380,7 +380,7 @@ await fn.close();
   note('merch photos all load', await mp.evaluate(() => [...document.querySelectorAll('.merch-card__img')].every(i => i.complete && i.naturalWidth > 0 && !i.hidden)));
   note('merch page: no horizontal overflow', (await mp.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)) <= 0);
   note('header nav is What We Do / How We Do It / The Playbook only', await mp.evaluate(() => [...document.querySelectorAll('.nav-list .nav-link')].map(a => a.textContent.trim()).join('|') === 'What We Do|How We Do It|The Playbook'));
-  note('footer links include How We Do It and Merch', await mp.evaluate(() => { const t = [...document.querySelectorAll('.site-footer__nav a')].map(a => a.textContent.trim()); return t.includes('How We Do It') && t.includes('Merch'); }));
+  note('footer links include How We Do It and hide Merch', await mp.evaluate(() => { const t = [...document.querySelectorAll('.site-footer__nav a')].map(a => a.textContent.trim()); return t.includes('How We Do It') && !t.includes('Merch'); }));
   await mp.evaluate(() => document.querySelectorAll('.reveal').forEach(e => e.classList.add('is-in')));
   await mp.screenshot({ path: join(outDir, 'merch-1440.png'), fullPage: true });
   await mp.setViewportSize({ width: 390, height: 800 });
