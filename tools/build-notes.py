@@ -172,8 +172,8 @@ band = f'''<!-- notes:start -->
     <section class="section section--paper notes" id="playbook" aria-labelledby="notes-title">
       <div class="container notes__grid">
         <div class="notes__intro reveal">
-          <p class="eyebrow">Playbook</p>
-          <h2 class="section-title" id="notes-title">Check out these growth hacks from our playbook.</h2>
+          <p class="eyebrow">The Playbook:</p>
+          <h2 class="section-title" id="notes-title">Operating insights for multi-unit growth.</h2>
         </div>
         <ul class="note-lines reveal">
 {rows}
