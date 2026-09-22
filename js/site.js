@@ -121,23 +121,23 @@
      all in use lights its tile acid. When every step of every stage is in use, the system is ready
      to scale and the page celebrates. */
   var STAGES = [
-    { label: 'Start here: uncover the gaps.', stamp: 'Siloed.', line: 'You identified the know-how.', rows: [
+    { label: 'Start here: uncover the gaps.', stamp: 'Siloed.', line: 'You identified the critical processes.', rows: [
       'Identify who people rely on to get critical work done',
       'Observe how that work happens at different locations',
       'Pinpoint where work stalls when those people are unavailable' ] },
     { label: 'From Siloed to Captured', stamp: 'Captured.', line: 'You got it out of people’s heads.', rows: [
       'Agree on the standard for each critical task',
-      'Turn it into a simple checklist or practical guide',
+      'Turn it into a checklist, practical guide, or tool',
       'Assign someone to keep it current and accessible' ] },
-    { label: 'From Captured to Adopted', stamp: 'Adopted.', line: 'You made it part of everyday work.', rows: [
+    { label: 'From Captured to Adopted', stamp: 'Adopted.', line: 'You\u2019ve standardized everyday work.', rows: [
       'Train teams using the tools in the actual operation',
       'Observe execution and coach where standards slip',
       'Fix what makes the tools difficult to use' ] },
-    { label: 'From Adopted to Linked', stamp: 'Linked.', line: 'You manage it across locations.', rows: [
+    { label: 'From Adopted to Linked', stamp: 'Linked.', line: 'You manage standards across locations.', rows: [
       'Use the same measures and reporting across locations',
       'Review gaps regularly and assign corrective actions',
       'Share improvements and update standards across the business' ] },
-    { label: 'From Linked to Expansion-ready', stamp: 'You\u2019re ready to scale.', line: 'Take it to the next location.', rows: [
+    { label: 'From Linked to Expansion-ready', stamp: 'You\u2019re ready to scale.', line: 'Take it to the next level.', rows: [
       'Hand the tools to a new location without changes',
       'Run onboarding without the person who built it',
       'Start the review rhythm in every new location on day one' ] }
