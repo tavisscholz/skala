@@ -212,7 +212,8 @@ def stamp_assets(html):
     """Append a content hash to every css/js/image URL so a swapped file is never served from cache."""
     for rel in ("css/fonts.css", "css/tokens.css", "css/site.css", "js/site.js"):
         html = re.sub(r'(["\'])' + re.escape(rel) + r'(\?v=[0-9a-f]+)?(["\'])', lambda m: m.group(1) + rel + "?v=" + asset_version(rel) + m.group(3), html)
-    return re.sub(r'(assets/images/[A-Za-z0-9_-]+\.webp)(\?v=[0-9a-f]+)?', lambda m: m.group(1) + "?v=" + asset_version(m.group(1)), html)
+    html = re.sub(r'(assets/images/[A-Za-z0-9_-]+\.webp)(\?v=[0-9a-f]+)?', lambda m: m.group(1) + "?v=" + asset_version(m.group(1)), html)
+    return re.sub(r'(assets/(?:favicon[A-Za-z0-9_-]*\.(?:svg|png)|apple-touch-icon\.png))(\?v=[0-9a-f]+)?', lambda m: m.group(1) + "?v=" + asset_version(m.group(1)), html)
 s = stamp_assets(s)
 s = re.sub(r"<!-- notes:start -->.*?<!-- notes:end -->", lambda m: band, s, flags=re.S)
 s = re.sub(r"<!-- dialogs:start -->.*?<!-- dialogs:end -->", lambda m: dialogs, s, flags=re.S)

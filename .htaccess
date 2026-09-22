@@ -24,6 +24,7 @@ RedirectMatch 404 ^/(README\.md|\.gitignore|\.git(/|$))
 # Correct types for self-hosted fonts and webp
 AddType font/woff2 .woff2
 AddType image/webp .webp
+AddType image/png .png
 AddType audio/mpeg .mp3
 
 # Compression
