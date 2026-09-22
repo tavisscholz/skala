@@ -173,7 +173,7 @@ band = f'''<!-- notes:start -->
       <div class="container notes__grid">
         <div class="notes__intro reveal">
           <p class="eyebrow">The Playbook:</p>
-          <h2 class="section-title" id="notes-title">Operating insights for multi-unit growth.</h2>
+          <h2 class="section-title" id="notes-title">Operating insights for multi‑unit growth.</h2>
         </div>
         <ul class="note-lines reveal">
 {rows}

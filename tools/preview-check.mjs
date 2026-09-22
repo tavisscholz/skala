@@ -67,7 +67,7 @@ await row2.click();
 note('second row collapses', await row2.getAttribute('aria-expanded') === 'false' && !(await page.locator('#service-store-development').isVisible()));
 
 // Playbook band: the tilted card carries the section line
-note('playbook band: growth-hacks title, no black card', (await page.locator('#notes-title').textContent()).startsWith('Operating insights for multi-unit growth') && (await page.locator('#playbook .notes__pull, #playbook .section-intro').count()) === 0);
+note('playbook band: growth-hacks title, no black card', (await page.locator('#notes-title').textContent()).startsWith('Operating insights for multi\u2011unit growth') && (await page.locator('#playbook .notes__pull, #playbook .section-intro').count()) === 0);
 note('about section carries the operator record', (await page.locator('#about-title').textContent()) === 'Operator experience.' && (await page.locator('.about__stat').count()) === 5 && (await page.locator('.about__stat-value').first().textContent()) === '7×' && (await page.locator('.about__engagements').count()) === 0);
 
 // Stylesheet sanity: an unbalanced brace silently drops every rule after it
