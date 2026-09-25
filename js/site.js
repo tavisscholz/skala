@@ -126,21 +126,21 @@
       'Observe how that work happens at different locations',
       'Pinpoint where work stalls when those people are unavailable' ] },
     { label: 'From Siloed to Captured', stamp: 'Captured.', line: 'You got it out of people’s heads.', rows: [
-      'Agree on the standard for each critical task',
-      'Turn it into a checklist, practical guide, or tool',
-      'Assign someone to keep it current and accessible' ] },
+      'Write the standard so someone else could follow it',
+      'Name an owner and keep it current and findable',
+      'Declare what\u2019s Core, what can flex, and what stays local' ] },
     { label: 'From Captured to Adopted', stamp: 'Adopted.', line: 'You\u2019ve standardized everyday work.', rows: [
-      'Train teams using the tools in the actual operation',
-      'Observe execution and coach where standards slip',
-      'Fix what makes the tools difficult to use' ] },
+      'Train the doers from the standard, not from the owner\u2019s side',
+      'Spot-check it at a location leadership didn\u2019t pick',
+      'Watch it hold when nobody\u2019s looking, across two review cycles' ] },
     { label: 'From Adopted to Linked', stamp: 'Linked.', line: 'You manage standards across locations.', rows: [
-      'Use the same measures and reporting across locations',
-      'Review gaps regularly and assign corrective actions',
-      'Share improvements and update standards across the business' ] },
+      'Put shared measures and a review cadence behind it',
+      'Give exceptions a path that actually resolves',
+      'Make sure pay and promotion reward the standard, not the old way' ] },
     { label: 'From Linked to Expansion-ready', stamp: 'You\u2019re ready to scale.', line: 'Take it to the next level.', rows: [
-      'Hand the tools to a new location without changes',
-      'Run onboarding without the person who built it',
-      'Start the review rhythm in every new location on day one' ] }
+      'Hand it to someone who didn\u2019t build it',
+      'Define the result, time bound, and support envelope up front',
+      'Confirm the new unit hits the result without redesigning the Core' ] }
   ];
   var STORE_KEY = 'skala-scale-progress';
   var boardLive = document.getElementById('board-live');
