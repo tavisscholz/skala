@@ -122,9 +122,9 @@
      to scale and the page celebrates. */
   var STAGES = [
     { label: 'Start here: uncover the gaps.', stamp: 'Siloed.', line: 'You identified the critical processes.', rows: [
-      'Identify who people rely on to get critical work done',
-      'Observe how that work happens at different locations',
-      'Pinpoint where work stalls when those people are unavailable' ] },
+      'Name the person the work quietly depends on',
+      'Watch how it gets done at a location they don\u2019t run',
+      'Note what stalls the week they\u2019re out' ] },
     { label: 'From Siloed to Captured', stamp: 'Captured.', line: 'You got it out of people’s heads.', rows: [
       'Write the standard so someone else could follow it',
       'Name an owner and keep it current and findable',
@@ -279,8 +279,8 @@
       hooplaEl.innerHTML =
         '<div class="hoopla__card">' +
         '  <p class="eyebrow">Every stage done</p>' +
-        '  <p class="hoopla__title brush" id="hoopla-title">Ready<br>to scale.</p>' +
-        '  <p class="hoopla__line">Siloed, Captured, Adopted, Linked, Expansion-ready. The system holds without the person who built it, and the next location inherits it.</p>' +
+        '  <p class="hoopla__title brush" id="hoopla-title">This one\u2019s<br>expansion-ready.</p>' +
+        '  <p class="hoopla__line">Siloed, Captured, Adopted, Linked, Expansion-ready. The system holds without the person who built it, and the next location inherits it. That\u2019s one capability \u2014 most growth moves need 8 to 15.</p>' +
         '  <svg class="hoopla__peaks mark-peaks" aria-hidden="true" focusable="false"><use href="#mark-peaks-sweep"/></svg>' +
         '  <button class="button button--ink hoopla__close" type="button">Keep building <span class="arrow" aria-hidden="true">→</span></button>' +
         '</div>';

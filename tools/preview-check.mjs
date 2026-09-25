@@ -90,7 +90,7 @@ note('status switches back to Working on', (await status.getAttribute('data-stat
   await page.locator('.ladder__step').first().hover();
   await page.waitForTimeout(150);
   note('hovering stage 1 lights its tile and mutes stage 5', await page.evaluate(() => document.querySelector('.ladder__step').classList.contains('is-active') && document.querySelectorAll('.ladder__step')[4].classList.contains('is-muted')));
-  note('hovering stage S swaps the board to the Siloed plan', (await page.locator('.workboard__head .eyebrow').textContent()).trim() === 'Start here: uncover the gaps.' && (await page.locator('.board-stamp__word').textContent()).trim() === 'Siloed.' && (await page.locator('.workboard__table tbody tr').first().locator('td').first().textContent()).includes('who people rely on'));
+  note('hovering stage S swaps the board to the Siloed plan', (await page.locator('.workboard__head .eyebrow').textContent()).trim() === 'Start here: uncover the gaps.' && (await page.locator('.board-stamp__word').textContent()).trim() === 'Siloed.' && (await page.locator('.workboard__table tbody tr').first().locator('td').first().textContent()).includes('quietly depends on'));
   await page.locator('.ladder__step').nth(4).hover();
   await page.waitForTimeout(150);
   note('hovering stage 5 shows the expansion plan and stamp', (await page.locator('.workboard__head .eyebrow').textContent()).trim() === 'From Linked to Expansion-ready' && (await page.locator('.board-stamp__word').textContent()).trim() === 'You\u2019re ready to scale.');
@@ -123,7 +123,7 @@ note('status switches back to Working on', (await status.getAttribute('data-stat
     for (let i = 0; i < 3; i++) if ((await btns.nth(i).getAttribute('data-status')) !== 'in-use') await btns.nth(i).click();
   }
   await page.waitForTimeout(400);
-  note('completing every stage opens the Ready to scale celebration', await page.locator('.hoopla.is-open').count() === 1 && (await page.locator('.hoopla__title').textContent()).includes('Ready'));
+  note('completing every stage opens the expansion-ready celebration', await page.locator('.hoopla.is-open').count() === 1 && (await page.locator('.hoopla__title').textContent()).includes('expansion-ready'));
   await page.screenshot({ path: join(outDir, 'ready-to-scale-1440.png') });
   await page.locator('.hoopla__close').click();
   note('closing the celebration leaves the board marked ready to scale', await page.locator('.hoopla.is-open').count() === 0 && await page.locator('.workboard').evaluate(el => el.classList.contains('is-scaled')) && await page.locator('.scale-banner').isVisible());
