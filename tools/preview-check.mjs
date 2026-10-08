@@ -77,6 +77,12 @@ note('about section carries the operator record', (await page.locator('#about-ti
   note('site.css braces balance', opens === closes, `${opens} open / ${closes} close`);
 }
 
+// The readiness tool lives on its own page now
+note('homepage no longer carries the readiness tool', await page.evaluate(() => !document.querySelector('#ready') && !document.querySelector('.workboard') && !!document.querySelector('.nav-list a[href$="are-you-ready.html"], .nav-list a[href="/are-you-ready"]')));
+await page.goto(url + 'are-you-ready.html', { waitUntil: 'networkidle' });
+note('Are You Ready page: section, ladder, board, current menu item', (await page.locator('#ready .eyebrow').first().textContent()).trim() === 'Are you ready' && (await page.locator('h1#ready-title').textContent()).startsWith('Where do your capabilities') && (await page.locator('.ladder__step').count()) === 5 && (await page.locator('.workboard').count()) === 1 && (await page.locator('.nav-list a[aria-current="page"]').textContent()).trim() === 'Are You Ready' && (await page.locator('.fn-close').count()) === 1);
+await page.screenshot({ path: join(outDir, 'are-you-ready-1440.png'), fullPage: true });
+
 // Workboard
 const status = page.locator('.status-btn').first();
 await status.click();
@@ -131,11 +137,12 @@ note('status switches back to Working on', (await status.getAttribute('data-stat
   note('reset clears every stage', await page.evaluate(() => !document.querySelector('.workboard').classList.contains('is-scaled') && document.querySelectorAll('.ladder__step.is-complete').length === 0 && document.querySelector('#board-stamp').classList.contains('is-pending')));
 }
 note('reset restores Working on', (await status.getAttribute('data-status')) === 'building' && (await page.locator('#board-live').textContent()).includes('Working on'));
+await page.goto(url + 'index.html', { waitUntil: 'networkidle' });
 
 // Phones: board hidden, tiles are the checklist
 {
   const ph = await browser.newPage({ viewport: { width: 390, height: 844 } });
-  await ph.goto(url + 'index.html', { waitUntil: 'networkidle' });
+  await ph.goto(url + 'are-you-ready.html', { waitUntil: 'networkidle' });
   await ph.evaluate(() => localStorage.clear());
   await ph.reload({ waitUntil: 'networkidle' });
   note('phone: the workboard is hidden', !(await ph.locator('.workboard').isVisible()));
@@ -214,7 +221,7 @@ note('selection scrolled to #work', await m.evaluate(() => { const r = document.
 await m.evaluate(() => { const r = document.querySelector('.hero').getBoundingClientRect(); window.scrollBy(0, r.bottom + 20); });
 await m.waitForTimeout(500);
 note('first row tugs once the hero has scrolled away', await m.evaluate(() => document.querySelector('.service-row').classList.contains('is-nudged')));
-note('torn seams present and gated', await m.evaluate(() => document.body.classList.contains('tears') && document.querySelectorAll('.tear').length === 7 && [...document.querySelectorAll('.tear')].every(t => { const r = t.getBoundingClientRect(); return r.height > 30; })));
+note('torn seams present and gated', await m.evaluate(() => document.body.classList.contains('tears') && document.querySelectorAll('.tear').length === 6 && [...document.querySelectorAll('.tear')].every(t => { const r = t.getBoundingClientRect(); return r.height > 30; })));
 note('header mark sits beside the wordmark', await m.evaluate(() => { const c = document.querySelector('.wordmark--header .wordmark__peaks'); if (!c) return false; const r = c.getBoundingClientRect(), t = document.querySelector('.wordmark__text').getBoundingClientRect(); return r.width > 20 && r.left >= t.right - 4; }));
 await m.locator('.wordmark--header').click();
 await m.waitForTimeout(900);
@@ -236,7 +243,7 @@ const fn = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 const fnErrors = []; fn.on('pageerror', e => fnErrors.push(e.message));
 await fn.goto(url + 'playbook.html', { waitUntil: 'networkidle' });
 note('playbook hub loads without errors', fnErrors.length === 0, fnErrors.join(' | '));
-note('hub hero carries one message: eyebrow, title, the photo', (await fn.locator('.fn-hero .eyebrow').textContent()).trim() === 'The Playbook' && (await fn.locator('#fn-title').textContent()).startsWith('Operating insights, field notes') && (await fn.locator('.fn-hero .section-intro, .fn-hero .notes__pull, .fn-hero .figure__caption').count()) === 0 && (await fn.locator('.fn-hero .figure img').count()) === 1);
+note('hub hero carries one message: eyebrow, title, the photo', (await fn.locator('.fn-hero .eyebrow').textContent()).trim() === 'Articles' && (await fn.locator('#fn-title').textContent()).startsWith('Operating insights, field notes') && (await fn.locator('.fn-hero .section-intro, .fn-hero .notes__pull, .fn-hero .figure__caption').count()) === 0 && (await fn.locator('.fn-hero .figure img').count()) === 1);
 note('hub lists the seven plays as cards, no article bodies', (await fn.locator('.fn-card').count()) === 7 && (await fn.locator('.fn-article, .note-article__body, .fn-index').count()) === 0 && await fn.evaluate((s) => [...document.querySelectorAll('.fn-card')].every((c, i) => c.id === s[i] && c.querySelector('.fn-card__link').getAttribute('href') === '/plays/' + s[i] && c.querySelector('.fn-card__tag') && c.querySelector('.fn-card__stand').textContent.length > 20), SLUGS));
 note('hub cards sit in two columns on desktop', await fn.evaluate(() => { const [a, b, c] = document.querySelectorAll('.fn-card'); return Math.abs(a.getBoundingClientRect().top - b.getBoundingClientRect().top) < 2 && b.getBoundingClientRect().left > a.getBoundingClientRect().right && c.getBoundingClientRect().top > a.getBoundingClientRect().bottom - 1; }));
 {
@@ -379,7 +386,7 @@ await fn.close();
   note('merch page lists four items with prices', await mp.evaluate(() => [...document.querySelectorAll('.merch-card__price')].map(e => e.textContent.trim()).join(',') === '$25,$25,$75,$15'));
   note('merch photos all load', await mp.evaluate(() => [...document.querySelectorAll('.merch-card__img')].every(i => i.complete && i.naturalWidth > 0 && !i.hidden)));
   note('merch page: no horizontal overflow', (await mp.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)) <= 0);
-  note('header nav is What We Do / How We Do It / The Playbook only', await mp.evaluate(() => [...document.querySelectorAll('.nav-list .nav-link')].map(a => a.textContent.trim()).join('|') === 'What We Do|How We Do It|The Playbook'));
+  note('header nav is What We Do / How We Do It / The Playbook / Are You Ready', await mp.evaluate(() => [...document.querySelectorAll('.nav-list .nav-link')].map(a => a.textContent.trim()).join('|') === 'What We Do|How We Do It|The Playbook|Are You Ready'));
   note('footer links include How We Do It and hide Merch', await mp.evaluate(() => { const t = [...document.querySelectorAll('.site-footer__nav a')].map(a => a.textContent.trim()); return t.includes('How We Do It') && !t.includes('Merch'); }));
   await mp.evaluate(() => document.querySelectorAll('.reveal').forEach(e => e.classList.add('is-in')));
   await mp.screenshot({ path: join(outDir, 'merch-1440.png'), fullPage: true });

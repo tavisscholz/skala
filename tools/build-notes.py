@@ -3,7 +3,8 @@
 Writes:
   - the compact Playbook band on index.html (between notes markers)
   - the article dialogs on index.html (between dialog markers)
-  - playbook.html, the hub: one card per play, filtered by lane
+  - playbook.html, the Articles hub: one card per play, filtered by lane
+  - are-you-ready.html, the readiness tool, from tools/partials/are-you-ready.html
   - plays/<slug>.html, one page per play
 
 Usage: python3 tools/build-notes.py
@@ -41,7 +42,7 @@ def clean_links(html):
     """Live site uses clean URLs: / for the home page and /playbook, /merch, /privacy, /terms for the rest (see .htaccess)."""
     for a, z in (('href="index.html#', 'href="/#'), ('href="index.html"', 'href="/"'), ('href="playbook.html', 'href="/playbook'),
                  ('href="merch.html"', 'href="/merch"'), ('href="privacy.html"', 'href="/privacy"'), ('href="terms.html"', 'href="/terms"'),
-                 ('href="work-with-us.html"', 'href="/work-with-us"')):
+                 ('href="work-with-us.html"', 'href="/work-with-us"'), ('href="are-you-ready.html"', 'href="/are-you-ready"')):
         html = html.replace(a, z)
     return re.sub(r'href="plays/([a-z0-9-]+)\.html"', r'href="/plays/\1"', html)
 
@@ -228,8 +229,7 @@ head = head.replace('<link rel="preload" href="assets/fonts/inter-variable-latin
 svgdefs = s[s.index('  <svg class="svg-defs"'):s.index("</svg>", s.index('  <svg class="svg-defs"'))+6]
 header = s[s.index('  <header class="site-header"'):s.index("</header>")+9]
 header = header.replace('href="#top" aria-label="SKALA — back to top"', 'href="index.html" aria-label="SKALA — home"')
-header = header.replace('href="#work"', 'href="index.html#work"').replace('href="#approach"', 'href="index.html#approach"').replace('href="#about"', 'href="index.html#about"').replace('href="#contact"', 'href="index.html#contact"')
-header = header.replace('<a class="nav-link" href="#playbook">The Playbook</a>', '<a class="nav-link" href="playbook.html" aria-current="page">The Playbook</a>')
+header = header.replace('href="#work"', 'href="index.html#work"').replace('href="#approach"', 'href="index.html#approach"').replace('href="#playbook"', 'href="index.html#playbook"').replace('href="#about"', 'href="index.html#about"').replace('href="#contact"', 'href="index.html#contact"')
 footer = s[s.index('  <footer class="site-footer">'):s.index("</footer>")+9]
 footer = footer.replace('href="#top"', 'href="index.html"').replace('href="#work"', 'href="index.html#work"').replace('href="#approach"', 'href="index.html#approach"').replace('href="#about"', 'href="index.html#about"').replace('href="#contact"', 'href="index.html#contact"')
 
@@ -244,9 +244,11 @@ cards = "\n".join(f'''          <li class="fn-card" id="{n['slug']}" data-lane="
             <p class="fn-card__more" aria-hidden="true">Read <span class="arrow">→</span></p>
           </li>''' for n in notes)
 
+hub_head = head.replace("<title>Playbook — SKALA</title>", "<title>Articles — SKALA</title>")
+hub_head = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="description" content="SKALA articles: operating insights, field notes, and things learned along the way, for multiunit brands preparing to grow.">', hub_head)
 page = f'''<!doctype html>
 <html lang="en">
-{head}
+{hub_head}
 <body class="notes-page">
   <a class="skip-link" href="#main">Skip to content</a>
 
@@ -258,7 +260,7 @@ page = f'''<!doctype html>
     <section class="section section--paper fn-hero" aria-labelledby="fn-title">
       <div class="container fn-hero__grid">
         <div class="fn-hero__copy reveal">
-          <p class="eyebrow">The Playbook</p>
+          <p class="eyebrow">Articles</p>
           <h1 class="section-title fn-hero__title" id="fn-title">Operating insights, field notes, and things learned along the way.</h1>
         </div>
         <figure class="figure figure--tall reveal">
@@ -527,4 +529,29 @@ def work_page():
     ]
     return "\n".join(parts)
 (ROOT / "work-with-us.html").write_text(clean_links(stamp_assets(work_page())))
-print("built: index.html band + dialogs, playbook.html, merch.html, privacy.html, terms.html, work-with-us.html")
+# ---------- are you ready: the readiness tool on its own page ----------
+def ready_page():
+    rhead = head.replace("<title>Playbook — SKALA</title>", "<title>Are You Ready — SKALA</title>")
+    rhead = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="description" content="Where do your capabilities stand today? Walk one operational capability up the SCALE readiness scale, from Siloed to Expansion-ready.">', rhead)
+    rheader = header.replace('<a class="nav-link" href="/are-you-ready">Are You Ready</a>', '<a class="nav-link" href="/are-you-ready" aria-current="page">Are You Ready</a>')
+    assert 'aria-current="page"' in rheader, "Are You Ready link not found in the header" 
+    section = (ROOT / "tools/partials/are-you-ready.html").read_text()
+    section = section[section.index("<section"):].rstrip()
+    parts = [
+        "<!doctype html>", '<html lang="en">', rhead, '<body class="ready-page">',
+        '  <a class="skip-link" href="#main">Skip to content</a>', "", svgdefs, "",
+        rheader, "",
+        '  <main id="main">', "    " + section, "",
+        '    <section class="section section--acid fn-close" aria-labelledby="fn-close-title">',
+        '      <div class="container fn-close__grid">',
+        '        <h2 class="campaign-heading" id="fn-close-title">Build a<br>business<br>that\u2019s ready<br>for growth.</h2>',
+        '        <div>',
+        '          <p class="section-intro">Share where your operation needs to get stronger.</p>',
+        '          <a class="button button--ink" href="index.html#contact">Let\u2019s build <span class="arrow" aria-hidden="true">\u2192</span></a>',
+        '        </div>',
+        '      </div>', '    </section>', '  </main>', "", footer, "",
+        '  <script src="js/site.js" defer></script>', '</body>', '</html>', "",
+    ]
+    return "\n".join(parts)
+(ROOT / "are-you-ready.html").write_text(clean_links(stamp_assets(ready_page())))
+print("built: index.html band + dialogs, playbook.html, plays/, merch.html, privacy.html, terms.html, work-with-us.html, are-you-ready.html")
