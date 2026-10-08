@@ -170,10 +170,12 @@ rows = "\n".join(f'''          <li class="note-line" data-quote-for="{n['slug'] 
             </button>
           </li>''' for n in home_notes)
 band = f'''<!-- notes:start -->
-    <section class="section section--paper notes" id="playbook" aria-labelledby="notes-title">
+    <section class="section section--ink notes" id="playbook" aria-labelledby="notes-title">
+      <i class="tear tear--top tear--alt" aria-hidden="true"></i>
+      <i class="tear tear--bottom" aria-hidden="true"></i>
       <div class="container notes__grid">
         <div class="notes__intro reveal">
-          <p class="eyebrow">Articles</p>
+          <p class="eyebrow eyebrow--acid">Articles</p>
           <h2 class="section-title" id="notes-title">Operating insights for multi‑unit growth.</h2>
         </div>
         <ul class="note-lines reveal">
