@@ -73,7 +73,7 @@ the homepage band, the dialogs, `playbook.html` and `plays/<slug>.html` from
 the folder. The homepage keeps a compact list (tag, title, standfirst) that
 opens each note in place. Since 20 September the playbook page is a hub (hero,
 lane filters, one card per play) and each play has its own page with the
-category, title, deck, article and a "Next play" link, which is the shareable
+category, title, deck, article and a "Next Article" link, which is the shareable
 destination. Old `/playbook#slug` links forward to the play's page.
 
 ## Departures from the brief, and why

@@ -271,7 +271,7 @@ page = f'''<!doctype html>
       </div>
     </section>
 
-    <section class="section section--paper fn-hub" aria-label="All plays">
+    <section class="section section--paper fn-hub" aria-label="All articles">
       <div class="container">
         <div class="fn-filters reveal" role="group" aria-label="Show plays from one lane">
 {filters}
@@ -324,7 +324,7 @@ def play_page(n, nxt):
         <article class="fn-article fn-article--page reveal" id="{n['slug']}">
           <div class="note-article__top">
             <p class="eyebrow">{n['lane']}</p>
-            <a class="text-link fn-play__back" href="playbook.html"><span class="arrow" aria-hidden="true">←</span> All plays</a>
+            <a class="text-link fn-play__back" href="playbook.html"><span class="arrow" aria-hidden="true">←</span> All Articles</a>
           </div>
           <h1 class="note-article__title" id="{n['slug']}-title">{esc(n['title'])}</h1>
           <p class="note-article__stand">{esc(n['stand'])}</p>
@@ -334,8 +334,8 @@ def play_page(n, nxt):
           </div>
           {closer_html()}
         </article>
-        <nav class="fn-next reveal" aria-label="Next play">
-          <p class="eyebrow">Next play</p>
+        <nav class="fn-next reveal" aria-label="Next article">
+          <p class="eyebrow">Next Article</p>
           <a class="fn-next__link" href="{play_href(nxt)}">
             <span class="fn-next__lane">{nxt['lane']}</span>
             <span class="fn-next__title">{esc(nxt['title'])}</span>
