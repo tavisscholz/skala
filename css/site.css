@@ -812,6 +812,15 @@ body.has-hoopla { overflow: hidden; }
 .fn-card__more .arrow { margin-left: 0.3em; }
 .note-lines__all { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-6); }
 .note-lines__all .text-link { color: var(--color-muted-dark); }
+/* The homepage Articles band sits on ink between How We Work and About */
+.notes.section--ink { position: relative; }
+.notes.section--ink .note-lines { border-top-color: var(--color-white); }
+.notes.section--ink .note-line { border-bottom-color: color-mix(in srgb, var(--color-white) 28%, transparent); }
+.notes.section--ink .note-line__stand { color: var(--color-muted-light); }
+.notes.section--ink .note-line__read { color: var(--color-acid); }
+.notes.section--ink .note__tag { background: var(--color-acid); color: var(--color-ink); }
+.notes.section--ink .note-line__button:hover .note__tag, .notes.section--ink .note-line__button:focus-visible .note__tag { background: var(--color-white); color: var(--color-ink); }
+.notes.section--ink .note-lines__all .text-link { color: var(--color-white); }
 
 /* ---------- A play on its own page ---------- */
 .fn-play { padding-top: var(--space-6); }
