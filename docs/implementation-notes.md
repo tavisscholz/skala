@@ -86,7 +86,7 @@ Franchise? (Franchise Infrastructure). The copy lives once, in `SESSIONS` in
 secondary one-line ask at the foot of each What We Do row (pointing at that
 lane's card only), and a single boxed block at the foot of the plays whose
 subject sits squarely on one session (`ARTICLE_SESSIONS`: the best-manager,
-openings, lease and scaling-chaos plays; the Item 19, founder-bottleneck and
+openings, lease, scaling-chaos and AI plays; the Item 19, founder-bottleneck and
 next-ten-locations plays carry none). A card's button opens the homepage form
 with `?session=<key>#contact`; the script names the session above the form,
 tunes the message placeholder, and sends it as a `session` field that

@@ -22,6 +22,7 @@ ARTICLES = [  # order on the page, lane tag, lane name, shown on the homepage ba
     ("scaling-chaos-7-signs", "SCALE", "Scaling Up", False),
     ("the-founder-bottleneck", "SCALE", "Scaling Up", False),
     ("the-next-ten-locations", "SCALE", "Scaling Up", False),
+    ("ai-wont-fix-a-bad-operating-system", "OPS", "Field Operations", False),
 ]
 ACCENTS = ["orange", "periwinkle", "orange", "periwinkle"]
 RINGS = [
@@ -39,6 +40,7 @@ QUOTES = {  # one line from each piece, shown while its row is hovered
     "scaling-chaos-7-signs": "Growth is a stress test, not a reward.",
     "the-founder-bottleneck": "The founder decides what the rules are. The founder stops being the rule.",
     "the-next-ten-locations": "Your management infrastructure didn\u2019t grow with you.",
+    "ai-wont-fix-a-bad-operating-system": "AI doesn\u2019t install an operating system. It audits the one you already have.",
 }
 
 # ---------- the four free working sessions ----------
@@ -68,6 +70,7 @@ ARTICLE_SESSIONS = {  # plays whose subject sits squarely on one session. The ot
     "why-new-store-openings-fall-behind": "open",                       # opening handoffs
     "before-you-sign-the-lease": "site",                                # site and lease decisions
     "scaling-chaos-7-signs": "bottleneck",                              # operating breakdowns and fire-fighting
+    "ai-wont-fix-a-bad-operating-system": "bottleneck",                 # three versions of the closing procedure
 }
 # Which page /are-you-ready serves. "sessions" is the four working sessions. "tool" puts the archived readiness
 # tool back there (see docs/are-you-ready-archive.md). The archive copy is built either way.
@@ -111,6 +114,7 @@ def inline(t):
     t = smart(esc(t))
     t = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", t)
     t = re.sub(r"\*(.+?)\*", r"<em>\1</em>", t)
+    t = re.sub(r"\[([^\]]+)\]\((https?://[^)\s]+)\)", r'<a href="\2">\1</a>', t)   # [source](https://...) citations
     return t
 
 def parse(slug):
@@ -131,8 +135,9 @@ def parse(slug):
             tbl = []
             while k < len(body) and body[k].startswith("|"):
                 tbl.append([c.strip() for c in body[k].strip().strip("|").split("|")]); k += 1
-            t = '<div class="note-table__wrap"><table class="note-table"><thead><tr>' + "".join(f'<th scope="col">{esc(h)}</th>' for h in tbl[0]) + "</tr></thead><tbody>"
-            for r in tbl[2:]: t += f"<tr><td>{inline(r[0])}</td><td>{inline(r[1])}</td></tr>"
+            wide = " note-table--wide" if len(tbl[0]) > 2 else ""   # two columns is label and value; more is a grid of prose
+            t = f'<div class="note-table__wrap"><table class="note-table{wide}"><thead><tr>' + "".join(f'<th scope="col">{esc(h)}</th>' for h in tbl[0]) + "</tr></thead><tbody>"
+            for r in tbl[2:]: t += "<tr>" + "".join(f"<td>{inline(c)}</td>" for c in r) + "</tr>"
             out.append(t + "</tbody></table></div>"); continue
         if l.startswith("**This week:**"):
             out.append(f'<aside class="note-article__week"><p class="note-article__week-label">This week</p><p>{inline(l[len("**This week:**"):].strip())}</p></aside>'); k += 1; continue
@@ -141,6 +146,12 @@ def parse(slug):
             while k < len(body) and body[k].startswith("- "):
                 items.append(f"<li>{inline(body[k][2:].strip())}</li>"); k += 1
             out.append('<ul class="note-article__list">' + "".join(items) + "</ul>"); continue
+        if re.match(r"\d+\. ", l):
+            items = []
+            while k < len(body) and re.match(r"\d+\. ", body[k]):
+                item = re.sub(r"^\d+\. ", "", body[k]).strip()
+                items.append(f"<li>{inline(item)}</li>"); k += 1
+            out.append('<ol class="note-article__list note-article__list--numbered">' + "".join(items) + "</ol>"); continue
         if l.startswith("**Fast Facts**"):
             k += 1; items = []
             while k < len(body) and body[k].startswith("> - "):
@@ -173,7 +184,7 @@ def parse(slug):
     paras = [j for j, o in enumerate(out) if o.startswith("<p>")]
     if quote and len(paras) > 2 and not any("note-article__pull--own" in o for o in out):
         out.insert(paras[1] + 1, f'<blockquote class="note-article__pull"><p>{esc(quote)}</p></blockquote>')
-    words = len(re.findall(r"[A-Za-z0-9\u2019']+", " ".join(body)))
+    words = len(re.findall(r"[A-Za-z0-9\u2019']+", re.sub(r"\]\(https?://[^)\s]+\)", "]", " ".join(body))))   # link targets are not read
     minutes = max(1, round(words / 200))
     return dict(slug=slug, title=title, date=date, stand=stand, kind=kind, minutes=minutes, body="\n        ".join(out))
 
