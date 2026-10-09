@@ -4,7 +4,9 @@ Writes:
   - the compact Playbook band on index.html (between notes markers)
   - the article dialogs on index.html (between dialog markers)
   - playbook.html, the Articles hub: one card per play, filtered by lane
-  - are-you-ready.html, the readiness tool, from tools/partials/are-you-ready.html
+  - are-you-ready.html, the four free working sessions (SESSIONS below)
+  - archive/are-you-ready-old.html, the readiness tool that /are-you-ready carried until 9 October 2026,
+    from tools/partials/are-you-ready-old.html (see docs/are-you-ready-archive.md)
   - plays/<slug>.html, one page per play
 
 Usage: python3 tools/build-notes.py
@@ -38,11 +40,60 @@ QUOTES = {  # one line from each piece, shown while its row is hovered
     "the-founder-bottleneck": "The founder decides what the rules are. The founder stops being the rule.",
     "the-next-ten-locations": "Your management infrastructure didn\u2019t grow with you.",
 }
+
+# ---------- the four free working sessions ----------
+# One entry per lane. Rendered three ways: the hub on are-you-ready.html, the secondary line at the foot of
+# each What We Do row, and the block at the foot of the plays listed in ARTICLE_SESSIONS. Copy lives here only.
+SESSIONS = [
+    dict(key="bottleneck", id="find-the-bottleneck", tag="OPS", lane="Field Operations",
+         title="Find the Bottleneck", cta="Find the bottleneck",
+         text="Something is harder than it should be, but the cause is not obvious. In one focused session, we\u2019ll separate symptoms from the likely constraint and identify what is worth testing next.",
+         nudge="Not sure what\u2019s actually getting in the way?"),
+    dict(key="open", id="ready-to-open", tag="DEV", lane="Store Development",
+         title="Are You Ready to Open?", cta="Pressure-test the opening",
+         text="A new opening creates a lot of motion. The risk is missing the dependency that matters most. We\u2019ll walk the opening plan, ownership, timing, and major handoffs to identify what could slow the opening down or create problems after launch.",
+         nudge="Have an opening on the calendar?"),
+    dict(key="site", id="take-this-site", tag="RE", lane="Real Estate &amp; Leasing",
+         title="Should You Take This Site?", cta="Review the site",
+         text="A site can look good on paper and still create a bad operating decision. We\u2019ll review the location, basic deal terms, and operating assumptions and identify the questions that need answering before you commit.",
+         nudge="Weighing a site right now?"),
+    dict(key="franchise", id="ready-to-franchise", tag="FRAN", lane="Franchise Infrastructure",
+         title="Are You Ready to Franchise?", cta="Check franchise readiness",
+         text="Franchising exposes whatever the business still depends on people to carry. We\u2019ll pressure-test the model, support structure, and key handoffs to identify what needs to be strengthened or built before outside operators enter the system.",
+         nudge="Thinking about franchising?"),
+]
+SESSION = {x["key"]: x for x in SESSIONS}
+ARTICLE_SESSIONS = {  # plays whose subject sits squarely on one session. The other plays carry none, on purpose.
+    "your-best-manager-cannot-be-the-operating-system": "bottleneck",   # manager dependence
+    "why-new-store-openings-fall-behind": "open",                       # opening handoffs
+    "before-you-sign-the-lease": "site",                                # site and lease decisions
+    "scaling-chaos-7-signs": "bottleneck",                              # operating breakdowns and fire-fighting
+}
+# Which page /are-you-ready serves. "sessions" is the four working sessions. "tool" puts the archived readiness
+# tool back there (see docs/are-you-ready-archive.md). The archive copy is built either way.
+READY_PAGE = "sessions"
+
+def session_href(x): return f"index.html?session={x['key']}#contact"
+def session_block(x, slug):
+    """The one contextual offer at the foot of a play."""
+    return f'''<aside class="note-session" aria-labelledby="session-{slug}-title">
+            <p class="eyebrow">Free working session</p>
+            <p class="note-session__title" id="session-{slug}-title">{x['title']}</p>
+            <p class="note-session__text">{x['text']}</p>
+            <a class="button button--ink button--small" href="{session_href(x)}">{x['cta']} <span class="arrow" aria-hidden="true">\u2192</span></a>
+          </aside>'''
+def article_session(n, indent):
+    k = ARTICLE_SESSIONS.get(n["slug"])
+    return (session_block(SESSION[k], n["slug"]) + "\n" + indent) if k else ""
+def session_line(x):
+    """The secondary line at the foot of a What We Do row, pointing at that lane's session on the hub."""
+    return f'{x["nudge"]} Book a free session: <a class="text-link" href="are-you-ready.html#{x["id"]}">{x["title"]} <span class="arrow" aria-hidden="true">\u2192</span></a>'
 def clean_links(html):
     """Live site uses clean URLs: / for the home page and /playbook, /merch, /privacy, /terms for the rest (see .htaccess)."""
     for a, z in (('href="index.html#', 'href="/#'), ('href="index.html"', 'href="/"'), ('href="playbook.html', 'href="/playbook'),
                  ('href="merch.html"', 'href="/merch"'), ('href="privacy.html"', 'href="/privacy"'), ('href="terms.html"', 'href="/terms"'),
-                 ('href="work-with-us.html"', 'href="/work-with-us"'), ('href="are-you-ready.html"', 'href="/are-you-ready"')):
+                 ('href="work-with-us.html"', 'href="/work-with-us"'), ('href="are-you-ready.html"', 'href="/are-you-ready"'),
+                 ('href="are-you-ready.html#', 'href="/are-you-ready#'), ('href="index.html?', 'href="/?')):
         html = html.replace(a, z)
     return re.sub(r'href="plays/([a-z0-9-]+)\.html"', r'href="/plays/\1"', html)
 
@@ -199,7 +250,7 @@ dialogs = "\n\n".join(f'''  <dialog class="note-dialog" id="note-{n['i']}" aria-
       <div class="note-article__body">
         {n['body']}
       </div>
-      {closer_html()}
+      {article_session(n, "      ")}{closer_html()}
       <div class="note-article__foot">
         <button class="button button--ink" type="button" data-close-note><span class="arrow" aria-hidden="true">←</span> Back</button>
         <a class="text-link" href="plays/{n['slug']}.html">Open on its own page <span class="arrow" aria-hidden="true">→</span></a>
@@ -220,6 +271,7 @@ def stamp_assets(html):
 s = stamp_assets(s)
 s = re.sub(r"<!-- notes:start -->.*?<!-- notes:end -->", lambda m: band, s, flags=re.S)
 s = re.sub(r"<!-- dialogs:start -->.*?<!-- dialogs:end -->", lambda m: dialogs, s, flags=re.S)
+s = re.sub(r'<p class="service-row__session" data-session="(\w+)">.*?</p>', lambda m: f'<p class="service-row__session" data-session="{m.group(1)}">{session_line(SESSION[m.group(1)])}</p>', s, flags=re.S)
 s = clean_links(s)
 idx.write_text(s)
 
@@ -286,8 +338,8 @@ page = f'''<!doctype html>
       <div class="container fn-close__grid">
         <h2 class="campaign-heading" id="fn-close-title">Build a<br>business<br>that’s ready<br>for growth.</h2>
         <div>
-          <p class="section-intro">Share where your operation needs to get stronger.</p>
-          <a class="button button--ink" href="index.html#contact">Let’s build <span class="arrow" aria-hidden="true">→</span></a>
+          <p class="section-intro">Bring the problem. We’ll work on it.</p>
+          <a class="button button--ink" href="are-you-ready.html">Book a free working session <span class="arrow" aria-hidden="true">→</span></a>
         </div>
       </div>
     </section>
@@ -332,7 +384,7 @@ def play_page(n, nxt):
           <div class="note-article__body">
             {n['body']}
           </div>
-          {closer_html()}
+          {article_session(n, "          ")}{closer_html()}
         </article>
         <nav class="fn-next reveal" aria-label="Next article">
           <p class="eyebrow">Next Article</p>
@@ -531,18 +583,62 @@ def work_page():
     ]
     return "\n".join(parts)
 (ROOT / "work-with-us.html").write_text(clean_links(stamp_assets(work_page())))
-# ---------- are you ready: the readiness tool on its own page ----------
-def ready_page():
-    rhead = head.replace("<title>Playbook — SKALA</title>", "<title>Are You Ready — SKALA</title>")
-    rhead = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="description" content="Where do your capabilities stand today? Walk one operational capability up the SCALE readiness scale, from Siloed to Expansion-ready.">', rhead)
-    rheader = header.replace('<a class="nav-link" href="/are-you-ready">Are You Ready</a>', '<a class="nav-link" href="/are-you-ready" aria-current="page">Are You Ready</a>')
-    assert 'aria-current="page"' in rheader, "Are You Ready link not found in the header" 
-    section = (ROOT / "tools/partials/are-you-ready.html").read_text()
-    section = section[section.index("<section"):].rstrip()
+# ---------- are you ready: the four free working sessions ----------
+def page_head(title, description):
+    h = head.replace("<title>Playbook — SKALA</title>", f"<title>{title}</title>")
+    return re.sub(r'<meta name="description" content="[^"]*">', f'<meta name="description" content="{description}">', h)
+def ready_header():
+    h = header.replace('<a class="nav-link" href="/are-you-ready">Are You Ready</a>', '<a class="nav-link" href="/are-you-ready" aria-current="page">Are You Ready</a>')
+    assert 'aria-current="page"' in h, "Are You Ready link not found in the header"
+    return h
+def session_card(x):
+    return f'''          <li class="session-card" id="{x['id']}">
+            <p class="session-card__lane"><span class="session-card__tag" aria-hidden="true">{x['tag']}</span> {x['lane']}</p>
+            <h2 class="session-card__title">{x['title']}</h2>
+            <p class="session-card__text">{x['text']}</p>
+            <a class="button button--ink" href="{session_href(x)}">{x['cta']} <span class="arrow" aria-hidden="true">\u2192</span></a>
+          </li>'''
+def sessions_page():
     parts = [
-        "<!doctype html>", '<html lang="en">', rhead, '<body class="ready-page">',
+        "<!doctype html>", '<html lang="en">',
+        page_head("Are You Ready — SKALA", "Four free working sessions from SKALA: find the bottleneck, pressure-test an opening, review a site, or check franchise readiness. Bring the issue and leave with a clearer next move."),
+        '<body class="sessions-page">',
+        '  <a class="skip-link" href="#main">Skip to content</a>', "", svgdefs, "", ready_header(), "",
+        '  <main id="main">',
+        '    <section class="section section--paper sessions" aria-labelledby="sessions-title">',
+        '      <div class="container">',
+        '        <div class="sessions__intro reveal">',
+        '          <p class="eyebrow">Free working sessions</p>',
+        '          <h1 class="section-title" id="sessions-title">Four focused sessions.</h1>',
+        '          <p class="section-intro">Bring the issue. Bring what you already know. We\u2019ll pressure-test it, find what matters, and leave you with a clearer next move.</p>',
+        '        </div>',
+        '        <ul class="session-cards reveal">',
+        "\n".join(session_card(x) for x in SESSIONS),
+        '        </ul>',
+        '      </div>', '    </section>', "",
+        '    <section class="section section--acid fn-close sessions-close" aria-labelledby="sessions-close-title">',
+        '      <div class="container fn-close__grid">',
+        '        <h2 class="section-title" id="sessions-close-title">Not a pitch. A working session.</h2>',
+        '        <div>',
+        '          <p class="section-intro">No deck. No long assessment. No obligation to keep going.</p>',
+        '          <p class="section-intro">Bring one real operating question. We\u2019ll spend the session getting clearer on it.</p>',
+        '          <a class="button button--ink" href="index.html#contact">Book a working session <span class="arrow" aria-hidden="true">\u2192</span></a>',
+        '        </div>',
+        '      </div>', '    </section>', '  </main>', "", footer, "",
+        '  <script src="js/site.js" defer></script>', '</body>', '</html>', "",
+    ]
+    return "\n".join(parts)
+def tool_page(current):
+    """The readiness tool (SCALE ladder and workboard): what /are-you-ready carried until 9 October 2026.
+    Built to archive/are-you-ready-old.html (unlisted, noindex); with READY_PAGE = "tool" it is /are-you-ready again."""
+    section = (ROOT / "tools/partials/are-you-ready-old.html").read_text()
+    section = section[section.index("<section"):].rstrip()
+    h = page_head("Are You Ready — SKALA", "Where do your capabilities stand today? Walk one operational capability up the SCALE readiness scale, from Siloed to Expansion-ready.")
+    if not current: h = h.replace("</head>", '  <meta name="robots" content="noindex">\n</head>')
+    parts = [
+        "<!doctype html>", '<html lang="en">', h, '<body class="ready-page">',
         '  <a class="skip-link" href="#main">Skip to content</a>', "", svgdefs, "",
-        rheader, "",
+        ready_header() if current else header, "",
         '  <main id="main">', "    " + section, "",
         '    <section class="section section--acid fn-close" aria-labelledby="fn-close-title">',
         '      <div class="container fn-close__grid">',
@@ -555,5 +651,7 @@ def ready_page():
         '  <script src="js/site.js" defer></script>', '</body>', '</html>', "",
     ]
     return "\n".join(parts)
-(ROOT / "are-you-ready.html").write_text(clean_links(stamp_assets(ready_page())))
-print("built: index.html band + dialogs, playbook.html, plays/, merch.html, privacy.html, terms.html, work-with-us.html, are-you-ready.html")
+(ROOT / "are-you-ready.html").write_text(clean_links(stamp_assets(sessions_page() if READY_PAGE == "sessions" else tool_page(True))))
+(ROOT / "archive").mkdir(exist_ok=True)
+(ROOT / "archive/are-you-ready-old.html").write_text(nested(clean_links(stamp_assets(tool_page(False)))))
+print("built: index.html band + dialogs + session lines, playbook.html, plays/, merch.html, privacy.html, terms.html, work-with-us.html, are-you-ready.html, archive/are-you-ready-old.html")

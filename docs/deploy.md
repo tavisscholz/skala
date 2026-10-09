@@ -2,9 +2,9 @@
 
 The site is static: the repository root is the web root, with `index.html`,
 `playbook.html`, `are-you-ready.html`, `merch.html`, `privacy.html` and `terms.html` alongside `plays/`
-(one page per play), `css/`, `js/` and `assets/`. Hostinger's Git deployment clones the branch straight into
+(one page per play), `archive/` (the retired readiness tool), `css/`, `js/` and `assets/`. Hostinger's Git deployment clones the branch straight into
 `public_html`, and the `.htaccess` at the root keeps the tooling folders private
-and serves clean URLs: `/`, `/playbook`, `/plays/<slug>`, `/are-you-ready`, `/merch`, `/privacy`, `/terms`. Requests for
+and serves clean URLs: `/`, `/playbook`, `/plays/<slug>`, `/are-you-ready`, `/archive/are-you-ready-old`, `/merch`, `/privacy`, `/terms`. Requests for
 `index.html` or any `.html` address redirect to the clean form.
 
 ## One-time setup in hPanel

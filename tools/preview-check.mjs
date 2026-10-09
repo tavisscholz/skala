@@ -80,8 +80,14 @@ note('about section carries the operator record', (await page.locator('#about-ti
 // The readiness tool lives on its own page now
 note('homepage no longer carries the readiness tool', await page.evaluate(() => !document.querySelector('#ready') && !document.querySelector('.workboard') && !!document.querySelector('.nav-list a[href$="are-you-ready.html"], .nav-list a[href="/are-you-ready"]')));
 await page.goto(url + 'are-you-ready.html', { waitUntil: 'networkidle' });
-note('Are You Ready page: section, ladder, board, current menu item', (await page.locator('#ready .eyebrow').first().textContent()).trim() === 'Are you ready' && (await page.locator('h1#ready-title').textContent()).startsWith('Where do your capabilities') && (await page.locator('.ladder__step').count()) === 5 && (await page.locator('.workboard').count()) === 1 && (await page.locator('.nav-list a[aria-current="page"]').textContent()).trim() === 'Are You Ready' && (await page.locator('.fn-close').count()) === 1);
+note('Are You Ready page: four sessions, current menu item, the working-session close', (await page.locator('#sessions-title').textContent()) === 'Four focused sessions.' && (await page.locator('.sessions__intro .section-intro').textContent()).startsWith('Bring the issue.') && (await page.locator('.session-card').count()) === 4 && (await page.locator('.nav-list a[aria-current="page"]').textContent()).trim() === 'Are You Ready' && (await page.locator('#sessions-close-title').textContent()) === 'Not a pitch. A working session.' && (await page.locator('.sessions-close .button').textContent()).trim().startsWith('Book a working session') && (await page.locator('.sessions-close .button').getAttribute('href')) === '/#contact' && !(await page.locator('#ready, .workboard, .ladder').count()));
+note('each session card carries its lane, title, one paragraph and its own button', await page.evaluate(() => { const want = [['find-the-bottleneck', 'Field Operations', 'Find the Bottleneck', 'Find the bottleneck', 'bottleneck'], ['ready-to-open', 'Store Development', 'Are You Ready to Open?', 'Pressure-test the opening', 'open'], ['take-this-site', 'Real Estate & Leasing', 'Should You Take This Site?', 'Review the site', 'site'], ['ready-to-franchise', 'Franchise Infrastructure', 'Are You Ready to Franchise?', 'Check franchise readiness', 'franchise']]; return [...document.querySelectorAll('.session-card')].every((c, i) => { const [id, lane, title, cta, key] = want[i]; const b = c.querySelector('.button'); return c.id === id && c.querySelector('.session-card__lane').textContent.trim().endsWith(lane) && c.querySelector('.session-card__title').textContent === title && c.querySelectorAll('.session-card__text').length === 1 && b.textContent.trim().startsWith(cta) && b.getAttribute('href') === '/?session=' + key + '#contact'; }); }));
+note('session cards sit in two columns on desktop', await page.evaluate(() => { const [a, b] = document.querySelectorAll('.session-card'); return Math.abs(a.getBoundingClientRect().top - b.getBoundingClientRect().top) < 2 && b.getBoundingClientRect().left > a.getBoundingClientRect().right; }));
 await page.screenshot({ path: join(outDir, 'are-you-ready-1440.png'), fullPage: true });
+
+// The readiness tool it replaced lives on, unlisted, under /archive
+await page.goto(url + 'archive/are-you-ready-old.html', { waitUntil: 'networkidle' });
+note('archived readiness tool: section, ladder, board, noindex, assets one folder up', (await page.locator('#ready .eyebrow').first().textContent()).trim() === 'Are you ready' && (await page.locator('h1#ready-title').textContent()).startsWith('Where do your capabilities') && (await page.locator('.ladder__step').count()) === 5 && (await page.locator('.workboard').count()) === 1 && (await page.locator('meta[name="robots"]').getAttribute('content')) === 'noindex' && (await page.locator('.nav-list a[aria-current="page"]').count()) === 0 && await page.evaluate(() => [...document.styleSheets].some(x => (x.href || '').includes('/css/site.css')) && getComputedStyle(document.querySelector('.workboard')).display !== 'none'));
 
 // Workboard
 const status = page.locator('.status-btn').first();
@@ -142,7 +148,7 @@ await page.goto(url + 'index.html', { waitUntil: 'networkidle' });
 // Phones: board hidden, tiles are the checklist
 {
   const ph = await browser.newPage({ viewport: { width: 390, height: 844 } });
-  await ph.goto(url + 'are-you-ready.html', { waitUntil: 'networkidle' });
+  await ph.goto(url + 'archive/are-you-ready-old.html', { waitUntil: 'networkidle' });
   await ph.evaluate(() => localStorage.clear());
   await ph.reload({ waitUntil: 'networkidle' });
   note('phone: the workboard is hidden', !(await ph.locator('.workboard').isVisible()));
@@ -254,11 +260,36 @@ note('hub cards sit in two columns on desktop', await fn.evaluate(() => { const 
   const all = await fn.evaluate(() => [...document.querySelectorAll('.fn-card')].filter(c => !c.hidden).length);
   note('lane filters show one lane at a time and All brings every play back', scale.length === 3 && scale.every(l => l === 'SCALE') && pressed.join() === 'SCALE' && all === 7, `${scale}/${pressed}/${all}`);
 }
+note('hub close band offers a free working session', (await fn.locator('.fn-close .button').textContent()).trim().startsWith('Book a free working session') && (await fn.locator('.fn-close .button').getAttribute('href')) === '/are-you-ready' && (await fn.locator('.fn-close .section-intro').textContent()) === 'Bring the problem. We\u2019ll work on it.');
 await fn.screenshot({ path: join(outDir, 'playbook-hub-1440.png'), fullPage: true });
 note('homepage band keeps four plays and sends the rest to the playbook', await fn.evaluate(async (u) => { const h = await (await fetch(u + 'index.html')).text(); return (h.match(/class="note-line"/g) || []).length === 4 && (h.match(/<dialog class="note-dialog"/g) || []).length === 4 && (h.match(/href="\/plays\/[a-z0-9-]+">Open on its own page/g) || []).length === 4; }, url));
 const playPages = await fn.evaluate(async ({ u, s }) => Object.fromEntries(await Promise.all(s.map(async k => [k, await (await fetch(u + 'plays/' + k + '.html')).text()]))), { u: url, s: SLUGS });
 note('every play has its own page with one article, the contributor note and a Listen button', SLUGS.every(k => { const h = playPages[k]; return (h.match(/<article class="fn-article/g) || []).length === 1 && h.includes('<h1 class="note-article__title"') && (h.match(/note-article__closer/g) || []).length === 1 && h.includes('East Tennessee') && h.includes('href="mailto:tavis@buildwithskala.com"') && (h.match(/class="byline-btn listen"/g) || []).length === 1 && h.includes('class="byline-btn share"') && !h.includes('class="fn-index'); }));
 note('play pages reach site assets one folder up and link the next play', SLUGS.every((k, i) => { const h = playPages[k]; const nxt = SLUGS[(i + 1) % SLUGS.length]; return h.includes('href="../css/site.css') && h.includes('src="../js/site.js') && h.includes('data-audio="../assets/audio/' + k + '.mp3') && h.includes('href="/plays/' + nxt + '"') && h.includes('href="/playbook"') && !/(href|src)="(css|js|assets)\//.test(h); }));
+// Working sessions: one line per What We Do row, one block on the plays that map cleanly, the chip above the form
+{
+  const WITH = ['your-best-manager-cannot-be-the-operating-system', 'why-new-store-openings-fall-behind', 'before-you-sign-the-lease', 'scaling-chaos-7-signs'];
+  const withCta = SLUGS.filter(k => playPages[k].includes('class="note-session"'));
+  note('session blocks sit on the four plays that map cleanly and on none of the others', withCta.join() === WITH.join() && SLUGS.length > withCta.length, withCta.join(','));
+  note('no play carries more than one offer, and each books its own session', SLUGS.every(k => (playPages[k].match(/class="note-session"/g) || []).length <= 1 && (playPages[k].match(/href="\/\?session=/g) || []).length <= 1) && playPages[WITH[0]].includes('href="/?session=bottleneck#contact"') && playPages[WITH[1]].includes('href="/?session=open#contact"') && playPages[WITH[2]].includes('href="/?session=site#contact"') && playPages[WITH[3]].includes('href="/?session=bottleneck#contact"') && !playPages['when-your-sales-story-outruns-your-item-19'].includes('session='));
+  const sp = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  await sp.goto(url + 'index.html', { waitUntil: 'networkidle' });
+  note('each What We Do row ends with one line pointing only at its own session', await sp.evaluate(() => { const want = { 'service-store-operations': 'find-the-bottleneck', 'service-store-development': 'ready-to-open', 'service-real-estate': 'take-this-site', 'service-franchise-development': 'ready-to-franchise' }; return document.querySelectorAll('.service-row__session').length === 4 && Object.keys(want).every(id => { const links = document.querySelectorAll('#' + id + ' .service-row__session a'); return links.length === 1 && links[0].getAttribute('href') === '/are-you-ready#' + want[id] && document.querySelector('#' + id + ' .service-row__session').textContent.includes('Book a free session'); }); }));
+  note('the homepage dialogs carry the same single offers as the plays', await sp.evaluate(() => ['note-1', 'note-2', 'note-3'].every(id => document.querySelectorAll('#' + id + ' .note-session').length === 1) && document.querySelectorAll('#note-4 .note-session').length === 0));
+  note('without ?session= the form shows no session line', !(await sp.locator('#contact-session').isVisible()) && (await sp.inputValue('#f-session')) === '');
+  await sp.goto(url + 'index.html?session=site#contact', { waitUntil: 'networkidle' });
+  note('arriving with ?session= names the session above the form and tunes the ask', await sp.locator('#contact-session').isVisible() && (await sp.locator('#contact-session-title').textContent()) === 'Should You Take This Site?' && (await sp.inputValue('#f-session')) === 'Should You Take This Site?' && (await sp.getAttribute('#f-message', 'placeholder')) === 'The site and where the deal stands' && (await sp.locator('#contact-submit').textContent()).trim().startsWith('Book the session'));
+  await sp.locator('#contact').screenshot({ path: join(outDir, 'contact-session-1440.png') });
+  await sp.fill('#f-name', 'Jordan Reyes'); await sp.fill('#f-email', 'jordan@example.com'); await sp.fill('#f-message', 'Corner unit, LOI in hand.');
+  await sp.locator('#contact-form button[type=submit]').click(); await sp.waitForTimeout(400);
+  note('the draft carries the session', (await sp.locator('#draft-body').textContent()).includes('Session: Should You Take This Site?'));
+  await sp.goto(url + 'are-you-ready.html#ready-to-open', { waitUntil: 'networkidle' });
+  note('a row line lands on its card, highlighted', await sp.evaluate(() => { const c = document.getElementById('ready-to-open'); const r = c.getBoundingClientRect(); return r.top >= 0 && r.top < window.innerHeight && getComputedStyle(c).boxShadow !== 'none'; }));
+  await sp.goto(url + 'plays/scaling-chaos-7-signs.html', { waitUntil: 'networkidle' });
+  await sp.evaluate(() => document.querySelectorAll('.reveal').forEach(e => e.classList.add('is-in')));
+  await sp.locator('.note-session').screenshot({ path: join(outDir, 'play-session-1440.png') });
+  await sp.close();
+}
 note('play pages carry their own title and description', SLUGS.every(k => /<title>[^<]+ — SKALA<\/title>/.test(playPages[k]) && !playPages[k].includes('<title>Playbook — SKALA</title>')) && playPages['the-founder-bottleneck'].includes('<meta name="description" content="The thing that made you indispensable'));
 note('scaling plays render their facts, callouts and weekly move', playPages['scaling-chaos-7-signs'].includes('note-article__facts') && playPages['the-next-ten-locations'].includes('note-article__callout') && playPages['the-founder-bottleneck'].includes('note-article__week') && /<cite>[^<]*Mellon/.test(playPages['the-next-ten-locations']));
 note('strip reads See. Plan. Do. Check. Act. Repeat. with See. and Repeat. in acid', await fn.evaluate(async (u) => {
@@ -386,8 +417,8 @@ await fn.close();
   note('merch page lists four items with prices', await mp.evaluate(() => [...document.querySelectorAll('.merch-card__price')].map(e => e.textContent.trim()).join(',') === '$25,$25,$75,$15'));
   note('merch photos all load', await mp.evaluate(() => [...document.querySelectorAll('.merch-card__img')].every(i => i.complete && i.naturalWidth > 0 && !i.hidden)));
   note('merch page: no horizontal overflow', (await mp.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)) <= 0);
-  note('header nav is What We Do / How We Do It / Articles / Are You Ready', await mp.evaluate(() => [...document.querySelectorAll('.nav-list .nav-link')].map(a => a.textContent.trim()).join('|') === 'What We Do|How We Do It|Articles|Are You Ready'));
-  note('footer links include How We Do It and hide Merch', await mp.evaluate(() => { const t = [...document.querySelectorAll('.site-footer__nav a')].map(a => a.textContent.trim()); return t.includes('How We Do It') && !t.includes('Merch'); }));
+  note('header nav is What We Do / How We Work / Articles / Are You Ready', await mp.evaluate(() => [...document.querySelectorAll('.nav-list .nav-link')].map(a => a.textContent.trim()).join('|') === 'What We Do|How We Work|Articles|Are You Ready'));
+  note('footer links include How We Work and hide Merch', await mp.evaluate(() => { const t = [...document.querySelectorAll('.site-footer__nav a')].map(a => a.textContent.trim()); return t.includes('How We Work') && !t.includes('Merch'); }));
   await mp.evaluate(() => document.querySelectorAll('.reveal').forEach(e => e.classList.add('is-in')));
   await mp.screenshot({ path: join(outDir, 'merch-1440.png'), fullPage: true });
   await mp.setViewportSize({ width: 390, height: 800 });

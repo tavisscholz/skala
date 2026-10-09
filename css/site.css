@@ -900,3 +900,32 @@ body.has-hoopla { overflow: hidden; }
 .draft__note { margin-top: var(--space-3); font-size: 0.9375rem; color: var(--color-muted-dark); }
 .draft__note a { color: inherit; }
 .contact-form.is-sending .button { opacity: 0.6; pointer-events: none; }
+
+/* ---------- Working sessions: the hub, the row lines, the play blocks, the form chip ---------- */
+.service-row__session { margin: 0; padding-top: var(--space-4); border-top: 1px solid color-mix(in srgb, var(--color-ink) 22%, transparent); font-size: 0.9375rem; line-height: 1.5; color: var(--color-muted-dark); max-width: 56ch; }
+.service-row__session .text-link { color: var(--color-ink); font-weight: 700; }
+.sessions__intro { max-width: 720px; }
+.session-cards { list-style: none; margin: var(--space-8) 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); }
+.session-card { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-6); border: 3px solid var(--color-ink); background: var(--color-white); }
+.session-card__lane { display: flex; align-items: center; gap: var(--space-3); margin: 0; font-size: var(--text-label); font-weight: 700; letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--color-muted-dark); }
+.session-card__tag { display: inline-flex; align-items: center; justify-content: center; padding: 5px 6px; background: var(--color-ink); color: var(--color-acid); font-size: 0.8125rem; letter-spacing: 0.08em; line-height: 1; transform: rotate(-2deg); }
+.session-card__title { margin: var(--space-2) 0 0; font-size: clamp(1.5rem, 1.15rem + 1.1vw, 2rem); font-weight: 800; letter-spacing: var(--tracking-tight); line-height: 1.05; text-wrap: balance; }
+.session-card__text { margin: 0; color: var(--color-muted-dark); font-size: var(--text-body); line-height: 1.5; max-width: 46ch; }
+.session-card .button { margin-top: var(--space-3); align-self: flex-start; }
+.session-card__text { flex: 1; }
+.session-card:target { box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-acid) 65%, transparent); }
+.sessions-close .fn-close__grid { align-items: start; }
+.sessions-close .section-title { max-width: 12ch; }
+.sessions-close .section-intro { margin-bottom: 0; }
+.sessions-close .section-intro + .section-intro { margin-top: var(--space-3); }
+.sessions-close .button { margin-top: var(--space-6); }
+@media (max-width: 767px) { .session-cards { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); } .session-card { padding: var(--space-5); } }
+.note-session { margin-top: var(--space-7); padding: var(--space-5) var(--space-6) var(--space-6); border: 3px solid var(--color-ink); max-width: 60ch; }
+.note-session .eyebrow { margin-bottom: var(--space-2); }
+.note-session__title { margin: 0; font-size: 1.375rem; font-weight: 800; letter-spacing: var(--tracking-tight); line-height: 1.1; }
+.note-session__text { margin: var(--space-2) 0 0; color: var(--color-muted-dark); font-size: 0.9375rem; line-height: 1.5; max-width: 56ch; }
+.note-session .button { margin-top: var(--space-4); }
+.contact-form__session { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-3); margin: 0; padding: var(--space-3) var(--space-4); border: 2px solid var(--color-ink); }
+.contact-form__session[hidden] { display: none; }
+.contact-form__session-label { font-size: var(--text-label); font-weight: 700; letter-spacing: var(--tracking-label); text-transform: uppercase; }
+.contact-form__session-title { font-weight: 800; letter-spacing: var(--tracking-tight); font-size: 1.125rem; }

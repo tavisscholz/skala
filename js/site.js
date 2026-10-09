@@ -627,6 +627,7 @@
       'What I am working toward:',
       fields.message.el.value.trim()
     ];
+    if (session) lines.splice(5, 0, 'Session: ' + session.title);
     return lines.join('\n');
   }
 
@@ -634,6 +635,29 @@
   var sentNote = document.getElementById('sent-note');
   var submitBtn = document.getElementById('contact-submit');
   var hp = document.getElementById('f-website');
+
+  /* A working session chosen on /are-you-ready or at the foot of a play arrives as ?session=<key>.
+     Titles mirror SESSIONS in tools/build-notes.py; the ask is the message placeholder for that session. */
+  var SESSIONS = {
+    bottleneck: { title: 'Find the Bottleneck', ask: 'What\u2019s harder than it should be' },
+    open: { title: 'Are You Ready to Open?', ask: 'The opening date and what\u2019s in motion' },
+    site: { title: 'Should You Take This Site?', ask: 'The site and where the deal stands' },
+    franchise: { title: 'Are You Ready to Franchise?', ask: 'Why franchise, and why now' }
+  };
+  var sessionField = document.getElementById('f-session');
+  var sessionChip = document.getElementById('contact-session');
+  var session = null;
+  if (form && sessionField && sessionChip) {
+    var sm = /[?&]session=([a-z]+)/.exec(window.location.search);
+    session = sm && SESSIONS[sm[1]] ? SESSIONS[sm[1]] : null;
+    if (session) {
+      sessionField.value = session.title;
+      document.getElementById('contact-session-title').textContent = session.title;
+      sessionChip.hidden = false;
+      fields.message.el.placeholder = session.ask;
+      if (submitBtn && submitBtn.firstChild && submitBtn.firstChild.nodeType === 3) submitBtn.firstChild.nodeValue = 'Book the session ';
+    }
+  }
 
   /* The draft is the fallback: shown when the site cannot send the inquiry itself. */
   function showDraft(reason) {
@@ -653,7 +677,7 @@
     form.reset();
   }
   function send() {
-    var payload = { name: fields.name.el.value.trim(), email: fields.email.el.value.trim(), company: company.value.trim(), message: fields.message.el.value.trim(), website: hp ? hp.value : '' };
+    var payload = { name: fields.name.el.value.trim(), email: fields.email.el.value.trim(), company: company.value.trim(), message: fields.message.el.value.trim(), session: sessionField ? sessionField.value : '', website: hp ? hp.value : '' };
     if (!window.fetch) return Promise.reject(new Error('no fetch'));
     return fetch('contact.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), credentials: 'same-origin' })
       .then(function (r) { return r.json().then(function (j) { if (!r.ok || !j || !j.ok) throw new Error((j && j.reason) || 'failed'); }); });

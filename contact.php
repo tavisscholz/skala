@@ -42,6 +42,7 @@ $name    = clean_line((string)($data['name'] ?? ''), 120);
 $email   = clean_line((string)($data['email'] ?? ''), 200);
 $company = clean_line((string)($data['company'] ?? ''), 160);
 $message = trim(mb_substr((string)($data['message'] ?? ''), 0, 6000));
+$session = clean_line((string)($data['session'] ?? ''), 80);   // the free working session they picked, if any
 
 if ($name === '' || $message === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) { http_response_code(422); reply(false, 'fields'); }
 
@@ -59,6 +60,7 @@ $body = implode("\n", [
   "Name: $name",
   "Work email: $email",
   "Company: " . ($company !== '' ? $company : '—'),
+  "Session: " . ($session !== '' ? $session : '—'),
   '',
   'What they are working toward:',
   $message,
@@ -76,7 +78,7 @@ $headers = [
   'Content-Transfer-Encoding: 8bit',
   'X-Mailer: buildwithskala.com',
 ];
-$subject = mb_encode_mimeheader(SUBJECT . ' from ' . $safeName, 'UTF-8');
+$subject = mb_encode_mimeheader(SUBJECT . ($session !== '' ? ' · ' . $session : '') . ' from ' . $safeName, 'UTF-8');
 
 $sent = @mail(TO, $subject, $body, implode("\r\n", $headers), '-f' . FROM);
 if (!$sent) { http_response_code(502); reply(false, 'mail'); }

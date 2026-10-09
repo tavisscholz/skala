@@ -18,7 +18,8 @@ npx http-server . -p 8080
 |---|---|
 | `index.html` | Long-form homepage with `#work`, `#approach`, `#field-notes`, `#about`, `#contact` |
 | `playbook.html` | The Articles hub: one card per play with lane filters, built from `assets/articles` by `tools/build-notes.py` |
-| `are-you-ready.html` | The readiness tool (SCALE ladder and workboard), assembled from `tools/partials/are-you-ready.html` by `tools/build-notes.py` |
+| `are-you-ready.html` | The four free working sessions (Find the Bottleneck, Are You Ready to Open?, Should You Take This Site?, Are You Ready to Franchise?), built by `tools/build-notes.py` from its `SESSIONS` list. The same list feeds the line at the foot of each What We Do row and the block on the plays that map to a session |
+| `archive/are-you-ready-old.html` | The readiness tool (SCALE ladder and workboard) that `/are-you-ready` carried until 9 October 2026. Built from `tools/partials/are-you-ready-old.html`, kept live but unlisted and `noindex`. `docs/are-you-ready-archive.md` says how to put it back |
 | `plays/<slug>.html` | One page per play (category, title, deck, article, next article), also built by `tools/build-notes.py` |
 | `merch.html` | Merch: the tee, hat, jacket and notebook with prices, also built by `tools/build-notes.py` |
 | `css/tokens.css` | Locked trial tokens plus the type, spacing, and motion scale |

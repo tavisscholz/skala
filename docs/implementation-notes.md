@@ -76,6 +76,25 @@ lane filters, one card per play) and each play has its own page with the
 category, title, deck, article and a "Next Article" link, which is the shareable
 destination. Old `/playbook#slug` links forward to the play's page.
 
+## The four working sessions (9 October 2026)
+
+`/are-you-ready` is a hub for four free working sessions, one per lane: Find
+the Bottleneck (Field Operations), Are You Ready to Open? (Store Development),
+Should You Take This Site? (Real Estate & Leasing) and Are You Ready to
+Franchise? (Franchise Infrastructure). The copy lives once, in `SESSIONS` in
+`tools/build-notes.py`, and is rendered in three places: the hub cards, a
+secondary one-line ask at the foot of each What We Do row (pointing at that
+lane's card only), and a single boxed block at the foot of the plays whose
+subject sits squarely on one session (`ARTICLE_SESSIONS`: the best-manager,
+openings, lease and scaling-chaos plays; the Item 19, founder-bottleneck and
+next-ten-locations plays carry none). A card's button opens the homepage form
+with `?session=<key>#contact`; the script names the session above the form,
+tunes the message placeholder, and sends it as a `session` field that
+`contact.php` puts in the subject and body. The Articles hub's close band
+offers "Book a free working session"; the play pages and the homepage keep
+"Let's build". The readiness tool the page used to carry is archived, see
+`docs/are-you-ready-archive.md`.
+
 ## Departures from the brief, and why
 
 | Brief | Built | Reason |
