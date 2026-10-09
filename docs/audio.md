@@ -1,5 +1,11 @@
 # Audio versions of the plays
 
+> **Hidden since 9 October 2026.** The Listen button and the speed pill are not rendered while
+> `AUDIO = False` in `tools/build-notes.py`. The recordings in `assets/audio/` and the player in
+> `js/site.js` are untouched. To bring the controls back: set `AUDIO = True`, run
+> `python3 tools/build-notes.py`, commit and push. Everything below describes the controls as they
+> work when shown.
+
 Every play has a Listen button beside its read time, in the homepage dialogs and on the playbook page.
 
 ## How it works today

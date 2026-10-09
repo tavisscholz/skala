@@ -264,9 +264,10 @@ note('hub close band offers a free working session', (await fn.locator('.fn-clos
 await fn.screenshot({ path: join(outDir, 'playbook-hub-1440.png'), fullPage: true });
 note('homepage band keeps four plays and sends the rest to the playbook', await fn.evaluate(async (u) => { const h = await (await fetch(u + 'index.html')).text(); return (h.match(/class="note-line"/g) || []).length === 4 && (h.match(/<dialog class="note-dialog"/g) || []).length === 4 && (h.match(/href="\/plays\/[a-z0-9-]+">Open on its own page/g) || []).length === 4; }, url));
 const playPages = await fn.evaluate(async ({ u, s }) => Object.fromEntries(await Promise.all(s.map(async k => [k, await (await fetch(u + 'plays/' + k + '.html')).text()]))), { u: url, s: SLUGS });
-note('every play has its own page with one article, the contributor note and a Listen button', SLUGS.every(k => { const h = playPages[k]; return (h.match(/<article class="fn-article/g) || []).length === 1 && h.includes('<h1 class="note-article__title"') && (h.match(/note-article__closer/g) || []).length === 1 && h.includes('East Tennessee') && h.includes('href="mailto:tavis@buildwithskala.com"') && (h.match(/class="byline-btn listen"/g) || []).length === 1 && h.includes('class="byline-btn share"') && !h.includes('class="fn-index'); }));
+const AUDIO = playPages[SLUGS[0]].includes('class="byline-btn listen"');   // AUDIO in tools/build-notes.py: Listen and the speed pill are hidden when false
+note('every play has its own page with one article, the contributor note and Share; Listen only while audio is on', SLUGS.every(k => { const h = playPages[k]; return (h.match(/<article class="fn-article/g) || []).length === 1 && h.includes('<h1 class="note-article__title"') && (h.match(/note-article__closer/g) || []).length === 1 && h.includes('East Tennessee') && h.includes('href="mailto:tavis@buildwithskala.com"') && (h.match(/class="byline-btn listen"/g) || []).length === (AUDIO ? 1 : 0) && (h.match(/class="byline-btn speed"/g) || []).length === (AUDIO ? 1 : 0) && h.includes('class="byline-btn share"') && !h.includes('class="fn-index'); }), AUDIO ? 'audio on' : 'audio hidden');
 const NARRATED = SLUGS.slice(0, 7);   // plays with a recorded MP3; the rest read with the device voice until one is made
-note('play pages reach site assets one folder up and link the next play', SLUGS.every((k, i) => { const h = playPages[k]; const nxt = SLUGS[(i + 1) % SLUGS.length]; return h.includes('href="../css/site.css') && h.includes('src="../js/site.js') && (NARRATED.includes(k) ? h.includes('data-audio="../assets/audio/' + k + '.mp3') : !h.includes('data-audio=')) && h.includes('href="/plays/' + nxt + '"') && h.includes('href="/playbook"') && !/(href|src)="(css|js|assets)\//.test(h); }));
+note('play pages reach site assets one folder up and link the next play', SLUGS.every((k, i) => { const h = playPages[k]; const nxt = SLUGS[(i + 1) % SLUGS.length]; return h.includes('href="../css/site.css') && h.includes('src="../js/site.js') && (!AUDIO ? !h.includes('data-audio=') : NARRATED.includes(k) ? h.includes('data-audio="../assets/audio/' + k + '.mp3') : !h.includes('data-audio=')) && h.includes('href="/plays/' + nxt + '"') && h.includes('href="/playbook"') && !/(href|src)="(css|js|assets)\//.test(h); }));
 // Working sessions: one line per What We Do row, one block on the plays that map cleanly, the chip above the form
 {
   const WITH = ['your-best-manager-cannot-be-the-operating-system', 'why-new-store-openings-fall-behind', 'before-you-sign-the-lease', 'scaling-chaos-7-signs', 'ai-wont-fix-a-bad-operating-system'];
@@ -329,7 +330,7 @@ note('the hub has no download button', (await fn.locator('.fn-index__cta, a[href
   const label = await sh.locator('.share__label').textContent();
   note('Share on a play page copies that page\u2019s link when there is no share sheet', /\/plays\/the-founder-bottleneck$/.test(copiedUrl || '') && label === 'Copied', `${copiedUrl}/${label}`);
 }
-{
+if (AUDIO) {
   /* Headless Chromium has no speech engine, so stand one in: each utterance "ends" after 150ms. */
   const lp = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   await lp.addInitScript(() => {
@@ -386,6 +387,8 @@ note('the hub has no download button', (await fn.locator('.fn-index__cta, a[href
     note('the remembered speed applies to the recording; the pill hides while idle', pillIdle === true && (await pillNow.isVisible()) && (await pillNow.locator('.speed__label').textContent()) === '1.5\u00d7');
   }
   await lp.close();
+} else {
+  note('audio hidden: no Listen or speed control in the homepage dialogs or on any play page', await fn.evaluate(async (u) => { const h = await (await fetch(u + 'index.html')).text(); return !h.includes('class="byline-btn listen"') && !h.includes('class="byline-btn speed"') && !h.includes('data-audio=') && (h.match(/class="byline-btn share"/g) || []).length === 4; }, url) && SLUGS.every(k => !playPages[k].includes('class="byline-btn listen"') && !playPages[k].includes('data-listen=')));
 }
 await fn.goto(url + 'playbook.html', { waitUntil: 'networkidle' });
 note('playbook hub: no horizontal overflow', (await fn.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)) <= 0);

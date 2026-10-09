@@ -201,13 +201,18 @@ def share_button(n):
     return (f'<button class="byline-btn share" type="button" data-share="{n["slug"]}" data-share-title="{esc(n["title"])}" aria-label="Share this play">'
             '<svg viewBox="0 0 10 10" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6.2V1.2M2.9 3.2 5 1.1l2.1 2.1M1.6 5.6v3h6.8v-3"/></svg>'
             '<span class="share__label">Share</span></button>')
+# Audio controls. False hides Listen and the speed pill on every play (the MP3s stay in assets/audio and the
+# player stays in js/site.js, unused); True brings them back on the next build. Hidden since 9 October 2026.
+AUDIO = False
 def speed_button():
     """Playback speed, shown once a play is playing. Cycles through presets."""
+    if not AUDIO: return ""
     return ('<button class="byline-btn speed" type="button" data-speed hidden aria-label="Playback speed, 1 times">'
             '<span class="speed__label">1\u00d7</span></button>')
 def listen_button(n, where):
     """Play/pause control beside the read time. Uses a recorded MP3 when
     tools/build-audio.mjs has made one, otherwise the device's own voice."""
+    if not AUDIO: return ""
     rel = f"assets/audio/{n['slug']}.mp3"
     audio = f' data-audio="{rel}?v={asset_version(rel)}"' if (ROOT / rel).exists() else ""
     return (f'<button class="byline-btn listen" type="button" data-listen="{where}-{n["slug"]}"{audio} data-state="idle" aria-pressed="false" aria-label="Listen to this play">'
