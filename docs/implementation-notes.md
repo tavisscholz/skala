@@ -155,7 +155,7 @@ territory.
 
 ## Labels and About (18 September)
 
-- Navigation reads What We Do · How We Do It · Playbook · About; the approach
+- Navigation reads What We Do · How We Work · Articles · Are You Ready; the approach
   eyebrow reads "How we do it". These reintroduce "we" in labels by the
   owner's decision; body copy stays third person.
 - Playbook row kind is Play for every piece. There is no PDF download: the
