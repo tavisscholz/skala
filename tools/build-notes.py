@@ -14,7 +14,7 @@ import re, html, hashlib, pathlib
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 ARTICLES = [  # order on the page, lane tag, lane name, shown on the homepage band
     ("your-best-manager-cannot-be-the-operating-system", "OPS", "Field Operations", True),
-    ("why-new-store-openings-fall-behind", "DEV", "Development", True),
+    ("why-new-store-openings-fall-behind", "DEV", "Store Development", True),
     ("before-you-sign-the-lease", "RE", "Real Estate &amp; Leasing", True),
     ("when-your-sales-story-outruns-your-item-19", "FRAN", "Franchise Development", True),
     ("scaling-chaos-7-signs", "SCALE", "Scaling Up", False),
@@ -236,7 +236,7 @@ footer = s[s.index('  <footer class="site-footer">'):s.index("</footer>")+9]
 footer = footer.replace('href="#top"', 'href="index.html"').replace('href="#work"', 'href="index.html#work"').replace('href="#approach"', 'href="index.html#approach"').replace('href="#about"', 'href="index.html#about"').replace('href="#contact"', 'href="index.html#contact"')
 
 # ---------- playbook hub: one card per play, filtered by lane ----------
-FILTERS = [("all", "All"), ("OPS", "Operations"), ("DEV", "Development"), ("RE", "Real estate"), ("FRAN", "Franchise"), ("SCALE", "Scaling")]
+FILTERS = [("all", "All"), ("OPS", "Operations"), ("DEV", "Store Development"), ("RE", "Real estate"), ("FRAN", "Franchise"), ("SCALE", "Scaling")]
 def play_href(n): return f"plays/{n['slug']}.html"
 filters = "\n".join(f'          <button class="fn-filter" type="button" data-filter="{key}" aria-pressed="{"true" if key == "all" else "false"}">{label}</button>' for key, label in FILTERS)
 cards = "\n".join(f'''          <li class="fn-card" id="{n['slug']}" data-lane="{n['tag']}">
