@@ -40,7 +40,7 @@ Internal record for the website trial. Nothing in this file renders on the site.
 
 The `#work` section carries the four experience lanes from the final
 experience-aligned capability handoff (copy used verbatim): Store Operations, Store Development,
-Real Estate & Leasing, Franchise Development. It replaces both the original
+Real Estate & Leasing, Franchise Infrastructure. It replaces both the original
 Strategy / Operations / People / Expansion rows and the intermediate taxonomy;
 the two were not merged. Heading and intro are the handoff's closed-state copy.
 Each row expands to What breaks · What we build · What becomes possible in the

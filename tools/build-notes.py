@@ -16,7 +16,7 @@ ARTICLES = [  # order on the page, lane tag, lane name, shown on the homepage ba
     ("your-best-manager-cannot-be-the-operating-system", "OPS", "Field Operations", True),
     ("why-new-store-openings-fall-behind", "DEV", "Store Development", True),
     ("before-you-sign-the-lease", "RE", "Real Estate &amp; Leasing", True),
-    ("when-your-sales-story-outruns-your-item-19", "FRAN", "Franchise Development", True),
+    ("when-your-sales-story-outruns-your-item-19", "FRAN", "Franchise Infrastructure", True),
     ("scaling-chaos-7-signs", "SCALE", "Scaling Up", False),
     ("the-founder-bottleneck", "SCALE", "Scaling Up", False),
     ("the-next-ten-locations", "SCALE", "Scaling Up", False),
