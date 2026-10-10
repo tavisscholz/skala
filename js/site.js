@@ -683,7 +683,7 @@
     site: { title: 'Should You Take This Site?', ask: 'The site and where the deal stands', button: 'Book the session ' },
     franchise: { title: 'Are You Ready to Franchise?', ask: 'Why franchise, and why now', button: 'Book the session ' },
     /* Work With Us sends operators here: same line above the form, its own label, the usual button */
-    operators: { label: 'Operators wanted', title: 'Bring your expertise', ask: 'What you\u2019ve opened, improved, or put into practice', field: 'Operators wanted: Bring your expertise' }
+    operators: { label: 'Operators wanted', title: 'Bring your expertise', ask: 'What you\u2019ve opened, improved, or run', field: 'Operators wanted: Bring your expertise' }
   };
   var sessionField = document.getElementById('f-session');
   var sessionChip = document.getElementById('contact-session');
