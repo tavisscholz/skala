@@ -666,7 +666,7 @@
       'What I am working toward:',
       fields.message.el.value.trim()
     ];
-    if (session) lines.splice(5, 0, 'Session: ' + session.title);
+    if (session) lines.splice(5, 0, 'Session: ' + sessionField.value);
     return lines.join('\n');
   }
 
@@ -678,10 +678,12 @@
   /* A working session chosen on /are-you-ready or at the foot of a play arrives as ?session=<key>.
      Titles mirror SESSIONS in tools/build-notes.py; the ask is the message placeholder for that session. */
   var SESSIONS = {
-    bottleneck: { title: 'Find the Bottleneck', ask: 'What\u2019s harder than it should be' },
-    open: { title: 'Are You Ready to Open?', ask: 'The opening date and what\u2019s in motion' },
-    site: { title: 'Should You Take This Site?', ask: 'The site and where the deal stands' },
-    franchise: { title: 'Are You Ready to Franchise?', ask: 'Why franchise, and why now' }
+    bottleneck: { title: 'Find the Bottleneck', ask: 'What\u2019s harder than it should be', button: 'Book the session ' },
+    open: { title: 'Are You Ready to Open?', ask: 'The opening date and what\u2019s in motion', button: 'Book the session ' },
+    site: { title: 'Should You Take This Site?', ask: 'The site and where the deal stands', button: 'Book the session ' },
+    franchise: { title: 'Are You Ready to Franchise?', ask: 'Why franchise, and why now', button: 'Book the session ' },
+    /* Work With Us sends operators here: same line above the form, its own label, the usual button */
+    operators: { label: 'Operators wanted', title: 'Bring your expertise', ask: 'What you\u2019ve opened, improved, or put into practice', field: 'Operators wanted: Bring your expertise' }
   };
   var sessionField = document.getElementById('f-session');
   var sessionChip = document.getElementById('contact-session');
@@ -690,11 +692,13 @@
     var sm = /[?&]session=([a-z]+)/.exec(window.location.search);
     session = sm && SESSIONS[sm[1]] ? SESSIONS[sm[1]] : null;
     if (session) {
-      sessionField.value = session.title;
+      sessionField.value = session.field || session.title;
       document.getElementById('contact-session-title').textContent = session.title;
+      var sessionLabel = sessionChip.querySelector('.contact-form__session-label');
+      if (sessionLabel) sessionLabel.textContent = session.label || 'Free working session';
       sessionChip.hidden = false;
       fields.message.el.placeholder = session.ask;
-      if (submitBtn && submitBtn.firstChild && submitBtn.firstChild.nodeType === 3) submitBtn.firstChild.nodeValue = 'Book the session ';
+      if (session.button && submitBtn && submitBtn.firstChild && submitBtn.firstChild.nodeType === 3) submitBtn.firstChild.nodeValue = session.button;
     }
   }
 

@@ -590,7 +590,7 @@ def work_page():
         '          <h2 class="join__sub">Bring your expertise. Help build what\u2019s next.</h2>',
         '          <p>Help multiunit brands get ready for their next stage of growth. Tell us what you\u2019ve opened, improved, or put into practice, and where you do your best work.</p>',
         '          <div class="join__cta">',
-        '            <a class="button button--ink" href="index.html#contact">Let\u2019s build <span class="arrow" aria-hidden="true">\u2192</span></a>',
+        '            <a class="button button--ink" href="index.html?session=operators#contact">Show your work <span class="arrow" aria-hidden="true">\u2192</span></a>',
         '            <p class="join__note">A short introduction and a link to your experience are a good place to start.</p>',
         '          </div>',
         '        </div>',

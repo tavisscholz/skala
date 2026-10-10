@@ -285,6 +285,11 @@ note('play pages reach site assets one folder up and link the next play', SLUGS.
   await sp.fill('#f-name', 'Jordan Reyes'); await sp.fill('#f-email', 'jordan@example.com'); await sp.fill('#f-message', 'Corner unit, LOI in hand.');
   await sp.locator('#contact-form button[type=submit]').click(); await sp.waitForTimeout(400);
   note('the draft carries the session', (await sp.locator('#draft-body').textContent()).includes('Session: Should You Take This Site?'));
+  await sp.goto(url + 'work-with-us.html', { waitUntil: 'networkidle' });
+  note('Work With Us asks operators to show their work', (await sp.locator('.join__cta .button').textContent()).trim().startsWith('Show your work') && (await sp.locator('.join__cta .button').getAttribute('href')) === '/?session=operators#contact');
+  await sp.goto(url + 'index.html?session=operators#contact', { waitUntil: 'networkidle' });
+  note('arriving from Work With Us the form says Operators wanted, Bring your expertise, with the usual button', await sp.locator('#contact-session').isVisible() && (await sp.locator('.contact-form__session-label').textContent()) === 'Operators wanted' && (await sp.locator('#contact-session-title').textContent()) === 'Bring your expertise' && (await sp.inputValue('#f-session')) === 'Operators wanted: Bring your expertise' && (await sp.getAttribute('#f-message', 'placeholder')).startsWith('What you') && (await sp.locator('#contact-submit').textContent()).trim().startsWith('Start the conversation'));
+  await sp.locator('#contact').screenshot({ path: join(outDir, 'contact-operators-1440.png') });
   await sp.goto(url + 'are-you-ready.html#ready-to-open', { waitUntil: 'networkidle' });
   note('a row line lands on its card, highlighted', await sp.evaluate(() => { const c = document.getElementById('ready-to-open'); const r = c.getBoundingClientRect(); return r.top >= 0 && r.top < window.innerHeight && getComputedStyle(c).boxShadow !== 'none'; }));
   await sp.goto(url + 'plays/scaling-chaos-7-signs.html', { waitUntil: 'networkidle' });
