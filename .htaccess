@@ -6,6 +6,8 @@ Options -Indexes
 # Clean URLs: /index.html -> /, /page.html -> /page, and /page serves page.html
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  # The careers page used to live at /work-with-us
+  RewriteRule ^work-with-us/?$ /careers [R=301,L]
   RewriteCond %{THE_REQUEST} \s/+(?:.*/)?index\.html[\s?]
   RewriteRule ^(.*/)?index\.html$ /$1 [R=301,L]
   RewriteCond %{THE_REQUEST} \s/+([^\s?]+)\.html[\s?]

@@ -287,10 +287,10 @@ note('play pages reach site assets one folder up and link the next play', SLUGS.
   await sp.fill('#f-name', 'Jordan Reyes'); await sp.fill('#f-email', 'jordan@example.com'); await sp.fill('#f-message', 'Corner unit, LOI in hand.');
   await sp.locator('#contact-form button[type=submit]').click(); await sp.waitForTimeout(400);
   note('the draft carries the session', (await sp.locator('#draft-body').textContent()).includes('Session: Should You Take This Site?'));
-  await sp.goto(url + 'work-with-us.html', { waitUntil: 'networkidle' });
-  note('Work With Us asks operators to show their work', (await sp.locator('.join__cta .button').textContent()).trim().startsWith('Show your work') && (await sp.locator('.join__cta .button').getAttribute('href')) === '/?session=operators#contact');
+  await sp.goto(url + 'careers.html', { waitUntil: 'networkidle' });
+  note('Careers asks operators to show their work', (await sp.locator('.join__cta .button').textContent()).trim().startsWith('Show your work') && (await sp.locator('.join__cta .button').getAttribute('href')) === '/?session=operators#contact');
   await sp.goto(url + 'index.html?session=operators#contact', { waitUntil: 'networkidle' });
-  note('arriving from Work With Us the form says Operators wanted, Bring your expertise, with the usual button', await sp.locator('#contact-session').isVisible() && (await sp.locator('.contact-form__session-label').textContent()) === 'Operators wanted' && (await sp.locator('#contact-session-title').textContent()) === 'Bring your expertise' && (await sp.inputValue('#f-session')) === 'Operators wanted: Bring your expertise' && (await sp.getAttribute('#f-message', 'placeholder')).startsWith('What you') && (await sp.locator('#contact-submit').textContent()).trim().startsWith('Start the conversation'));
+  note('arriving from Careers the form says Operators wanted, Bring your expertise, with the usual button', await sp.locator('#contact-session').isVisible() && (await sp.locator('.contact-form__session-label').textContent()) === 'Operators wanted' && (await sp.locator('#contact-session-title').textContent()) === 'Bring your expertise' && (await sp.inputValue('#f-session')) === 'Operators wanted: Bring your expertise' && (await sp.getAttribute('#f-message', 'placeholder')).startsWith('What you') && (await sp.locator('#contact-submit').textContent()).trim().startsWith('Start the conversation'));
   await sp.locator('#contact').screenshot({ path: join(outDir, 'contact-operators-1440.png') });
   await sp.goto(url + 'are-you-ready.html#ready-to-open', { waitUntil: 'networkidle' });
   note('a row line lands on its card, highlighted', await sp.evaluate(() => { const c = document.getElementById('ready-to-open'); const r = c.getBoundingClientRect(); return r.top >= 0 && r.top < window.innerHeight && getComputedStyle(c).boxShadow !== 'none'; }));
@@ -430,7 +430,7 @@ await fn.close();
   mp.on('pageerror', e => merr.push(e.message));
   await mp.goto(url + 'merch.html', { waitUntil: 'networkidle' });
   note('merch page loads without errors', merr.length === 0, merr.join('; '));
-  for (const [file, title] of [['privacy.html', 'Privacy Policy'], ['terms.html', 'Terms of Use'], ['work-with-us', 'Work With SKALA']]) {
+  for (const [file, title] of [['privacy.html', 'Privacy Policy'], ['terms.html', 'Terms of Use'], ['careers', 'Careers']]) {
     const lerr = [];
     const lp = await browser.newPage({ viewport: { width: 1440, height: 900 } });
     lp.on('pageerror', e => lerr.push(e.message));
@@ -438,7 +438,7 @@ await fn.close();
     note(`${file} loads and is titled ${title}`, lerr.length === 0 && (await lp.title()).startsWith(title) && (await lp.locator('.legal__body h2, .join__sub, .join__dek').count()) >= 2);
     await lp.close();
   }
-  note('footer links to Work With Us', await mp.evaluate(() => !!document.querySelector('.site-footer a[href="/work-with-us"]')));
+  note('footer links to Careers, and nothing links to the old address', await mp.evaluate(() => !!document.querySelector('.site-footer a[href="/careers"]') && !document.querySelector('a[href*="work-with-us"]')));
   note('footer links to the legal pages and nothing else does', await mp.evaluate(() => document.querySelectorAll('.site-footer a[href="/privacy"], .site-footer a[href="/terms"]').length === 2 && document.querySelectorAll('main a[href$="privacy"], main a[href$="terms"], header a[href$="privacy"], header a[href$="terms"]').length === 0));
   note('no link on the site still points at index.html or a .html page', await mp.evaluate(() => [...document.querySelectorAll('a[href]')].every(a => !/(^|\/)index\.html|\.html($|#)/.test(a.getAttribute('href')))));
   note('merch page lists four items with prices', await mp.evaluate(() => [...document.querySelectorAll('.merch-card__price')].map(e => e.textContent.trim()).join(',') === '$25,$25,$75,$15'));

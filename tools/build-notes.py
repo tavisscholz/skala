@@ -95,7 +95,7 @@ def clean_links(html):
     """Live site uses clean URLs: / for the home page and /playbook, /merch, /privacy, /terms for the rest (see .htaccess)."""
     for a, z in (('href="index.html#', 'href="/#'), ('href="index.html"', 'href="/"'), ('href="playbook.html', 'href="/playbook'),
                  ('href="merch.html"', 'href="/merch"'), ('href="privacy.html"', 'href="/privacy"'), ('href="terms.html"', 'href="/terms"'),
-                 ('href="work-with-us.html"', 'href="/work-with-us"'), ('href="are-you-ready.html"', 'href="/are-you-ready"'),
+                 ('href="work-with-us.html"', 'href="/work-with-us"'), ('href="careers.html"', 'href="/careers"'), ('href="are-you-ready.html"', 'href="/are-you-ready"'),
                  ('href="are-you-ready.html#', 'href="/are-you-ready#'), ('href="index.html?', 'href="/?')):
         html = html.replace(a, z)
     return re.sub(r'href="plays/([a-z0-9-]+)\.html"', r'href="/plays/\1"', html)
@@ -562,9 +562,9 @@ def legal_page(slug, spec):
     return "\n".join(parts)
 for slug, spec in LEGAL.items():
     (ROOT / f"{slug}.html").write_text(clean_links(stamp_assets(legal_page(slug, spec))))
-# ---------- work with us ----------
+# ---------- careers (was work-with-us; .htaccess redirects the old address) ----------
 def work_page():
-    whead = head.replace("<title>Playbook — SKALA</title>", "<title>Work With SKALA</title>")
+    whead = head.replace("<title>Playbook — SKALA</title>", "<title>Careers — SKALA</title>")
     whead = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="description" content="Operators wanted. SKALA is connecting with experienced operators across specialties who want to help multi-unit brands get ready for their next stage of growth.">', whead)
     chips = ["Brand &amp; growth marketing", "Finance &amp; unit economics", "Merchandising &amp; category management", "People operations", "Data &amp; automation", "Supply chain &amp; logistics", "Tech &amp; networking", "Production &amp; manufacturing", "Store development &amp; construction", "Program &amp; launch management"]
     chip_html = "\n".join(f'            <li class="join__chip">{t}</li>' for t in chips)
@@ -577,7 +577,7 @@ def work_page():
         '    <section class="section section--paper join" aria-labelledby="join-title">',
         '      <div class="container join__grid">',
         '        <div class="join__intro reveal">',
-        '          <p class="eyebrow">Work with SKALA</p>',
+        '          <p class="eyebrow">Careers</p>',
         f'          <h1 class="section-title join__title is-drawn" id="join-title">Operators <span class="join__title-line">wanted.{underline}</span></h1>',
         '          <p class="join__dek">Different specialties. Real-world experience.</p>',
         '          <p class="section-intro">You\u2019ve opened locations, rolled out something that stuck, or helped a growing business run better. You know your specialty, and what happens when it meets the rest of the operation. <strong>That\u2019s the experience we want at SKALA.</strong></p>',
@@ -598,7 +598,7 @@ def work_page():
         '  <script src="js/site.js" defer></script>', '</body>', '</html>', "",
     ]
     return "\n".join(parts)
-(ROOT / "work-with-us.html").write_text(clean_links(stamp_assets(work_page())))
+(ROOT / "careers.html").write_text(clean_links(stamp_assets(work_page())))
 # ---------- are you ready: the four free working sessions ----------
 def page_head(title, description):
     h = head.replace("<title>Playbook — SKALA</title>", f"<title>{title}</title>")
@@ -670,4 +670,4 @@ def tool_page(current):
 (ROOT / "are-you-ready.html").write_text(clean_links(stamp_assets(sessions_page() if READY_PAGE == "sessions" else tool_page(True))))
 (ROOT / "archive").mkdir(exist_ok=True)
 (ROOT / "archive/are-you-ready-old.html").write_text(nested(clean_links(stamp_assets(tool_page(False)))))
-print("built: index.html band + dialogs + session lines, playbook.html, plays/, merch.html, privacy.html, terms.html, work-with-us.html, are-you-ready.html, archive/are-you-ready-old.html")
+print("built: index.html band + dialogs + session lines, playbook.html, plays/, merch.html, privacy.html, terms.html, careers.html, are-you-ready.html, archive/are-you-ready-old.html")
