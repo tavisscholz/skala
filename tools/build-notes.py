@@ -22,7 +22,7 @@ ARTICLES = [  # order on the page, lane tag, lane name, shown on the homepage ba
     ("scaling-chaos-7-signs", "SCALE", "Scaling Up", False),
     ("the-founder-bottleneck", "SCALE", "Scaling Up", False),
     ("the-next-ten-locations", "SCALE", "Scaling Up", False),
-    ("ai-wont-fix-a-bad-operating-system", "OPS", "Field Operations", False),
+    ("ai-wont-fix-a-bad-operating-system", "AI", "Artificial Intelligence", False),
 ]
 ACCENTS = ["orange", "periwinkle", "orange", "periwinkle"]
 RINGS = [
@@ -257,7 +257,7 @@ band = f'''<!-- notes:start -->
 dialogs = "\n\n".join(f'''  <dialog class="note-dialog" id="note-{n['i']}" aria-labelledby="note-{n['i']}-heading">
     <article class="note-article">
       <div class="note-article__top">
-        <p class="eyebrow">{n['kind']} {n['i']} · <span class="note-article__lane">{n['lane']}</span></p>
+        <p class="eyebrow note-article__lane">{n['lane']}</p>
         <button class="text-button note-dialog__close" type="button" data-close-note><span class="arrow" aria-hidden="true">←</span> Back</button>
       </div>
       <h2 class="note-article__title" id="note-{n['i']}-heading" tabindex="-1">{esc(n['title'])}</h2>
@@ -304,11 +304,11 @@ footer = s[s.index('  <footer class="site-footer">'):s.index("</footer>")+9]
 footer = footer.replace('href="#top"', 'href="index.html"').replace('href="#work"', 'href="index.html#work"').replace('href="#approach"', 'href="index.html#approach"').replace('href="#about"', 'href="index.html#about"').replace('href="#contact"', 'href="index.html#contact"')
 
 # ---------- playbook hub: one card per play, filtered by lane ----------
-FILTERS = [("all", "All"), ("OPS", "Operations"), ("DEV", "Store Development"), ("RE", "Real estate"), ("FRAN", "Franchise"), ("SCALE", "Scaling")]
+FILTERS = [("all", "All"), ("OPS", "Field Operations"), ("DEV", "Store Development"), ("RE", "Real Estate &amp; Leasing"), ("FRAN", "Franchise Infrastructure"), ("SCALE", "Scaling Up"), ("AI", "Artificial Intelligence")]
 def play_href(n): return f"plays/{n['slug']}.html"
 filters = "\n".join(f'          <button class="fn-filter" type="button" data-filter="{key}" aria-pressed="{"true" if key == "all" else "false"}">{label}</button>' for key, label in FILTERS)
 cards = "\n".join(f'''          <li class="fn-card" id="{n['slug']}" data-lane="{n['tag']}">
-            <p class="fn-card__tag">{n['tag']}</p>
+            <p class="fn-card__tag">{n['lane']}</p>
             <h3 class="fn-card__title"><a class="fn-card__link" href="{play_href(n)}">{esc(n['title'])}</a></h3>
             <p class="fn-card__stand">{esc(n['stand'])}</p>
             <p class="fn-card__more" aria-hidden="true">Read <span class="arrow">→</span></p>
