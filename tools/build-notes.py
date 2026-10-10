@@ -23,6 +23,9 @@ ARTICLES = [  # order on the page, lane tag, lane name, shown on the homepage ba
     ("the-founder-bottleneck", "SCALE", "Scaling Up", False),
     ("the-next-ten-locations", "SCALE", "Scaling Up", False),
     ("ai-wont-fix-a-bad-operating-system", "AI", "Artificial Intelligence", False),
+    ("ai-literacy-is-not-ai-readiness", "AI", "Artificial Intelligence", False),
+    ("where-ai-actually-helps-a-multi-unit-operator", "AI", "Artificial Intelligence", False),
+    ("your-best-managers-knowledge-is-the-ai-opportunity", "AI", "Artificial Intelligence", False),
 ]
 ACCENTS = ["orange", "periwinkle", "orange", "periwinkle"]
 RINGS = [
@@ -41,6 +44,9 @@ QUOTES = {  # one line from each piece, shown while its row is hovered
     "the-founder-bottleneck": "The founder decides what the rules are. The founder stops being the rule.",
     "the-next-ten-locations": "Your management infrastructure didn\u2019t grow with you.",
     "ai-wont-fix-a-bad-operating-system": "AI doesn\u2019t install an operating system. It audits the one you already have.",
+    "ai-literacy-is-not-ai-readiness": "You can raise literacy for everyone and still have a workflow that isn\u2019t ready.",
+    "where-ai-actually-helps-a-multi-unit-operator": "The mistake is starting with the tool instead of the delay.",
+    "your-best-managers-knowledge-is-the-ai-opportunity": "The technology may be ready before the employment bargain is.",
 }
 
 # ---------- the four free working sessions ----------
