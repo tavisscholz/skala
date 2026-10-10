@@ -197,8 +197,8 @@ def closer_html():
     t = re.sub(r"([\w.+-]+@[\w.-]+\.\w+)", r'<a href="mailto:\1">\1</a>', t)
     return f'<p class="note-article__closer">{t}</p>'
 def share_button(n):
-    """Share the play: the device share sheet where there is one, otherwise copy the link."""
-    return (f'<button class="byline-btn share" type="button" data-share="{n["slug"]}" data-share-title="{esc(n["title"])}" aria-label="Share this play">'
+    """Share the play: a small menu (copy link, email, LinkedIn, X) on desktop; the device share sheet on phones."""
+    return (f'<button class="byline-btn share" type="button" data-share="{n["slug"]}" data-share-title="{esc(n["title"])}" data-share-text="{esc(n["stand"])}" aria-label="Share this play" aria-haspopup="menu" aria-expanded="false">'
             '<svg viewBox="0 0 10 10" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6.2V1.2M2.9 3.2 5 1.1l2.1 2.1M1.6 5.6v3h6.8v-3"/></svg>'
             '<span class="share__label">Share</span></button>')
 # Audio controls. False hides Listen and the speed pill on every play (the MP3s stay in assets/audio and the

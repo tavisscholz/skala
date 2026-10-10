@@ -552,10 +552,22 @@
     });
   }
 
-  /* ---------- Share a play: the device share sheet, or copy the link ---------- */
+  /* ---------- Share a play ----------
+     Phones get the device share sheet with the title, the standfirst and the link. Desktops get a small
+     menu instead: the desktop share sheet hands mail clients a bare URL under a subject like "Url from",
+     so Email here is a mailto with the title as subject and the standfirst and link as the body. */
+  var touchShare = !!navigator.share && !!(window.matchMedia && window.matchMedia('(hover: none) and (pointer: coarse)').matches);
+  var openShare = null;
+  function closeShare() {
+    if (!openShare) return;
+    openShare.menu.hidden = true; openShare.btn.setAttribute('aria-expanded', 'false'); openShare = null;
+  }
+  document.addEventListener('click', function (e) { if (openShare && !openShare.wrap.contains(e.target)) closeShare(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && openShare) { var b = openShare.btn; closeShare(); b.focus(); } });
   Array.prototype.forEach.call(document.querySelectorAll('[data-share]'), function (btn) {
     var slug = btn.getAttribute('data-share');
     var title = btn.getAttribute('data-share-title') || document.title;
+    var text = btn.getAttribute('data-share-text') || '';
     /* On a play's own page share that page; from the homepage dialogs point at the play's page. */
     var onPlay = /\/plays\//.test(location.pathname);
     var page = /\.html$/.test(location.pathname) ? 'plays/' + slug + '.html' : '/plays/' + slug;
@@ -565,16 +577,43 @@
       btn.classList.add('is-copied'); label.textContent = ok ? 'Copied' : 'Copy failed';
       window.setTimeout(function () { btn.classList.remove('is-copied'); label.textContent = 'Share'; }, 1600);
     }
-    btn.addEventListener('click', function () {
-      if (navigator.share) {
-        navigator.share({ title: title, url: url }).catch(function () {});
-        return;
-      }
+    function copy() {
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(url).then(function () { copied(true); }, function () { copied(false); });
       } else {
         window.prompt('Copy this link', url);
       }
+    }
+    var wrap = document.createElement('span'); wrap.className = 'share-wrap';
+    btn.parentNode.insertBefore(wrap, btn); wrap.appendChild(btn);
+    var menu = document.createElement('span'); menu.className = 'share-menu'; menu.setAttribute('role', 'menu'); menu.hidden = true;
+    menu.setAttribute('aria-label', 'Share ' + title);
+    function item(tag, text, attrs) {
+      var el = document.createElement(tag); el.className = 'share-menu__item'; el.setAttribute('role', 'menuitem'); el.textContent = text;
+      Object.keys(attrs).forEach(function (k) { el.setAttribute(k, attrs[k]); });
+      menu.appendChild(el); return el;
+    }
+    var copyItem = item('button', 'Copy link', { type: 'button' });
+    copyItem.addEventListener('click', function () { closeShare(); copy(); });
+    item('a', 'Email', { href: 'mailto:?subject=' + encodeURIComponent(title) + '&body=' + encodeURIComponent((text ? text + '\r\n\r\n' : '') + url) });
+    item('a', 'LinkedIn', { href: 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(url), target: '_blank', rel: 'noopener' });
+    item('a', 'X', { href: 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(title) + '&url=' + encodeURIComponent(url), target: '_blank', rel: 'noopener' });
+    Array.prototype.forEach.call(menu.querySelectorAll('a'), function (a) { a.addEventListener('click', function () { closeShare(); }); });
+    wrap.appendChild(menu);
+    menu.addEventListener('keydown', function (e) {
+      var items = menu.querySelectorAll('[role="menuitem"]'); var i = Array.prototype.indexOf.call(items, document.activeElement);
+      if (e.key === 'ArrowDown') { e.preventDefault(); items[(i + 1) % items.length].focus(); }
+      if (e.key === 'ArrowUp') { e.preventDefault(); items[(i - 1 + items.length) % items.length].focus(); }
+    });
+    btn.addEventListener('click', function () {
+      if (touchShare) {
+        navigator.share({ title: title, text: text, url: url }).catch(function () {});
+        return;
+      }
+      if (openShare && openShare.btn === btn) { closeShare(); return; }
+      closeShare();
+      menu.hidden = false; btn.setAttribute('aria-expanded', 'true'); openShare = { btn: btn, menu: menu, wrap: wrap };
+      copyItem.focus();
     });
   });
 

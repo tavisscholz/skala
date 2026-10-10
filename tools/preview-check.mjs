@@ -326,9 +326,24 @@ note('the hub has no download button', (await fn.locator('.fn-index__cta, a[href
   await fn.evaluate(() => { window.__copied = null; Object.defineProperty(navigator, 'share', { configurable: true, value: undefined }); Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: t => { window.__copied = t; return Promise.resolve(); } } }); });
   const sh = fn.locator('.fn-article .share');
   await sh.scrollIntoViewIfNeeded(); await sh.click(); await fn.waitForTimeout(150);
+  const menuItems = await fn.locator('.fn-article .share-menu [role="menuitem"]').allTextContents();
+  note('Share on a desktop opens a small menu: Copy link, Email, LinkedIn, X', menuItems.join('|') === 'Copy link|Email|LinkedIn|X' && (await sh.getAttribute('aria-expanded')) === 'true' && await fn.evaluate(() => document.activeElement && document.activeElement.textContent === 'Copy link'), menuItems.join('|'));
+  const hrefs = await fn.evaluate(() => [...document.querySelectorAll('.fn-article .share-menu a')].map(a => a.getAttribute('href')));
+  note('Email carries the title as subject and the standfirst and link as body; LinkedIn and X carry the link', hrefs[0].startsWith('mailto:?subject=' + encodeURIComponent('The Founder Bottleneck')) && decodeURIComponent(hrefs[0]).includes('indispensable in year one') && decodeURIComponent(hrefs[0]).endsWith('/plays/the-founder-bottleneck') && hrefs[1].startsWith('https://www.linkedin.com/sharing/share-offsite/?url=') && decodeURIComponent(hrefs[1]).endsWith('/plays/the-founder-bottleneck') && hrefs[2].startsWith('https://twitter.com/intent/tweet?text=') && decodeURIComponent(hrefs[2]).includes('/plays/the-founder-bottleneck'), hrefs.join(' | '));
+  await fn.locator('.fn-article').screenshot({ path: join(outDir, 'share-menu-1440.png'), clip: undefined }).catch(() => {});
+  await fn.locator('.fn-article .share-menu__item').first().click(); await fn.waitForTimeout(150);
   const copiedUrl = await fn.evaluate(() => window.__copied);
   const label = await sh.locator('.share__label').textContent();
-  note('Share on a play page copies that page\u2019s link when there is no share sheet', /\/plays\/the-founder-bottleneck$/.test(copiedUrl || '') && label === 'Copied', `${copiedUrl}/${label}`);
+  note('Copy link copies that page\u2019s link and closes the menu', /\/plays\/the-founder-bottleneck$/.test(copiedUrl || '') && label === 'Copied' && (await fn.locator('.fn-article .share-menu').isHidden()) && (await sh.getAttribute('aria-expanded')) === 'false', `${copiedUrl}/${label}`);
+  await sh.click(); await fn.waitForTimeout(100); await fn.keyboard.press('Escape'); await fn.waitForTimeout(100);
+  note('Escape closes the share menu and returns focus to Share', (await fn.locator('.fn-article .share-menu').isHidden()) && await fn.evaluate(() => document.activeElement && document.activeElement.classList.contains('share')));
+  const tp = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  await tp.addInitScript(() => { window.__shared = null; Object.defineProperty(navigator, 'share', { configurable: true, value: d => { window.__shared = d; return Promise.resolve(); } }); });
+  await tp.goto(url + 'plays/the-founder-bottleneck.html', { waitUntil: 'networkidle' });
+  await tp.locator('.fn-article .share').click(); await tp.waitForTimeout(150);
+  const shared = await tp.evaluate(() => window.__shared);
+  note('on a phone Share hands the title, standfirst and link to the device sheet', !!shared && shared.title === 'The Founder Bottleneck: How to Build a Business That Can Make Decisions Without You' && shared.text.includes('indispensable in year one') && /\/plays\/the-founder-bottleneck\.html$/.test(shared.url) && (await tp.locator('.fn-article .share-menu').isHidden()), JSON.stringify(shared));
+  await tp.close();
 }
 if (AUDIO) {
   /* Headless Chromium has no speech engine, so stand one in: each utterance "ends" after 150ms. */
