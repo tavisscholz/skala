@@ -829,6 +829,7 @@ body.has-hoopla { overflow: hidden; }
 .notes.section--ink .note-lines { border-top-color: var(--color-white); }
 .notes.section--ink .note-line { border-bottom-color: color-mix(in srgb, var(--color-white) 28%, transparent); }
 .notes.section--ink .note-line__stand { color: var(--color-muted-light); }
+.notes__intro .section-intro { max-width: 30ch; }
 .notes.section--ink .note-line__read { color: var(--color-acid); }
 .notes.section--ink .note__tag { background: var(--color-acid); color: var(--color-ink); }
 .notes.section--ink .note-line__button:hover .note__tag, .notes.section--ink .note-line__button:focus-visible .note__tag { background: var(--color-white); color: var(--color-ink); }

@@ -249,7 +249,8 @@ band = f'''<!-- notes:start -->
       <div class="container notes__grid">
         <div class="notes__intro reveal">
           <p class="eyebrow eyebrow--acid">Articles</p>
-          <h2 class="section-title" id="notes-title">Operating insights for multi‑unit growth.</h2>
+          <h2 class="section-title" id="notes-title">How we think about growth.</h2>
+          <p class="section-intro">A collection of articles with steps you can take now.</p>
         </div>
         <ul class="note-lines reveal">
 {rows}
