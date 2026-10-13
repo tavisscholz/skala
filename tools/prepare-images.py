@@ -12,8 +12,8 @@ from PIL import Image, ImageOps
 # source filename (any extension) -> (output name, target width)
 MAPPING = {
     "SKALA_01_store_floor_hero": ("hero-store-floor.webp", 1600),
-    "campaign-team-training": ("campaign-team-training.webp", 1200),
-    "approach-before-doors-open": ("approach-before-doors-open.webp", 1200),
+    "SKALA_02_team_training": ("campaign-team-training.webp", 1200),
+    "SKALA_03_before_the_doors_open": ("approach-before-doors-open.webp", 1200),
     "SKALA_18_between_locations": ("about-between-locations.webp", 900),
     "SKALA_21_onboarding_swag": ("join-onboarding-swag.webp", 1200),
     "SKALA_09_the_field_notebook": ("notes-field-notebook.webp", 1200),
