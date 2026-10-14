@@ -4,7 +4,6 @@
 
 *Revenue is up. Everything else feels harder. Here's how to tell whether that's normal growing pain or a system that's already broken.*
 
-**Field Note**
 
 Sales are climbing. You're busier than you've ever been. And somehow, everything takes longer, costs more, and breaks more often than it did a year ago when you were smaller. If that sounds familiar, you're not imagining it, and you're not failing. You're running into a well-documented pattern: growth is a stress test, not a reward, and most businesses fail the test at a predictable point.
 

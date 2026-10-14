@@ -27,6 +27,14 @@ ARTICLES = [  # order on the page, lane tag, lane name, shown on the homepage ba
     ("where-ai-actually-helps-a-multi-unit-operator", "AI", "Artificial Intelligence", False),
     ("your-best-managers-knowledge-is-the-ai-opportunity", "AI", "Artificial Intelligence", False),
 ]
+# The canonical article source is github.com/tavisscholz/articles;
+# tools/sync-articles.py writes assets/articles/manifest.json from it, and a
+# manifest, when present, replaces the hardcoded table above (which stays as
+# the fallback and as documentation of the original set).
+_MANIFEST = pathlib.Path(__file__).resolve().parent.parent / "assets/articles/manifest.json"
+if _MANIFEST.exists():
+    import json as _json
+    ARTICLES = [(a["slug"], a["laneTag"], a["lane"], a["featured"]) for a in _json.loads(_MANIFEST.read_text())]
 ACCENTS = ["orange", "periwinkle", "orange", "periwinkle"]
 RINGS = [
     "M60 8 C 92 4, 116 26, 113 58 C 110 92, 84 114, 54 111 C 22 108, 4 84, 8 54 C 12 24, 34 10, 60 8 Z",
@@ -232,7 +240,7 @@ for i, (slug, tag, lane, home) in enumerate(ARTICLES, start=1):
 home_notes = [n for n in notes if n["home"]]
 
 # ---------- homepage band ----------
-rows = "\n".join(f'''          <li class="note-line" data-quote-for="{n['slug'] if QUOTES[n['slug']] != PULL else 'default'}">
+rows = "\n".join(f'''          <li class="note-line" data-quote-for="{n['slug'] if QUOTES.get(n['slug'], '') != PULL else 'default'}">
             <button class="note-line__button" type="button" data-open-note="note-{n['i']}">
               <span class="note__tag" aria-hidden="true">{n['tag']}</span>
               <span class="note-line__text">

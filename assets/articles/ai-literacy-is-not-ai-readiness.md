@@ -4,7 +4,6 @@
 
 *Training tells you whether people can use the tool. It says nothing about whether the work is ready for it.*
 
-**Field Note**
 
 When a new technology arrives, most companies reach for the same first move: train people.
 

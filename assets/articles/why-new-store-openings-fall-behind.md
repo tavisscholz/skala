@@ -4,7 +4,6 @@
 
 *The owners, dependencies, and decision dates that keep routine surprises from becoming opening delays.*
 
-**Field Note**
 
 The opening date was set the day the lease got signed. Everybody agreed to it. There's a checklist, a long one, and every line on it will get done. And the store will still open three weeks late, because the checklist never had the one thing that actually decides an opening date: who owns each handoff, what it depends on, and the date by which a decision has to be made.
 

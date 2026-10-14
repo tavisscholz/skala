@@ -4,7 +4,6 @@
 
 *Most lists of AI use cases are lists of tasks. A better place to look is where work sits still.*
 
-**Field Note**
 
 Most lists of AI use cases are lists of tasks: write the email, summarize the lease, answer the question.
 

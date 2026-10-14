@@ -4,7 +4,6 @@
 
 *Why the stretch from unit three to unit ten feels harder than the stretch from zero to three, and what separates operators who break through it from operators who get stuck in it.*
 
-**Field Note**
 
 You did the hard part. Unit one, you built with your own hands. Unit two and three, you ran on hustle: eighteen-hour days, personally training every manager, personally answering every 11pm call. It worked. Now you're staring at unit four or five, and something's off. It doesn't feel like the business is compounding. It feels like it's fraying. Margins are softer than they were. Turnover's up. You're more tired for less result than you were a year ago.
 

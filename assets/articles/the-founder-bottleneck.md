@@ -4,7 +4,6 @@
 
 *The thing that made you indispensable in year one is quietly capping what your business is worth in year seven.*
 
-**Field Note**
 
 You're the person everyone calls. Vendor issue, staffing crisis, a customer complaint that escalated, a lease question, someone always ends up in your inbox or your voicemail. You've gotten good at it. Fast decisions, right most of the time, nobody has to wait on you long. It feels like strength. It's also, without you necessarily noticing, the reason your business can't grow past a certain point, and the reason it's worth less than it should be if you ever sell it.
 

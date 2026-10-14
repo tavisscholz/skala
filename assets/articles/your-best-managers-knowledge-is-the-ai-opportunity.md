@@ -4,7 +4,6 @@
 
 *If her knowledge travels further but her role, recognition and workload stay the same, the technology is ready before the employment bargain is.*
 
-**Field Note**
 
 Think about the manager everyone calls when a store has a problem the manual doesn't cover.
 

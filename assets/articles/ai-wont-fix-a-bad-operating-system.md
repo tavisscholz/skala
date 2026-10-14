@@ -4,7 +4,6 @@
 
 *Every AI pitch answers what the tool can do. The question that matters is what it will amplify.*
 
-**Field Note**
 
 Every multi-unit operator I talk to has been pitched an AI tool this year. A bot for the operations manual. A drive-thru voice. A lease reader. A candidate screener. The pitch always answers the same question: what can this do?
 

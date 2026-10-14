@@ -1,0 +1,40 @@
+
+# Keeps the Playbook in step with the canonical articles repository
+# (github.com/tavisscholz/articles): hourly, and on demand from the Actions
+# tab. Pulls the articles checkout, converts it into assets/articles/ via
+# tools/sync-articles.py, regenerates the site with tools/build-notes.py, and
+# commits only when something changed — the push to main is what makes
+# Hostinger deploy.
+name: Sync articles
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: tavisscholz/articles
+          path: _articles
+      - name: Sync and rebuild
+        run: |
+          python3 tools/sync-articles.py _articles
+          python3 tools/build-notes.py
+          rm -rf _articles
+      - name: Commit if changed
+        run: |
+          git config user.name "skala-article-sync"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && echo "No changes." || {
+            git commit -m "Sync articles from tavisscholz/articles"
+            git push
+          }

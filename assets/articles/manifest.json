@@ -1,0 +1,68 @@
+[
+ {
+  "slug": "your-best-manager-cannot-be-the-operating-system",
+  "laneTag": "OPS",
+  "lane": "Field Operations",
+  "featured": true
+ },
+ {
+  "slug": "why-new-store-openings-fall-behind",
+  "laneTag": "DEV",
+  "lane": "Store Development",
+  "featured": true
+ },
+ {
+  "slug": "before-you-sign-the-lease",
+  "laneTag": "RE",
+  "lane": "Real Estate &amp; Leasing",
+  "featured": true
+ },
+ {
+  "slug": "when-your-sales-story-outruns-your-item-19",
+  "laneTag": "FRAN",
+  "lane": "Franchise Infrastructure",
+  "featured": true
+ },
+ {
+  "slug": "scaling-chaos-7-signs",
+  "laneTag": "SCALE",
+  "lane": "Scaling Up",
+  "featured": false
+ },
+ {
+  "slug": "the-founder-bottleneck",
+  "laneTag": "SCALE",
+  "lane": "Scaling Up",
+  "featured": false
+ },
+ {
+  "slug": "the-next-ten-locations",
+  "laneTag": "SCALE",
+  "lane": "Scaling Up",
+  "featured": false
+ },
+ {
+  "slug": "ai-wont-fix-a-bad-operating-system",
+  "laneTag": "AI",
+  "lane": "Artificial Intelligence",
+  "featured": false
+ },
+ {
+  "slug": "ai-literacy-is-not-ai-readiness",
+  "laneTag": "AI",
+  "lane": "Artificial Intelligence",
+  "featured": false
+ },
+ {
+  "slug": "where-ai-actually-helps-a-multi-unit-operator",
+  "laneTag": "AI",
+  "lane": "Artificial Intelligence",
+  "featured": false
+ },
+ {
+  "slug": "your-best-managers-knowledge-is-the-ai-opportunity",
+  "laneTag": "AI",
+  "lane": "Artificial Intelligence",
+  "featured": false
+ }
+]
