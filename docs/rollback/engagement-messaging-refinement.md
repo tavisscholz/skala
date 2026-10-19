@@ -68,15 +68,19 @@ Intro, two paragraphs:
 >
 > Then we work alongside your team to put the solution into practice, so it keeps working without us.
 
-Four principles (an ordered list under the intro and photo, four columns at
-1024px and up, two columns on tablets, one column under 600px):
+Four principles. Layout since the 19 Oct follow-up: the section mirrors What We
+Do, flipped left to right. The principles are four ruled rows with a numbered
+tag on the left of the page, the copy sits on the right, and the storefront
+photo that used to sit beside the headline is no longer shown (the image file
+stays in `assets/images/`). Under 1024px the copy stacks above the rows.
 
 1. **Find what matters.** Start with the operating problem, not a predetermined solution.
 2. **Prove the next move.** Focus on the smallest meaningful change that can show progress.
 3. **Build it into the business.** Create the routines, ownership, tools, and team capability to make the improvement stick.
 4. **Leave the capability behind.** The goal is a stronger operation, not an ongoing dependency.
 
-Closing line, once, directly under the fourth principle:
+Closing line, once, at the foot of the copy column (the position "Our focus
+areas:" holds in What We Do):
 
 > Build capability that stays after we leave.
 
