@@ -13,7 +13,7 @@ Change made on 19 Oct 2026 to the How We Work section of the homepage
 | Pre-change tag | `skala-pre-engagement-messaging-20261019-2113` (points at `7342a44`) |
 | Pre-change backup branch | `backup/pre-engagement-messaging-20261019-2113` (same commit; a fallback if the tag cannot be pushed) |
 | Working branch | `skala/engagement-messaging-refinement` (created from `7342a44`) |
-| Change commit | the single commit on the working branch after the tag: `git log --oneline skala-pre-engagement-messaging-20261019-2113..skala/engagement-messaging-refinement` |
+| Change commits | every commit on the working branch after the tag (the refinement plus the follow-up that replaced the em dash with a comma): `git log --oneline backup/pre-engagement-messaging-20261019-2113..skala/engagement-messaging-refinement` |
 | Build | `python3 tools/build-notes.py` (regenerates the built pages and restamps asset URLs) |
 | Checks | `node tools/preview-check.mjs` (Playwright; needs `node_modules/playwright`) |
 | Production | Hostinger Git deploy serves `buildwithskala.com` from the branch `claude/hopeful-babbage-pcgjgf`; every push to that branch redeploys (see `docs/deploy.md`) |
@@ -21,7 +21,7 @@ Change made on 19 Oct 2026 to the How We Work section of the homepage
 The working branch is not the deploy branch, so nothing reaches production
 until the change is merged into `claude/hopeful-babbage-pcgjgf` and pushed.
 
-## Files modified by the change commit
+## Files modified by the change commits
 
 Hand-edited:
 
@@ -66,7 +66,7 @@ Intro, two paragraphs:
 
 > Growth exposes what the business has outgrown. We get into the operation, find the constraint that matters, and agree on the next move before building more than you need.
 >
-> Then we work alongside your team to put the solution into practice—so it keeps working without us.
+> Then we work alongside your team to put the solution into practice, so it keeps working without us.
 
 Four principles (an ordered list under the intro and photo, four columns at
 1024px and up, two columns on tablets, one column under 600px):
@@ -87,8 +87,7 @@ Option A, keep history (preferred once the change has been shared or deployed):
 ```sh
 git fetch origin
 git checkout skala/engagement-messaging-refinement        # or the branch that now carries the commit
-HASH=$(git log --format=%H skala-pre-engagement-messaging-20261019-2113..HEAD | tail -1)
-git revert --no-edit "$HASH"
+git revert --no-edit skala-pre-engagement-messaging-20261019-2113..HEAD   # reverts every change commit, newest first
 git diff --stat skala-pre-engagement-messaging-20261019-2113 HEAD    # prints nothing when the tree matches the pre-change state
 git push -u origin HEAD
 ```
@@ -124,7 +123,7 @@ only reaches the live site after that branch receives the commit.
    ```sh
    git checkout claude/hopeful-babbage-pcgjgf
    git pull origin claude/hopeful-babbage-pcgjgf
-   git revert --no-edit <change commit hash>
+   git revert --no-edit origin/backup/pre-engagement-messaging-20261019-2113..origin/skala/engagement-messaging-refinement
    git push -u origin claude/hopeful-babbage-pcgjgf
    ```
 
@@ -147,4 +146,4 @@ only reaches the live site after that branch receives the commit.
 - `python3 tools/build-notes.py`: clean; generated pages differ only by the stylesheet stamp.
 - `node tools/preview-check.mjs`: 124/124 passed (120 existing plus the four new checks).
 - Section rendered at 375, 430, 768 and 1440px wide: no horizontal overflow; one column at 375 and 430, two at 768, four at 1440; every principle title fits in one or two lines.
-- Rollback rehearsed in a detached worktree: reverting the change commit leaves no diff against the pre-change tag (see the commit record in the final report).
+- Rollback rehearsed in a detached worktree: reverting the change commits leaves no diff against the pre-change tag.
