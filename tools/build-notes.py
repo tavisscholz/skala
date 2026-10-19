@@ -11,7 +11,7 @@ Writes:
 
 Usage: python3 tools/build-notes.py
 """
-import re, html, hashlib, pathlib
+import re, html, hashlib, pathlib, os
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 ARTICLES = [  # order on the page, lane tag, lane name, shown on the homepage band
@@ -218,6 +218,36 @@ def share_button(n):
 # Audio controls. False hides Listen and the speed pill on every play (the MP3s stay in assets/audio and the
 # player stays in js/site.js, unused); True brings them back on the next build. Hidden since 9 October 2026.
 AUDIO = False
+
+# ---------- design variant ----------
+# "legacy" is the original SKALA presentation (torn paper, brush faces, grain, tilted stamps);
+# "architectural" is the refined one (straight hairline boundaries, one diagonal image cut, the
+# house sans in place of the brush faces). The value is written as data-design on <body> of
+# every page and css/site.css scopes the refined rules under [data-design="architectural"], so
+# changing this one line and rebuilding switches the whole site. SKALA_DESIGN=architectural
+# overrides it for a QA build without editing the file. See docs/design-variants.md.
+DESIGN = os.environ.get("SKALA_DESIGN", "legacy")
+if DESIGN not in ("legacy", "architectural"):
+    raise SystemExit(f"DESIGN must be 'legacy' or 'architectural', not {DESIGN!r}")
+# Review aid, never the rollback mechanism: ?design=architectural or ?design=legacy on any page
+# switches the variant for that browser session. It runs before first paint so nothing flashes.
+DESIGN_SCRIPT = ('<script>(function(){try{var q=new URLSearchParams(location.search).get("design"),s=window.sessionStorage,'
+                 'd=q||s.getItem("skala-design");if(q)s.setItem("skala-design",q);if(d==="legacy"||d==="architectural"){'
+                 'var b=document.body;b.setAttribute("data-design",d);b.classList.toggle("tears",d==="legacy"&&b.hasAttribute("data-tears"));}}'
+                 'catch(e){}})();</script>')
+
+def apply_design(page, tears=False):
+    """Rewrite <body>: keep its classes, add data-design, flag the homepage's torn-paper seams
+    (the tears class itself is only present in the legacy build) and inject the review script."""
+    def sub(m):
+        attrs = re.sub(r'\s*data-design="[^"]*"|\s*data-tears\b', '', m.group(1))
+        cls = re.search(r'class="([^"]*)"', attrs)
+        classes = [c for c in (cls.group(1).split() if cls else []) if c != "tears"]
+        if tears and DESIGN == "legacy": classes.append("tears")
+        attrs = re.sub(r'\s*class="[^"]*"', '', attrs).strip()
+        out = (f' class="{" ".join(classes)}"' if classes else "") + f' data-design="{DESIGN}"' + (" data-tears" if tears else "") + (f" {attrs}" if attrs else "")
+        return f"<body{out}>\n{DESIGN_SCRIPT}\n"
+    return re.sub(r'<body([^>]*)>\n?(?:<script>\(function\(\)\{try\{var q=[^\n]*</script>\n?)?', sub, page, count=1)
 def speed_button():
     """Playback speed, shown once a play is playing. Cycles through presets."""
     if not AUDIO: return ""
@@ -304,7 +334,7 @@ s = re.sub(r"<!-- notes:start -->.*?<!-- notes:end -->", lambda m: band, s, flag
 s = re.sub(r"<!-- dialogs:start -->.*?<!-- dialogs:end -->", lambda m: dialogs, s, flags=re.S)
 s = re.sub(r'<p class="service-row__session" data-session="(\w+)">.*?</p>', lambda m: f'<p class="service-row__session" data-session="{m.group(1)}">{session_line(SESSION[m.group(1)])}</p>', s, flags=re.S)
 s = clean_links(s)
-idx.write_text(s)
+idx.write_text(apply_design(s, tears=True))
 
 # ---------- full page ----------
 head = s[s.index("<head>"):s.index("</head>")+7]
@@ -382,7 +412,7 @@ page = f'''<!doctype html>
 </body>
 </html>
 '''
-(ROOT / "playbook.html").write_text(clean_links(stamp_assets(page)))
+(ROOT / "playbook.html").write_text(apply_design(clean_links(stamp_assets(page))))
 
 # ---------- one page per play ----------
 def nested(html):
@@ -447,7 +477,7 @@ def play_page(n, nxt):
 '''
 (ROOT / "plays").mkdir(exist_ok=True)
 for j, n in enumerate(notes):
-    (ROOT / "plays" / f"{n['slug']}.html").write_text(nested(clean_links(stamp_assets(play_page(n, notes[(j + 1) % len(notes)])))))
+    (ROOT / "plays" / f"{n['slug']}.html").write_text(apply_design(nested(clean_links(stamp_assets(play_page(n, notes[(j + 1) % len(notes)]))))))
 
 # ---------- merch page ----------
 MERCH = [
@@ -505,7 +535,7 @@ merch = f'''<!doctype html>
 </body>
 </html>
 '''
-(ROOT / "merch.html").write_text(clean_links(stamp_assets(merch)))
+(ROOT / "merch.html").write_text(apply_design(clean_links(stamp_assets(merch))))
 # ---------- legal pages (linked from the footer only) ----------
 LEGAL = {
     "privacy": {
@@ -576,7 +606,7 @@ def legal_page(slug, spec):
     ]
     return "\n".join(parts)
 for slug, spec in LEGAL.items():
-    (ROOT / f"{slug}.html").write_text(clean_links(stamp_assets(legal_page(slug, spec))))
+    (ROOT / f"{slug}.html").write_text(apply_design(clean_links(stamp_assets(legal_page(slug, spec)))))
 # ---------- careers (was work-with-us; .htaccess redirects the old address) ----------
 def work_page():
     whead = head.replace("<title>Playbook — SKALA</title>", "<title>Careers — SKALA</title>")
@@ -613,7 +643,7 @@ def work_page():
         '  <script src="js/site.js" defer></script>', '</body>', '</html>', "",
     ]
     return "\n".join(parts)
-(ROOT / "careers.html").write_text(clean_links(stamp_assets(work_page())))
+(ROOT / "careers.html").write_text(apply_design(clean_links(stamp_assets(work_page()))))
 # ---------- are you ready: the four free working sessions ----------
 def page_head(title, description):
     h = head.replace("<title>Playbook — SKALA</title>", f"<title>{title}</title>")
@@ -682,7 +712,7 @@ def tool_page(current):
         '  <script src="js/site.js" defer></script>', '</body>', '</html>', "",
     ]
     return "\n".join(parts)
-(ROOT / "are-you-ready.html").write_text(clean_links(stamp_assets(sessions_page() if READY_PAGE == "sessions" else tool_page(True))))
+(ROOT / "are-you-ready.html").write_text(apply_design(clean_links(stamp_assets(sessions_page() if READY_PAGE == "sessions" else tool_page(True)))))
 (ROOT / "archive").mkdir(exist_ok=True)
-(ROOT / "archive/are-you-ready-old.html").write_text(nested(clean_links(stamp_assets(tool_page(False)))))
+(ROOT / "archive/are-you-ready-old.html").write_text(apply_design(nested(clean_links(stamp_assets(tool_page(False))))))
 print("built: index.html band + dialogs + session lines, playbook.html, plays/, merch.html, privacy.html, terms.html, careers.html, are-you-ready.html, archive/are-you-ready-old.html")

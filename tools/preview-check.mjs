@@ -232,7 +232,11 @@ note('selection scrolled to #work', await m.evaluate(() => { const r = document.
 await m.evaluate(() => { const r = document.querySelector('.hero').getBoundingClientRect(); window.scrollBy(0, r.bottom + 20); });
 await m.waitForTimeout(500);
 note('first row tugs once the hero has scrolled away', await m.evaluate(() => document.querySelector('.service-row').classList.contains('is-nudged')));
-note('torn seams present and gated', await m.evaluate(() => document.body.classList.contains('tears') && document.querySelectorAll('.tear').length === 7 && [...document.querySelectorAll('.tear')].every(t => { const r = t.getBoundingClientRect(); return r.height > 30; })));
+{
+  const seams = await m.evaluate(() => { const live = [...document.querySelectorAll('.tear')].filter(t => t.getBoundingClientRect().height > 30).length; return { design: document.body.dataset.design, tears: document.body.classList.contains('tears'), total: document.querySelectorAll('.tear').length, live }; });
+  if (seams.design === 'architectural') note('architectural build: no torn seams on the phone', !seams.tears && seams.live === 0);
+  else note('torn seams present and gated', seams.tears && seams.total === 7 && seams.live === 7);
+}
 note('header mark sits beside the wordmark', await m.evaluate(() => { const c = document.querySelector('.wordmark--header .wordmark__peaks'); if (!c) return false; const r = c.getBoundingClientRect(), t = document.querySelector('.wordmark__text').getBoundingClientRect(); return r.width > 20 && r.left >= t.right - 4; }));
 await m.locator('.wordmark--header').click();
 await m.waitForTimeout(900);
@@ -464,6 +468,46 @@ const rm = await browser.newPage({ viewport: { width: 1440, height: 900 }, reduc
 await rm.goto(url, { waitUntil: 'networkidle' });
 note('reduced motion: content visible without scrolling', await rm.evaluate(() => [...document.querySelectorAll('.reveal')].every(el => getComputedStyle(el).opacity === '1')));
 await rm.close();
+
+// Design variants (docs/design-variants.md): the build writes data-design on every <body>;
+// the legacy build keeps the torn paper, the architectural build gets straight edges and the sans.
+{
+  const dv = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  const designs = [];
+  for (const p of ['index.html', 'playbook.html', 'plays/the-founder-bottleneck.html', 'careers.html', 'are-you-ready.html', 'merch.html', 'privacy.html', 'archive/are-you-ready-old.html']) {
+    await dv.goto(url + p, { waitUntil: 'networkidle' });
+    designs.push(await dv.evaluate(() => document.body.dataset.design));
+  }
+  const built = designs[0];
+  note(`design variant "${built}" is written on every page`, ['legacy', 'architectural'].includes(built) && designs.every(d => d === built));
+  const probe = () => dv.evaluate(() => ({
+    design: document.body.dataset.design, tears: document.body.classList.contains('tears'),
+    seams: [...document.querySelectorAll('.tear')].filter(t => t.getBoundingClientRect().height > 30).length,
+    tornEdge: getComputedStyle(document.querySelector('.torn-edge')).display,
+    clip: getComputedStyle(document.querySelector('.hero__media')).clipPath,
+    strip: getComputedStyle(document.querySelector('.strip__words')).fontFamily,
+    line: getComputedStyle(document.querySelector('.campaign__line')).fontFamily,
+    tagTilt: getComputedStyle(document.querySelector('.service-row__tag')).transform,
+    underline: getComputedStyle(document.querySelector('.brush-underline')).display,
+    wordmark: getComputedStyle(document.querySelector('.wordmark__text')).fontFamily,
+    wordmarkTilt: getComputedStyle(document.querySelector('.wordmark__text')).transform,
+    overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+  }));
+  const isLegacy = s => s.design === 'legacy' && s.tears && s.seams === 7 && s.clip === 'none' && /Permanent Marker/.test(s.strip) && /Oracle Brush/.test(s.line) && s.tagTilt !== 'none' && s.underline !== 'none' && s.overflow === 0;
+  const isArch = s => s.design === 'architectural' && !s.tears && s.seams === 0 && s.tornEdge === 'none' && s.clip.startsWith('polygon') && /Inter/.test(s.strip) && !/Oracle Brush|Permanent Marker/.test(s.line) && s.tagTilt === 'none' && s.underline === 'none' && s.overflow === 0;
+  await dv.goto(url + 'index.html', { waitUntil: 'networkidle' });
+  const asBuilt = await probe();
+  note(`${built} build renders its own presentation (seams, edges, faces, tilts)`, built === 'legacy' ? isLegacy(asBuilt) : isArch(asBuilt));
+  await dv.goto(url + 'index.html?design=architectural', { waitUntil: 'networkidle' });
+  const arch = await probe();
+  await dv.goto(url + 'playbook.html', { waitUntil: 'networkidle' });
+  const carried = await dv.evaluate(() => document.body.dataset.design);
+  await dv.goto(url + 'index.html?design=legacy', { waitUntil: 'networkidle' });
+  const leg = await probe();
+  note('?design= review override switches both ways and persists across pages', isArch(arch) && carried === 'architectural' && isLegacy(leg));
+  note('wordmark face and tilt are identical in both variants', [asBuilt, arch, leg].every(s => /Oracle Brush/.test(s.wordmark) && s.wordmarkTilt !== 'none' && s.wordmarkTilt === asBuilt.wordmarkTilt));
+  await dv.close();
+}
 
 await browser.close();
 server.close();

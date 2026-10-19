@@ -953,3 +953,55 @@ body.has-hoopla { overflow: hidden; }
 .contact-form__session[hidden] { display: none; }
 .contact-form__session-label { font-size: var(--text-label); font-weight: 700; letter-spacing: var(--tracking-label); text-transform: uppercase; }
 .contact-form__session-title { font-weight: 800; letter-spacing: var(--tracking-tight); font-size: 1.125rem; }
+
+/* ==========================================================================
+   Design variant: architectural — applies only under [data-design="architectural"].
+   The attribute is written on <body> by tools/build-notes.py from its DESIGN
+   setting (default "legacy"); see docs/design-variants.md. Nothing above this
+   line changes: legacy keeps the torn paper, brush faces, grain and tilted
+   stamps exactly as they were. The SKALA wordmark (.wordmark*, .poster__wordmark)
+   is deliberately absent from every rule below.
+   ========================================================================== */
+[data-design="architectural"] {
+  --hairline: 1px solid color-mix(in srgb, var(--color-ink) 24%, transparent);
+  --cut-drop: 8.8vw;   /* tan(10°) × the photo's width: 49.7vw beside the hero copy */
+}
+
+/* Section boundaries: straight edges; a hairline only where two paper surfaces meet */
+[data-design="architectural"] .torn-edge { display: none; }
+[data-design="architectural"] .strip { padding-bottom: var(--space-7); }
+[data-design="architectural"] .section--paper + .section--paper { border-top: var(--hairline); }
+
+/* Flat surfaces: the paper grain and film noise overlays are off */
+[data-design="architectural"] .hero__copy::after,
+[data-design="architectural"] .campaign__media::after,
+[data-design="architectural"] .poster::after { display: none; }
+
+/* Diagonal image treatment: one angle (10° from horizontal), one direction (rising to the
+   right), bottom edge only, on the three photographs that carry a section. The hero photo is
+   sized by the viewport, so its drop is in vw; the figures keep a fixed aspect ratio, so their
+   drop is the same angle expressed as a share of their height (2:3 → 11.75%, 3:2 → 26.4%, 4:3 → 23.5%). */
+[data-design="architectural"] :is(.hero__media, .about .figure, .join .figure, .fn-hero .figure) {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut-drop)), 0 100%);
+}
+[data-design="architectural"] .about .figure { --cut-drop: 11.75%; }
+[data-design="architectural"] .join .figure { --cut-drop: 26.4%; }
+[data-design="architectural"] .fn-hero .figure { --cut-drop: 23.5%; }   /* 4:3 */
+@media (max-width: 767px) { [data-design="architectural"] .hero__media { --cut-drop: 17.6vw; } }
+
+/* Typography: the brush faces step back to the house sans at its heaviest weight */
+[data-design="architectural"] .strip__words { font-family: var(--font-sans); font-weight: 900; letter-spacing: var(--tracking-hero); }
+[data-design="architectural"] .campaign__panel { container-type: inline-size; }
+[data-design="architectural"] .campaign__line { font-family: var(--font-sans); font-weight: 900; letter-spacing: var(--tracking-hero); transform: none; margin-left: 0; }
+[data-design="architectural"] .campaign__word { margin-left: 0; }
+@media (min-width: 1024px) { [data-design="architectural"] .campaign__line { font-size: min(var(--campaign-mark, clamp(2.75rem, 0.6rem + 5.3vw, 5.6rem)), 11.5cqi); } }
+@media (min-width: 768px) and (max-width: 1023px) { [data-design="architectural"] .campaign__line { font-size: min(var(--campaign-mark, clamp(2.75rem, 0.6rem + 5.3vw, 5.6rem)), 12.5cqi); } }
+[data-design="architectural"] .media-slot__img ~ .campaign__poster-copy { white-space: normal; max-width: 17ch; }
+[data-design="architectural"] .note-article__week-label { font-family: var(--font-sans); font-size: var(--text-label); font-weight: 800; letter-spacing: var(--tracking-label); text-transform: uppercase; }
+
+/* Hand-drawn strokes and tilts are off; the stamps, tags and chips sit square */
+[data-design="architectural"] .brush-underline,
+[data-design="architectural"] .campaign__underline { display: none; }
+[data-design="architectural"] .hero__line--underlined,
+[data-design="architectural"] .join__title-line { padding-bottom: 0; }
+[data-design="architectural"] :is(.service-row__tag, .approach__principle-num, .note__tag, .session-card__tag, .join__chip, .step__num, .note__num, .notes__pull, .note__accent--orange, .note__accent--periwinkle, .merch-card__placeholder, .campaign__smile, .poster__line, .board-stamp, .scale-banner, .hoopla__card, .ladder__step--ready:not(.is-muted), .ladder__step.is-active) { transform: none; }
