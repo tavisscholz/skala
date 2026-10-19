@@ -308,7 +308,7 @@ idx.write_text(s)
 
 # ---------- full page ----------
 head = s[s.index("<head>"):s.index("</head>")+7]
-head = head.replace("<title>SKALA — Real operators. Bigger tomorrows.</title>", "<title>Playbook — SKALA</title>")
+head = head.replace("<title>SKALA — Real operators. Stronger tomorrows.</title>", "<title>Playbook — SKALA</title>")
 head = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="description" content="The SKALA playbook: practical plays and working tools on store operations, store development, real estate, and franchise growth.">', head)
 head = head.replace('<link rel="preload" href="assets/fonts/inter-variable-latin.woff2"', '<link rel="preload" href="assets/fonts/inter-variable-latin.woff2"')
 svgdefs = s[s.index('  <svg class="svg-defs"'):s.index("</svg>", s.index('  <svg class="svg-defs"'))+6]
