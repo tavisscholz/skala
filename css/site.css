@@ -964,7 +964,6 @@ body.has-hoopla { overflow: hidden; }
    ========================================================================== */
 [data-design="architectural"] {
   --hairline: 1px solid color-mix(in srgb, var(--color-ink) 24%, transparent);
-  --cut-drop: 8.8vw;   /* tan(10°) × the photo's width: 49.7vw beside the hero copy */
 }
 
 /* Section boundaries: straight edges; a hairline only where two paper surfaces meet */
@@ -974,20 +973,26 @@ body.has-hoopla { overflow: hidden; }
 
 /* Flat surfaces: the paper grain and film noise overlays are off */
 [data-design="architectural"] .hero__copy::after,
-[data-design="architectural"] .campaign__media::after,
 [data-design="architectural"] .poster::after { display: none; }
 
-/* Diagonal image treatment: one angle (10° from horizontal), one direction (rising to the
-   right), bottom edge only, on the three photographs that carry a section. The hero photo is
-   sized by the viewport, so its drop is in vw; the figures keep a fixed aspect ratio, so their
-   drop is the same angle expressed as a share of their height (2:3 → 11.75%, 3:2 → 26.4%, 4:3 → 23.5%). */
-[data-design="architectural"] :is(.hero__media, .about .figure, .join .figure, .fn-hero .figure) {
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut-drop)), 0 100%);
+/* Diagonal image treatment: a 75° edge (15° off vertical) rising to the right, placed only where
+   a photograph meets the acid panel. On the hero the acid runs over the photo's top-left corner,
+   starting at its bottom-left corner; on the campaign block the acid runs under the photo's
+   bottom-right corner, meeting its top-right corner. Each wedge is an absolutely positioned
+   pseudo-element whose aspect ratio fixes the angle (width = height × tan 15°), so it holds at
+   every height and width. Every other photograph (About, Careers, Articles hub) keeps straight
+   edges. The campaign block's ::after was the film-noise overlay in legacy; here it is the wedge. */
+[data-design="architectural"] .hero__media::after,
+[data-design="architectural"] .campaign__media::after {
+  content: ""; display: block; position: absolute; top: 0; bottom: 0; height: auto; width: auto; aspect-ratio: 0.26795 / 1;
+  background: var(--color-acid); background-image: none; opacity: 1; mix-blend-mode: normal; pointer-events: none; z-index: 2;
 }
-[data-design="architectural"] .about .figure { --cut-drop: 11.75%; }
-[data-design="architectural"] .join .figure { --cut-drop: 26.4%; }
-[data-design="architectural"] .fn-hero .figure { --cut-drop: 23.5%; }   /* 4:3 */
-@media (max-width: 767px) { [data-design="architectural"] .hero__media { --cut-drop: 17.6vw; } }
+[data-design="architectural"] .hero__media::after { left: 0; right: auto; clip-path: polygon(0 0, 100% 0, 0 100%); }
+[data-design="architectural"] .campaign__media::after { right: 0; left: auto; clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+@media (max-width: 767px) { [data-design="architectural"] .hero__media::after { background: var(--color-ink); } }   /* the stacked hero's copy panel is ink */
+/* The surfaces behind the seams are acid too, so sub-pixel gaps between grid columns never show a dark line. */
+@media (min-width: 768px) { [data-design="architectural"] .hero { background: var(--color-acid); } }
+[data-design="architectural"] .campaign { background: var(--color-acid); }
 
 /* Typography: the brush faces step back to the house sans at its heaviest weight */
 [data-design="architectural"] .strip__words { font-family: var(--font-sans); font-weight: 900; letter-spacing: var(--tracking-hero); }

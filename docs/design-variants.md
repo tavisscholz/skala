@@ -58,35 +58,37 @@ back. It never changes what is served.
 | Element | Legacy | Architectural |
 | --- | --- | --- |
 | Section seams | Torn paper on the homepage (hero sheet, strip, Articles band, Contact), serrated strip edge, paper grain | Straight edges. A 1px hairline only where two paper sections meet (Articles hub). No grain. |
-| Hero photo | Acid sheet torn over the photograph | Split layout, photo bottom edge cut at 10° rising to the right |
-| Campaign block | Acid sheet torn over the photograph; line set in the wordmark face, tilted and staggered; brush underline | Split layout; line set in Inter 900, square, sized to the panel; caption wraps to two lines |
+| Hero photo | Acid sheet torn over the photograph | Split layout; the acid runs over the photo's left edge at 75°, from its bottom-left corner up to the right |
+| Campaign block | Acid sheet torn over the photograph; line set in the wordmark face, tilted and staggered; brush underline | Split layout; the acid runs under the photo's right edge at the same 75°, up to its top-right corner; line set in Inter 900, square, sized to the panel; caption wraps to two lines |
 | "See. Plan. Do. Check. Act. Repeat." | Permanent Marker | Inter 900 |
 | Hero underline, careers underline, campaign underline | Brush strokes | Off |
 | Tags, chips, stamps, numbers, peaks mark | Tilted 1.25° to 4° | Square |
 | "Do This Week" label in articles | Permanent Marker | Inter label style |
-| About, Careers and Articles-hub figures | Straight | Bottom edge cut at the same 10°, same direction |
 | Wordmark (header, footer, hero poster) | Oracle Brush, tilted 2° | **Unchanged** |
 
-Images that deliberately keep straight edges: the campaign photograph (its
-caption sits in the corner a cut would take, and the team leader's head is at
-the top left), the How We Work section (no photograph), merch product shots,
-article pages.
+Every other photograph keeps straight edges: the About portrait, the Careers
+and Articles-hub figures, merch product shots and article pages. The diagonal
+belongs only where a photograph meets the acid panel.
 
 ### The diagonal cut
 
-One rule, applied to a list of elements:
+Two pseudo-elements, one rule:
 
 ```css
-[data-design="architectural"] :is(.hero__media, .about .figure, .join .figure, .fn-hero .figure) {
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut-drop)), 0 100%);
+[data-design="architectural"] .hero__media::after,
+[data-design="architectural"] .campaign__media::after {
+  content: ""; position: absolute; top: 0; bottom: 0; aspect-ratio: 0.26795 / 1;   /* width = height × tan 15° */
+  background: var(--color-acid); clip-path: …;                                       /* a triangle */
 }
 ```
 
-`--cut-drop` is tan(10°) times the element's width: `8.8vw` for the hero photo
-beside the copy, `17.6vw` when it spans a phone, and a share of the height for
-the fixed-ratio figures (2:3 → 11.75%, 3:2 → 26.4%, 4:3 → 23.5%). Measured in
-Chromium the hero edge is 10.0° at 375, 768 and 1440px. Source image files
-are not cropped; the cut is a CSS clip.
+The hero wedge sits on the photo's left edge and is clipped to the triangle
+that starts at the bottom-left corner and rises to the right; the campaign
+wedge sits on the right edge and is clipped to the triangle that rises to the
+top-right corner. Because the wedge's width comes from its aspect ratio, the
+edge is 75° from horizontal at every viewport and hero height (measured 75°
+at 375, 768 and 1440px). On phones the stacked hero's copy panel is ink, so
+that wedge is ink there. Source image files are not cropped.
 
 ## Validation (19 Oct 2026)
 
@@ -98,7 +100,7 @@ are not cropped; the cut is a CSS clip.
   No horizontal overflow at 320, 390, 768 or 1440px in either build.
 - Full-page captures of the homepage, Articles hub, Careers, Are You Ready
   and Merch at 375, 768 and 1440px for both variants, plus section captures
-  of the hero, campaign and About blocks. The hero copy, navigation, forms,
+  of the hero and campaign blocks. The hero copy, navigation, forms,
   footer and all CTAs render and work identically in both.
 - `git diff backup/pre-architectural-20261019 -- assets/ css/fonts.css css/tokens.css js/ .htaccess contact.php` is empty:
   no asset, font, token, script or server file changed.

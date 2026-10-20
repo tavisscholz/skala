@@ -484,7 +484,9 @@ await rm.close();
     design: document.body.dataset.design, tears: document.body.classList.contains('tears'),
     seams: [...document.querySelectorAll('.tear')].filter(t => t.getBoundingClientRect().height > 30).length,
     tornEdge: getComputedStyle(document.querySelector('.torn-edge')).display,
-    clip: getComputedStyle(document.querySelector('.hero__media')).clipPath,
+    wedge: (() => { const s = getComputedStyle(document.querySelector('.hero__media'), '::after'); return s.content !== 'none' && s.position === 'absolute' ? Math.round(parseFloat(s.width)) : 0; })(),
+    wedgeAngle: (() => { const s = getComputedStyle(document.querySelector('.campaign__media'), '::after'); const w = parseFloat(s.width), h = parseFloat(s.height); return s.position === 'absolute' && w > 0 ? Math.round(Math.atan(h / w) * 180 / Math.PI) : 0; })(),
+    figureClip: getComputedStyle(document.querySelector('.about .figure')).clipPath,
     strip: getComputedStyle(document.querySelector('.strip__words')).fontFamily,
     line: getComputedStyle(document.querySelector('.campaign__line')).fontFamily,
     tagTilt: getComputedStyle(document.querySelector('.service-row__tag')).transform,
@@ -493,8 +495,8 @@ await rm.close();
     wordmarkTilt: getComputedStyle(document.querySelector('.wordmark__text')).transform,
     overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
   }));
-  const isLegacy = s => s.design === 'legacy' && s.tears && s.seams === 7 && s.clip === 'none' && /Permanent Marker/.test(s.strip) && /Oracle Brush/.test(s.line) && s.tagTilt !== 'none' && s.underline !== 'none' && s.overflow === 0;
-  const isArch = s => s.design === 'architectural' && !s.tears && s.seams === 0 && s.tornEdge === 'none' && s.clip.startsWith('polygon') && /Inter/.test(s.strip) && !/Oracle Brush|Permanent Marker/.test(s.line) && s.tagTilt === 'none' && s.underline === 'none' && s.overflow === 0;
+  const isLegacy = s => s.design === 'legacy' && s.tears && s.seams === 7 && s.wedge === 0 && s.figureClip === 'none' && /Permanent Marker/.test(s.strip) && /Oracle Brush/.test(s.line) && s.tagTilt !== 'none' && s.underline !== 'none' && s.overflow === 0;
+  const isArch = s => s.design === 'architectural' && !s.tears && s.seams === 0 && s.tornEdge === 'none' && s.wedge > 0 && s.wedgeAngle === 75 && s.figureClip === 'none' && /Inter/.test(s.strip) && !/Oracle Brush|Permanent Marker/.test(s.line) && s.tagTilt === 'none' && s.underline === 'none' && s.overflow === 0;
   await dv.goto(url + 'index.html', { waitUntil: 'networkidle' });
   const asBuilt = await probe();
   note(`${built} build renders its own presentation (seams, edges, faces, tilts)`, built === 'legacy' ? isLegacy(asBuilt) : isArch(asBuilt));
