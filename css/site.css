@@ -999,6 +999,18 @@ body.has-hoopla { overflow: hidden; }
 @media (min-width: 768px) { [data-design="architectural"] .hero, [data-design="architectural"] .hero__media { background: var(--color-acid); } }
 [data-design="architectural"] .campaign, [data-design="architectural"] .campaign__media { background: var(--color-acid); }
 
+/* Phones only: every homepage photograph is the hero's height (the stacked hero photo is a 4:3 frame on
+   the full width, i.e. 75vw), cropping into the picture with object-fit where the frame demands it; and
+   the hero photograph is cropped into by 15% from the left (7.5% top and bottom), the remaining frame
+   scaled to fill so its right edge stays. Tablet and desktop frames are untouched. */
+@media (max-width: 767px) {
+  [data-design="architectural"] .campaign__media { min-height: 0; aspect-ratio: 4 / 3; }
+  [data-design="architectural"] .about .figure { aspect-ratio: auto; height: 75vw; }
+  [data-design="architectural"] .campaign__media .media-slot__img { object-position: 30% 45%; }   /* keeps the team leader at the left edge */
+  [data-design="architectural"] .about .figure img { object-position: 50% 18%; }                  /* keeps the head when the portrait is cropped */
+  [data-design="architectural"] .hero__media .media-slot__img { clip-path: inset(7.5% 0 7.5% 15%); transform: scale(1.17647); transform-origin: 100% 50%; }
+}
+
 /* Typography: the brush faces step back to the house sans at its heaviest weight */
 [data-design="architectural"] .strip__words { font-family: var(--font-sans); font-weight: 900; letter-spacing: var(--tracking-hero); }
 [data-design="architectural"] .campaign__panel { container-type: inline-size; }
