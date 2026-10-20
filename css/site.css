@@ -1012,7 +1012,7 @@ body.has-hoopla { overflow: hidden; }
 }
 
 /* Typography: the brush faces step back to the house sans at its heaviest weight */
-[data-design="architectural"] .strip__words { font-family: var(--font-sans); font-weight: 900; letter-spacing: var(--tracking-hero); }
+[data-design="architectural"] .strip__words { font-family: var(--font-sans); font-weight: 900; letter-spacing: var(--tracking-hero); font-size: calc(var(--text-campaign) * 0.7); }
 [data-design="architectural"] .campaign__panel { container-type: inline-size; }
 [data-design="architectural"] .campaign__line { font-family: var(--font-sans); font-weight: 900; letter-spacing: var(--tracking-hero); transform: none; margin-left: 0; }
 [data-design="architectural"] .campaign__word { margin-left: 0; }
