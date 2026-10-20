@@ -999,24 +999,6 @@ body.has-hoopla { overflow: hidden; }
 @media (min-width: 768px) { [data-design="architectural"] .hero, [data-design="architectural"] .hero__media { background: var(--color-acid); } }
 [data-design="architectural"] .campaign, [data-design="architectural"] .campaign__media { background: var(--color-acid); }
 
-/* Photograph heights: every homepage photograph matches the hero (690px on desktop, 540px on tablets,
-   a 4:3 frame when the blocks stack on phones), cropping into the picture with object-fit where the
-   frame demands it. The hero photograph is additionally cropped into by 15% from the left (and 7.5%
-   top and bottom) with the remaining frame scaled up to fill, so its right edge stays where it was. */
-@media (min-width: 1024px) { [data-design="architectural"] { --photo-h: 690px; } }
-@media (min-width: 768px) and (max-width: 1023px) { [data-design="architectural"] { --photo-h: 540px; } [data-design="architectural"] .hero { min-height: var(--photo-h); } }
-@media (min-width: 768px) {
-  [data-design="architectural"] .campaign { min-height: var(--photo-h); }
-  [data-design="architectural"] .about .figure { aspect-ratio: auto; height: var(--photo-h); }
-}
-@media (max-width: 767px) {
-  [data-design="architectural"] .campaign__media { min-height: 0; aspect-ratio: 4 / 3; }
-  [data-design="architectural"] .about .figure { aspect-ratio: 4 / 3; }
-}
-[data-design="architectural"] .campaign__media .media-slot__img { object-position: 30% 45%; }   /* keeps the team leader at the left edge */
-[data-design="architectural"] .about .figure img { object-position: 50% 18%; }                  /* keeps the head when the portrait is cropped */
-[data-design="architectural"] .hero__media .media-slot__img { clip-path: inset(7.5% 0 7.5% 15%); transform: scale(1.17647); transform-origin: 100% 50%; }
-
 /* Typography: the brush faces step back to the house sans at its heaviest weight */
 [data-design="architectural"] .strip__words { font-family: var(--font-sans); font-weight: 900; letter-spacing: var(--tracking-hero); }
 [data-design="architectural"] .campaign__panel { container-type: inline-size; }
