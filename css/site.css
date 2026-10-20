@@ -980,8 +980,9 @@ body.has-hoopla { overflow: hidden; }
    starting at its bottom-left corner; on the campaign block the acid runs under the photo's
    bottom-right corner, meeting its top-right corner. Each wedge is an absolutely positioned
    pseudo-element whose aspect ratio fixes the angle (width = height × tan 15°), so it holds at
-   every height and width. Every other photograph (About, Careers, Articles hub) keeps straight
-   edges. The campaign block's ::after was the film-noise overlay in legacy; here it is the wedge. */
+   every height and width from 768px up; on phones the blocks stack and both photographs keep
+   straight edges. Every other photograph (About, Careers, Articles hub) keeps straight edges.
+   The campaign block's ::after was the film-noise overlay in legacy; here it is the wedge. */
 [data-design="architectural"] .hero__media::after,
 [data-design="architectural"] .campaign__media::after {
   content: ""; display: block; position: absolute; top: 0; bottom: 0; height: auto; width: auto; aspect-ratio: 0.26795 / 1;
@@ -992,8 +993,7 @@ body.has-hoopla { overflow: hidden; }
 [data-design="architectural"] .hero__media, [data-design="architectural"] .campaign__media { overflow: visible; }
 [data-design="architectural"] .hero__media::after { left: -1px; right: auto; clip-path: polygon(0 0, 100% 0, 0 100%); }
 [data-design="architectural"] .campaign__media::after { right: -1px; left: auto; clip-path: polygon(100% 0, 100% 100%, 0 100%); }
-@media (max-width: 767px) { [data-design="architectural"] .hero__media::after { left: 0; } [data-design="architectural"] .campaign__media::after { right: 0; } }   /* stacked: the seam is the viewport edge */
-@media (max-width: 767px) { [data-design="architectural"] .hero__media::after { background: var(--color-ink); } }   /* the stacked hero's copy panel is ink */
+@media (max-width: 767px) { [data-design="architectural"] .hero__media::after, [data-design="architectural"] .campaign__media::after { display: none; } }   /* phones: no cuts, straight edges */
 /* The surfaces behind the seams are acid too, so neither sub-pixel column gaps nor the wedge's anti-aliased
    clip edge can show a dark line against the panel. */
 @media (min-width: 768px) { [data-design="architectural"] .hero, [data-design="architectural"] .hero__media { background: var(--color-acid); } }

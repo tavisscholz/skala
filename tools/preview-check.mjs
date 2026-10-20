@@ -234,7 +234,7 @@ await m.waitForTimeout(500);
 note('first row tugs once the hero has scrolled away', await m.evaluate(() => document.querySelector('.service-row').classList.contains('is-nudged')));
 {
   const seams = await m.evaluate(() => { const live = [...document.querySelectorAll('.tear')].filter(t => t.getBoundingClientRect().height > 30).length; return { design: document.body.dataset.design, tears: document.body.classList.contains('tears'), total: document.querySelectorAll('.tear').length, live }; });
-  if (seams.design === 'architectural') note('architectural build: no torn seams on the phone', !seams.tears && seams.live === 0);
+  if (seams.design === 'architectural') note('architectural build: no torn seams and no wedges on the phone', !seams.tears && seams.live === 0 && (await m.evaluate(() => ['.hero__media', '.campaign__media'].every(sel => getComputedStyle(document.querySelector(sel), '::after').display === 'none'))));
   else note('torn seams present and gated', seams.tears && seams.total === 7 && seams.live === 7);
 }
 note('header mark sits beside the wordmark', await m.evaluate(() => { const c = document.querySelector('.wordmark--header .wordmark__peaks'); if (!c) return false; const r = c.getBoundingClientRect(), t = document.querySelector('.wordmark__text').getBoundingClientRect(); return r.width > 20 && r.left >= t.right - 4; }));

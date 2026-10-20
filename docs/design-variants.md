@@ -57,8 +57,8 @@ never changes what is served.
 | Element | Legacy | Architectural |
 | --- | --- | --- |
 | Section seams | Torn paper on the homepage (hero sheet, strip, Articles band, Contact), serrated strip edge, paper grain | Straight edges. A 1px hairline only where two paper sections meet (Articles hub). No grain. |
-| Hero photo | Acid sheet torn over the photograph | Split layout; the acid runs over the photo's left edge at 75°, from its bottom-left corner up to the right |
-| Campaign block | Acid sheet torn over the photograph; line set in the wordmark face, tilted and staggered; brush underline | Split layout; the acid runs under the photo's right edge at the same 75°, up to its top-right corner; line set in Inter 900, square, sized to the panel; caption wraps to two lines |
+| Hero photo | Acid sheet torn over the photograph | Split layout; the acid runs over the photo's left edge at 75°, from its bottom-left corner up to the right (tablet and desktop; straight on phones) |
+| Campaign block | Acid sheet torn over the photograph; line set in the wordmark face, tilted and staggered; brush underline | Split layout; the acid runs under the photo's right edge at the same 75°, up to its top-right corner (tablet and desktop; straight on phones); line set in Inter 900, square, sized to the panel; caption wraps to two lines |
 | "See. Plan. Do. Check. Act. Repeat." | Permanent Marker | Inter 900 |
 | Hero underline, careers underline, campaign underline | Brush strokes | Off |
 | Tags, chips, stamps, numbers, peaks mark | Tilted 1.25° to 4° | Square |
@@ -85,9 +85,9 @@ The hero wedge sits on the photo's left edge and is clipped to the triangle
 that starts at the bottom-left corner and rises to the right; the campaign
 wedge sits on the right edge and is clipped to the triangle that rises to the
 top-right corner. Because the wedge's width comes from its aspect ratio, the
-edge is 75° from horizontal at every viewport and hero height (measured 75°
-at 375, 768 and 1440px). On phones the stacked hero's copy panel is ink, so
-that wedge is ink there. Source image files are not cropped.
+edge is 75° from horizontal at every hero height (measured 75° at 768 and
+1440px). Below 768px the blocks stack and both wedges are off, so phones see
+straight edges. Source image files are not cropped.
 
 ## Validation (19 Oct 2026)
 
