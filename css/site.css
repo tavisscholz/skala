@@ -987,12 +987,17 @@ body.has-hoopla { overflow: hidden; }
   content: ""; display: block; position: absolute; top: 0; bottom: 0; height: auto; width: auto; aspect-ratio: 0.26795 / 1;
   background: var(--color-acid); background-image: none; opacity: 1; mix-blend-mode: normal; pointer-events: none; z-index: 2;
 }
-[data-design="architectural"] .hero__media::after { left: 0; right: auto; clip-path: polygon(0 0, 100% 0, 0 100%); }
-[data-design="architectural"] .campaign__media::after { right: 0; left: auto; clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+/* Each wedge reaches 1px past its seam into the acid panel, so its anti-aliased edge never lands on the same
+   fractional pixel column as the photograph's edge (which would conflate into a faint dark line). */
+[data-design="architectural"] .hero__media, [data-design="architectural"] .campaign__media { overflow: visible; }
+[data-design="architectural"] .hero__media::after { left: -1px; right: auto; clip-path: polygon(0 0, 100% 0, 0 100%); }
+[data-design="architectural"] .campaign__media::after { right: -1px; left: auto; clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+@media (max-width: 767px) { [data-design="architectural"] .hero__media::after { left: 0; } [data-design="architectural"] .campaign__media::after { right: 0; } }   /* stacked: the seam is the viewport edge */
 @media (max-width: 767px) { [data-design="architectural"] .hero__media::after { background: var(--color-ink); } }   /* the stacked hero's copy panel is ink */
-/* The surfaces behind the seams are acid too, so sub-pixel gaps between grid columns never show a dark line. */
-@media (min-width: 768px) { [data-design="architectural"] .hero { background: var(--color-acid); } }
-[data-design="architectural"] .campaign { background: var(--color-acid); }
+/* The surfaces behind the seams are acid too, so neither sub-pixel column gaps nor the wedge's anti-aliased
+   clip edge can show a dark line against the panel. */
+@media (min-width: 768px) { [data-design="architectural"] .hero, [data-design="architectural"] .hero__media { background: var(--color-acid); } }
+[data-design="architectural"] .campaign, [data-design="architectural"] .campaign__media { background: var(--color-acid); }
 
 /* Typography: the brush faces step back to the house sans at its heaviest weight */
 [data-design="architectural"] .strip__words { font-family: var(--font-sans); font-weight: 900; letter-spacing: var(--tracking-hero); }
