@@ -63,6 +63,8 @@ never changes what is served.
 | Hero underline, careers underline, campaign underline | Brush strokes | Off |
 | Tags, chips, stamps, numbers, peaks mark | Tilted 1.25° to 4° | Square |
 | "Do This Week" label in articles | Permanent Marker | Inter label style |
+| Photograph heights | Hero 690px, campaign 420px, About portrait 2:3 | Hero, campaign and About all 690px on desktop and 540px on tablets (object-fit crops into the picture); 4:3 frames on phones |
+| Hero photograph crop | Full frame, focus at 60% | Cropped into by 15% from the left and 7.5% top and bottom, scaled to fill; the right edge stays |
 | Wordmark (header, footer, hero poster) | Oracle Brush, tilted 2° | **Unchanged** |
 
 Every other photograph keeps straight edges: the About portrait, the Careers
