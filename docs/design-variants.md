@@ -4,24 +4,23 @@ The site ships two visual presentations of the same markup, copy and
 functionality. **Legacy** is the original SKALA look. **Architectural** is the
 refinement from the 19 Oct 2026 brief: straight hairline boundaries, one
 consistent diagonal image cut, the house sans in place of the brush faces,
-flat surfaces and square stamps. Legacy is the default until the refined
-version is approved.
+flat surfaces and square stamps. Architectural has been the shipped default
+since 20 Oct 2026; legacy stays in the code, one value away.
 
 ## The switch
 
 One value, in `tools/build-notes.py`:
 
 ```python
-DESIGN = os.environ.get("SKALA_DESIGN", "legacy")
+DESIGN = os.environ.get("SKALA_DESIGN", "architectural")
 ```
 
-- To ship the refined design, change `"legacy"` to `"architectural"` and run
-  `python3 tools/build-notes.py`. Every page's `<body>` gets
-  `data-design="architectural"` and the homepage loses its `tears` class.
-- To return to the original design, set it back to `"legacy"` and rebuild.
-  The pages come back byte-for-byte to the legacy build.
+- To return to the original design, change `"architectural"` to `"legacy"`,
+  run `python3 tools/build-notes.py`, commit and push. Every page's `<body>`
+  gets `data-design="legacy"` and the homepage regains its `tears` class; the
+  pages come back byte-for-byte to the legacy build.
 - For a one-off build without editing the file:
-  `SKALA_DESIGN=architectural python3 tools/build-notes.py`.
+  `SKALA_DESIGN=legacy python3 tools/build-notes.py`.
 
 The build is the rollback mechanism. Nothing depends on the browser.
 
@@ -30,10 +29,10 @@ The build is the rollback mechanism. Nothing depends on the browser.
 A six-line inline script at the top of every `<body>`, written by the build,
 reads `?design=architectural` or `?design=legacy` from the address, applies it
 before first paint and remembers it for the browser session. It exists so
-both variants can be compared on the same deployment, for example
-`https://buildwithskala.com/?design=architectural` once this branch ships
-with the legacy default. Clear the session (or open `?design=legacy`) to go
-back. It never changes what is served.
+both variants can be compared on the same deployment: open
+`https://buildwithskala.com/?design=legacy` to see the original look for the
+rest of the browser session, and `?design=architectural` to come back. It
+never changes what is served.
 
 ## How it is built
 
@@ -133,7 +132,9 @@ git push --force-with-lease origin design/skala-architectural-refinement
 ```
 
 Production (`buildwithskala.com`, Hostinger Git deploy of
-`claude/hopeful-babbage-pcgjgf`) is untouched by this branch. It only changes
-if the branch is merged into the deploy branch and pushed; with `DESIGN`
-left at `"legacy"` even that deploy keeps the current look and merely adds
-the `?design=` review switch.
+`claude/hopeful-babbage-pcgjgf`) received the architectural default on
+20 Oct 2026. To roll production back without touching Git history, set
+`DESIGN` to `"legacy"`, rebuild, commit and push to the deploy branch; the
+webhook redeploys within a minute. To undo the whole refinement instead, use
+the revert above on the deploy branch. Emergency fallback: point hPanel
+(Advanced → Git) at `backup/pre-architectural-20261019` and click Deploy.

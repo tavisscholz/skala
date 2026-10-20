@@ -224,9 +224,9 @@ AUDIO = False
 # "architectural" is the refined one (straight hairline boundaries, one diagonal image cut, the
 # house sans in place of the brush faces). The value is written as data-design on <body> of
 # every page and css/site.css scopes the refined rules under [data-design="architectural"], so
-# changing this one line and rebuilding switches the whole site. SKALA_DESIGN=architectural
-# overrides it for a QA build without editing the file. See docs/design-variants.md.
-DESIGN = os.environ.get("SKALA_DESIGN", "legacy")
+# changing this one line and rebuilding switches the whole site. SKALA_DESIGN=legacy (or
+# architectural) overrides it for a QA build without editing the file. See docs/design-variants.md.
+DESIGN = os.environ.get("SKALA_DESIGN", "architectural")
 if DESIGN not in ("legacy", "architectural"):
     raise SystemExit(f"DESIGN must be 'legacy' or 'architectural', not {DESIGN!r}")
 # Review aid, never the rollback mechanism: ?design=architectural or ?design=legacy on any page
